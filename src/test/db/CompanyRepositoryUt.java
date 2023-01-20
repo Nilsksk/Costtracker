@@ -2,11 +2,16 @@ package test.db;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +24,22 @@ class CompanyRepositoryUt {
 	private static Connection connection;
 
 	private int id;
-	private String name;
-	private String location;
+	private String name = "Subway";
+	private String location = "Landau";
 
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
+		Path path = Paths.get("CreateDatabase.sql");
+		String sql = Files.readString(path);
+		Statement stmt = connection.createStatement();
+		stmt.execute(sql);
+		connection.close();
+	}
+	
 	@BeforeEach
 	void setUp() throws Exception {
-		connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "test");
+		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		helper = new DatabaseTestHelper(connection);
 	}
 
@@ -32,10 +47,11 @@ class CompanyRepositoryUt {
 	void tearDown() throws Exception {
 		connection.close();
 		helper = null;
+		id = 0;
 	}
 
 	@Test
-	void testPurchaseInsert() throws SQLException {
+	void testCompanyInsert() throws SQLException {
 		// Arrange
 		CompanyRepository repository = new CompanyRepository(connection);
 		CompanyEntity entity = new CompanyEntity(name, location);
@@ -46,13 +62,26 @@ class CompanyRepositoryUt {
 		// Assert
 		assertEquals(true, ret);
 	}
+	
+	@Test
+	void testCompanyInsertNoLocation() throws SQLException {
+		// Arrange
+		CompanyRepository repository = new CompanyRepository(connection);
+		CompanyEntity entity = new CompanyEntity(name, location);
+		
+		// Act
+		var ret = repository.insert(entity);
+		
+		// Assert
+		assertEquals(true, ret);
+	}
 
 	@Test
-	void testPurchaseUpdate() throws SQLException {
+	void testCompanyUpdate() throws SQLException {
 		// Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
-		CompanyEntity entity = new CompanyEntity(name, location);
+		CompanyEntity entity = new CompanyEntity(id, name, location);
 		entity.setLocation("Karlsruhe");
 
 		// Act
@@ -61,14 +90,28 @@ class CompanyRepositoryUt {
 		// Assert
 		assertEquals(true, ret);
 	}
+	
+	@Test
+	void testCompanyUpdateNoLocation() throws SQLException {
+		// Arrange
+		id = helper.createCompany(name, location);
+		CompanyRepository repository = new CompanyRepository(connection);
+		CompanyEntity entity = new CompanyEntity(id, name);
+		entity.setName("McDonalds");
+		
+		// Act
+		var ret = repository.update(entity);
+		
+		// Assert
+		assertEquals(true, ret);
+	}
 
 	@Test
-	void testPurchaseDeleteEntity() throws SQLException {
+	void testCompanyDeleteEntity() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
-		CompanyEntity entity = new CompanyEntity(name, location);
-		entity.setId(id);
+		CompanyEntity entity = new CompanyEntity(id, name, location);
 
 		//Act
 		var ret = repository.delete(entity);
@@ -77,7 +120,8 @@ class CompanyRepositoryUt {
 		assertEquals(true, ret);
 	}
 
-	void testPurchaseDeleteId() throws SQLException {
+	@Test
+	void testCompanyDeleteId() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -90,7 +134,7 @@ class CompanyRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseSelect() throws SQLException {
+	void testCompanySelect() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);

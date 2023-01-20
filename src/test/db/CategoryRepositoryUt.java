@@ -2,11 +2,16 @@ package test.db;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +26,19 @@ class CategoryRepositoryUt {
 	private int id;
 	private String name = "Essen";
 
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
+		Path path = Paths.get("CreateDatabase.sql");
+		String sql = Files.readString(path);
+		Statement stmt = connection.createStatement();
+		stmt.execute(sql);
+		connection.close();
+	}
+	
 	@BeforeEach
 	void setUp() throws Exception {
-		connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "test");
+		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		helper = new DatabaseTestHelper(connection);
 	}
 
@@ -31,10 +46,11 @@ class CategoryRepositoryUt {
 	void tearDown() throws Exception {
 		connection.close();
 		helper = null;
+		id = 0;
 	}
 
 	@Test
-	void testPurchaseInsert() throws SQLException {
+	void testCategoryInsert() throws SQLException {
 		// Arrange
 		CategoryRepository repository = new CategoryRepository(connection);
 		CategoryEntity entity = new CategoryEntity(name);
@@ -47,11 +63,11 @@ class CategoryRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseUpdate() throws SQLException {
+	void testCategoryUpdate() throws SQLException {
 		// Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
-		CategoryEntity entity = new CategoryEntity(name);
+		CategoryEntity entity = new CategoryEntity(id, name);
 		entity.setName("Trinken");
 
 		// Act
@@ -62,12 +78,11 @@ class CategoryRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseDeleteEntity() throws SQLException {
+	void testCategoryDeleteEntity() throws SQLException {
 		//Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
-		CategoryEntity entity = new CategoryEntity(name);
-		entity.setId(id);
+		CategoryEntity entity = new CategoryEntity(id, name);
 
 		//Act
 		var ret = repository.delete(entity);
@@ -76,7 +91,8 @@ class CategoryRepositoryUt {
 		assertEquals(true, ret);
 	}
 
-	void testPurchaseDeleteId() throws SQLException {
+	@Test
+	void testCategoryDeleteId() throws SQLException {
 		//Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
@@ -89,7 +105,7 @@ class CategoryRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseSelect() throws SQLException {
+	void testCategorySelect() throws SQLException {
 		//Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
