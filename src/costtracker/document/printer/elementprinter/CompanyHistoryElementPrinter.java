@@ -13,7 +13,10 @@ public class CompanyHistoryElementPrinter implements ElementPrinter {
 	
 	@Override
 	public String getElementHeader() {
-		return element.getHeader();
+		lineWriter.newLine();
+		lineWriter.appendToLine(this.element.getHeader());
+		lineWriter.appendToLine(Double.toString(this.element.getTotal()));
+		return lineWriter.returnLine();
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class CompanyHistoryElementPrinter implements ElementPrinter {
 		for (Purchase purchase : element.getPurchases()) {
 			lineWriter.newLine();
 			if (purchase.getCompany() != null) {
-				lineWriter.appendToLine(purchase.getCategory().getName());
+				lineWriter.appendToLine(purchase.getCompany().getName());
 			}
 			else
 				lineWriter.appendToLine("");

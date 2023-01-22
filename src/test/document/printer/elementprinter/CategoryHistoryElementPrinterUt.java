@@ -21,11 +21,12 @@ class CategoryHistoryElementPrinterUt {
 		Category category = new Category(1, header);
 		CategoryHistoryElement element = new CategoryHistoryElement(category);
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, category);
+		header += ";0.0;\n";
 		element.addPurchase(purchase);
 		CategoryHistoryElementPrinter printer = new CategoryHistoryElementPrinter();
 
 		printer.registerElement(element);
-
+		printer.registerLineWriter(new CSVLineWriter());
 		var ret = printer.getElementHeader();
 
 		assertEquals(header, ret);

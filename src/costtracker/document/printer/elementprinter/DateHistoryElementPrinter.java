@@ -13,7 +13,10 @@ public class DateHistoryElementPrinter implements ElementPrinter {
 	
 	@Override
 	public String getElementHeader() {
-		return element.getHeader();
+		lineWriter.newLine();
+		lineWriter.appendToLine(this.element.getHeader());
+		lineWriter.appendToLine(Double.toString(this.element.getTotal()));
+		return lineWriter.returnLine();
 	}
 
 	@Override

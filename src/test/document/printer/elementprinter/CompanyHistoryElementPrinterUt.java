@@ -20,12 +20,14 @@ class CompanyHistoryElementPrinterUt {
 		String header = "category";
 		Company company = new Company(1, header, "loc");
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
+		 header += ";0.0;\n";
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, company, null);
 		element.addPurchase(purchase);
 		CompanyHistoryElementPrinter printer = new CompanyHistoryElementPrinter();
 
 		printer.registerElement(element);
-
+		printer.registerLineWriter(new CSVLineWriter());
+		
 		var ret = printer.getElementHeader();
 
 		assertEquals(header, ret);

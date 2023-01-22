@@ -18,13 +18,14 @@ class DateHistoryElementPrinterUt {
 	@Test
 	void TestGetElementHeader() {
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		String header = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();
+		String header = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + ";0.0;\n";
 		DateHistoryElement element = new DateHistoryElement(date);
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, null);
 		element.addPurchase(purchase);
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getElementHeader();
 

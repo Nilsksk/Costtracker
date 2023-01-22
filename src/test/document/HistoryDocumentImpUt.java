@@ -22,9 +22,6 @@ import costtracker.document.elements.CategoryHistoryElement;
 import costtracker.document.elements.CompanyHistoryElement;
 import costtracker.document.elements.DateHistoryElement;
 import costtracker.document.elements.HistoryElement;
-import costtracker.document.printer.CSVPrinter;
-import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
-import costtracker.document.printer.elementprinter.ElementPrinter;
 import costtracker.document.type.DocumentType;
 import costtracker.document.type.ElementType;
 

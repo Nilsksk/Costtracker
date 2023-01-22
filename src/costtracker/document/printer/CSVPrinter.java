@@ -35,10 +35,8 @@ public class CSVPrinter implements Printer {
 			elementPrinter.registerLineWriter(new CSVLineWriter());
 			for (HistoryElement historyElement : element) {
 				elementPrinter.registerElement(historyElement);
-				sb.append(elementPrinter.getElementHeader() + ";" + historyElement.getTotal());
-				sb.append("\n");
+				sb.append(elementPrinter.getElementHeader());
 				sb.append(elementPrinter.getDescription());
-				sb.append("\n");
 				sb.append(elementPrinter.getElementLines());
 			}
 			writer.append(sb.toString());

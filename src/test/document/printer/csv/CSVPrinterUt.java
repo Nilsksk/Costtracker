@@ -214,7 +214,7 @@ class CSVPrinterUt {
 		HistoryElement element = new DateHistoryElement(date);
 		HistoryElement element2 = new DateHistoryElement(date);
 		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase2 = new Purchase(0, "purchase", "description", date.plusDays(1), 0, null, category);
 		element.addPurchase(purchase);
 		element.addPurchase(purchase2);
 		element2.addPurchase(purchase);

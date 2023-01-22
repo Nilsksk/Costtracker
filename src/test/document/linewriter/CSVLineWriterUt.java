@@ -24,7 +24,7 @@ class CSVLineWriterUt {
 		assertEquals(chars[2], second.toCharArray()[0]);
 		assertEquals(chars[3], ';');
 	}
-
+	@Test
 	void TestNewLine() {
 		String first = "1";
 		String second = "2";
@@ -36,12 +36,9 @@ class CSVLineWriterUt {
 		
 		var ret = lineWriter.returnLine();
 		
-		//TODO find out how \n works here
-		
 		var chars = ret.toCharArray();
-//		assertTrue(chars.length == 2);
-//		assertEquals(chars[0], '\\');
-//		assertEquals(chars[1], ';');
+		assertTrue(chars.length == 1);
+		assertEquals(chars[0], '\n');
 	}
 
 }
