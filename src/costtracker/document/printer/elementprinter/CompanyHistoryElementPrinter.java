@@ -3,11 +3,14 @@ package costtracker.document.printer.elementprinter;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.CompanyHistoryElement;
 import costtracker.document.elements.HistoryElement;
+import costtracker.document.linewriter.LineWriter;
 
 public class CompanyHistoryElementPrinter implements ElementPrinter {
 
 	private CompanyHistoryElement element;
 
+	private LineWriter lineWriter;
+	
 	@Override
 	public String getElementHeader() {
 		return element.getHeader();
@@ -15,25 +18,22 @@ public class CompanyHistoryElementPrinter implements ElementPrinter {
 
 	@Override
 	public String getElementLines() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder lines = new StringBuilder();
 		for (Purchase purchase : element.getPurchases()) {
+			lineWriter.newLine();
 			if (purchase.getCompany() != null) {
-				sb.append(purchase.getCompany().getName());
+				lineWriter.appendToLine(purchase.getCategory().getName());
 			}
-			sb.append(";");
-			sb.append(purchase.getName());
-			sb.append(";");
-			sb.append(purchase.getDescription());
-			sb.append(";");
-			sb.append(purchase.getPrice());
-			sb.append(";");
-			sb.append(purchase.getDateString());
-			sb.append(";");
-			sb.append(purchase.getCategory().getName());
-			sb.append(";");
-			sb.append("\n");
+			else
+				lineWriter.appendToLine("");
+			lineWriter.appendToLine(purchase.getName());
+			lineWriter.appendToLine(purchase.getDescription());
+			lineWriter.appendToLine(Double.toString(purchase.getPrice()));
+			lineWriter.appendToLine(purchase.getDateString());
+			lineWriter.appendToLine(purchase.getCategory().getName());
+			lines.append(lineWriter.returnLine());
 		}
-		return sb.toString();
+		return lines.toString();
 	}
 
 	@Override
@@ -44,13 +44,25 @@ public class CompanyHistoryElementPrinter implements ElementPrinter {
 
 	@Override
 	public String getDescription() {
-		return "Company;Name;Description;Price;Date;Category";
+		lineWriter.newLine();
+		lineWriter.appendToLine("Company");
+		lineWriter.appendToLine("Name");
+		lineWriter.appendToLine("Description");
+		lineWriter.appendToLine("Price");
+		lineWriter.appendToLine("Date");
+		lineWriter.appendToLine("Category");
+		return lineWriter.returnLine();
 	}
 
 	@Override
 	public String getType() {
 		// TODO Auto-generated method stub
 		return "Company";
+	}
+
+	@Override
+	public void registerLineWriter(LineWriter lineWriter) {
+		this.lineWriter = lineWriter;
 	}
 
 }

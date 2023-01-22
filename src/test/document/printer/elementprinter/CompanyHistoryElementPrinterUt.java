@@ -10,6 +10,7 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.CompanyHistoryElement;
+import costtracker.document.linewriter.CSVLineWriter;
 import costtracker.document.printer.elementprinter.CompanyHistoryElementPrinter;
 
 class CompanyHistoryElementPrinterUt {
@@ -48,7 +49,7 @@ class CompanyHistoryElementPrinterUt {
 
 	@Test
 	void TestGetElementDescription() {
-		String description = "Company;Name;Description;Price;Date;Category";
+		String description = "Company;Name;Description;Price;Date;Category;\n";
 		Company company = new Company(1, "com", "loc");
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, company, null);
@@ -56,6 +57,7 @@ class CompanyHistoryElementPrinterUt {
 		CompanyHistoryElementPrinter printer = new CompanyHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getDescription();
 
@@ -76,6 +78,7 @@ class CompanyHistoryElementPrinterUt {
 		String line = company.getName() + ";" + name + ";" + description + ";" + price + ";" + purchase.getDateString() + ";"
 				+ category.getName() + ";\n";
 		CompanyHistoryElementPrinter printer = new CompanyHistoryElementPrinter();
+		printer.registerLineWriter(new CSVLineWriter());
 
 		printer.registerElement(element);
 
@@ -100,6 +103,7 @@ class CompanyHistoryElementPrinterUt {
 		CompanyHistoryElementPrinter printer = new CompanyHistoryElementPrinter();
 		
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 		
 		var ret = printer.getElementLines();
 		

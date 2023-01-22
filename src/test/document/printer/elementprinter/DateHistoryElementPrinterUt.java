@@ -10,6 +10,7 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.DateHistoryElement;
+import costtracker.document.linewriter.CSVLineWriter;
 import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
 
 class DateHistoryElementPrinterUt {
@@ -47,13 +48,14 @@ class DateHistoryElementPrinterUt {
 
 	@Test
 	void TestGetElementDescription() {
-		String description = "Date;Name;Description;Price;Category;Company";
+		String description = "Date;Name;Description;Price;Category;Company;\n";
 		LocalDate date = LocalDate.of(2023, 1, 21);
 		DateHistoryElement element = new DateHistoryElement(date);
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, null);
 		element.addPurchase(purchase);
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
+		printer.registerLineWriter(new CSVLineWriter());
 		printer.registerElement(element);
 
 		var ret = printer.getDescription();
@@ -78,6 +80,7 @@ class DateHistoryElementPrinterUt {
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getElementLines();
 
@@ -100,6 +103,7 @@ class DateHistoryElementPrinterUt {
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getElementLines();
 

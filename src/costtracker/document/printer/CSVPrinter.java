@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import costtracker.document.elements.HistoryElement;
+import costtracker.document.linewriter.CSVLineWriter;
 import costtracker.document.printer.elementprinter.ElementPrinter;
 
 public class CSVPrinter implements Printer {
@@ -31,6 +32,7 @@ public class CSVPrinter implements Printer {
 			file.createNewFile();
 			writer = new FileWriter(file);
 			sb.append(createDocumentHeader());
+			elementPrinter.registerLineWriter(new CSVLineWriter());
 			for (HistoryElement historyElement : element) {
 				elementPrinter.registerElement(historyElement);
 				sb.append(elementPrinter.getElementHeader() + ";" + historyElement.getTotal());
@@ -64,7 +66,6 @@ public class CSVPrinter implements Printer {
 	@Override
 	public void setPath(String path) {
 		this.path = path;
-		
 	}
 
 }

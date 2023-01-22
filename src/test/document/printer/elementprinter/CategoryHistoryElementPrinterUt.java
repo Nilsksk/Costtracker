@@ -10,6 +10,7 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.CategoryHistoryElement;
+import costtracker.document.linewriter.CSVLineWriter;
 import costtracker.document.printer.elementprinter.CategoryHistoryElementPrinter;
 
 class CategoryHistoryElementPrinterUt {
@@ -39,7 +40,7 @@ class CategoryHistoryElementPrinterUt {
 		CategoryHistoryElementPrinter printer = new CategoryHistoryElementPrinter();
 		
 		printer.registerElement(element);
-		
+
 		var ret = printer.getType();
 		
 		assertEquals("Category", ret);
@@ -47,7 +48,7 @@ class CategoryHistoryElementPrinterUt {
 
 	@Test
 	void TestGetElementDescription() {
-		String description = "Category;Name;Description;Price;Date;Company";
+		String description = "Category;Name;Description;Price;Date;Company;\n";
 		Category category = new Category(1, "");
 		CategoryHistoryElement element = new CategoryHistoryElement(category);
 		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, category);
@@ -55,6 +56,7 @@ class CategoryHistoryElementPrinterUt {
 		CategoryHistoryElementPrinter printer = new CategoryHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getDescription();
 
@@ -77,6 +79,7 @@ class CategoryHistoryElementPrinterUt {
 		CategoryHistoryElementPrinter printer = new CategoryHistoryElementPrinter();
 
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 
 		var ret = printer.getElementLines();
 
@@ -93,10 +96,11 @@ class CategoryHistoryElementPrinterUt {
 		CategoryHistoryElement element = new CategoryHistoryElement(category);
 		Purchase purchase = new Purchase(0, name, description, date, price, null, category);
 		element.addPurchase(purchase);
-		String line = category.getName() + ";" + name + ";" + description + ";" + price + ";" + purchase.getDateString() + ";\n";
+		String line = category.getName() + ";" + name + ";" + description + ";" + price + ";" + purchase.getDateString() + ";;\n";
 		CategoryHistoryElementPrinter printer = new CategoryHistoryElementPrinter();
 		
 		printer.registerElement(element);
+		printer.registerLineWriter(new CSVLineWriter());
 		
 		var ret = printer.getElementLines();
 		
