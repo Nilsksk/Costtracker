@@ -1,8 +1,9 @@
 package test.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
 import costtracker.api.Api;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MyFirstJUnitJupiterTests {
 

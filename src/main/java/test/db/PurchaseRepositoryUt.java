@@ -1,25 +1,20 @@
 package test.db;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import costtracker.db.entities.CategoryEntity;
+import costtracker.db.entities.CompanyEntity;
+import costtracker.db.entities.PurchaseEntity;
+import costtracker.db.repositories.PurchaseRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.db.entities.CategoryEntity;
-import costtracker.db.entities.CompanyEntity;
-import costtracker.db.entities.PurchaseEntity;
-import costtracker.db.repositories.PurchaseRepository;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PurchaseRepositoryUt {
 
@@ -80,7 +75,7 @@ class PurchaseRepositoryUt {
 		PurchaseEntity entity = new PurchaseEntity(companyEntity, categoryEntity, price, name, description, date);
 
 		// Act
-		var ret = repository.insert(entity);
+		boolean ret = repository.insert(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -94,7 +89,7 @@ class PurchaseRepositoryUt {
 		PurchaseEntity entity = new PurchaseEntity(categoryEntity, price, name, description, date);
 
 		// Act
-		var ret = repository.insert(entity);
+		boolean ret = repository.insert(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -108,7 +103,7 @@ class PurchaseRepositoryUt {
 		PurchaseEntity entity = new PurchaseEntity(categoryEntity, price, name, date);
 
 		// Act
-		var ret = repository.insert(entity);
+		boolean ret = repository.insert(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -123,7 +118,7 @@ class PurchaseRepositoryUt {
 		PurchaseEntity entity = new PurchaseEntity(companyEntity, categoryEntity, price, name, date);
 
 		// Act
-		var ret = repository.insert(entity);
+		boolean ret = repository.insert(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -138,7 +133,7 @@ class PurchaseRepositoryUt {
 		entity.setName("Chicken Fajita");
 
 		// Act
-		var ret = repository.update(entity);
+		boolean ret = repository.update(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -154,7 +149,7 @@ class PurchaseRepositoryUt {
 		entity.setName("Chicken Fajita");
 
 		// Act
-		var ret = repository.update(entity);
+		boolean ret = repository.update(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -169,7 +164,7 @@ class PurchaseRepositoryUt {
 		entity.setName("Chicken Fajita");
 		
 		// Act
-		var ret = repository.update(entity);
+		boolean ret = repository.update(entity);
 		
 		// Assert
 		assertEquals(true, ret);
@@ -184,7 +179,7 @@ class PurchaseRepositoryUt {
 		entity.setName("Chicken Fajita");
 		
 		// Act
-		var ret = repository.update(entity);
+		boolean ret = repository.update(entity);
 		
 		// Assert
 		assertEquals(true, ret);
@@ -198,7 +193,7 @@ class PurchaseRepositoryUt {
 		PurchaseEntity entity = new PurchaseEntity(id, companyid, categoryid, price, name, description, date);
 
 		// Act
-		var ret = repository.delete(entity);
+		boolean ret = repository.delete(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -211,7 +206,7 @@ class PurchaseRepositoryUt {
 		PurchaseRepository repository = new PurchaseRepository(connection);
 
 		// Act
-		var ret = repository.delete(id);
+		boolean ret = repository.delete(id);
 
 		// Assert
 		assertEquals(true, ret);
@@ -224,7 +219,7 @@ class PurchaseRepositoryUt {
 		PurchaseRepository repository = new PurchaseRepository(connection);
 
 		// Act
-		var entity = repository.select(id);
+		PurchaseEntity entity = repository.select(id);
 
 		// Assert
 		assertEquals(id, entity.getId());

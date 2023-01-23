@@ -1,6 +1,11 @@
 package test.db;
 
-import static org.junit.jupiter.api.Assertions.*;
+import costtracker.db.entities.CategoryEntity;
+import costtracker.db.repositories.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,13 +15,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import costtracker.db.entities.CategoryEntity;
-import costtracker.db.repositories.CategoryRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CategoryRepositoryUt {
 
@@ -56,7 +55,7 @@ class CategoryRepositoryUt {
 		CategoryEntity entity = new CategoryEntity(name);
 
 		// Act
-		var ret = repository.insert(entity);
+		boolean ret = repository.insert(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -71,7 +70,7 @@ class CategoryRepositoryUt {
 		entity.setName("Trinken");
 
 		// Act
-		var ret = repository.update(entity);
+		boolean ret = repository.update(entity);
 
 		// Assert
 		assertEquals(true, ret);
@@ -85,7 +84,7 @@ class CategoryRepositoryUt {
 		CategoryEntity entity = new CategoryEntity(id, name);
 
 		//Act
-		var ret = repository.delete(entity);
+		boolean ret = repository.delete(entity);
 
 		//Assert
 		assertEquals(true, ret);
@@ -98,7 +97,7 @@ class CategoryRepositoryUt {
 		CategoryRepository repository = new CategoryRepository(connection);
 
 		//Act
-		var ret = repository.delete(id);
+		boolean ret = repository.delete(id);
 
 		//Assert
 		assertEquals(true, ret);
@@ -111,7 +110,7 @@ class CategoryRepositoryUt {
 		CategoryRepository repository = new CategoryRepository(connection);
 		
 		//Act
-		var entity = repository.select(id);
+		CategoryEntity entity = repository.select(id);
 		
 		//Assert
 		assertEquals(id, entity.getId());

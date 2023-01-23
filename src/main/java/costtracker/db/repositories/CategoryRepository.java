@@ -1,10 +1,11 @@
 package costtracker.db.repositories;
 
+import costtracker.db.entities.CategoryEntity;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import costtracker.db.entities.CategoryEntity;
 
 public class CategoryRepository extends RepositoryBase implements Repository<CategoryEntity> {
 
@@ -18,8 +19,8 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 		String sql = "select * from category where id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
-		
-		var result = stmt.executeQuery();
+
+		ResultSet result = stmt.executeQuery();
 		if(result.next()) {
 			entity = new CategoryEntity(result.getInt("id"), result.getString("name"));
 		}
@@ -34,7 +35,7 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 		stmt.setString(1, entity.getName());
 		stmt.setInt(2, entity.getId());
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}
@@ -45,7 +46,7 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, entity.getName());
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}
@@ -56,7 +57,7 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}

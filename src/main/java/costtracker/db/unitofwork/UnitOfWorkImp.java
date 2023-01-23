@@ -1,10 +1,12 @@
 package costtracker.db.unitofwork;
 
+import costtracker.db.repositories.CategoryRepository;
+import costtracker.db.repositories.CompanyRepository;
+import costtracker.db.repositories.PurchaseRepository;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import costtracker.db.repositories.*;
 
 public class UnitOfWorkImp implements UnitOfWork {
 

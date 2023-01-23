@@ -1,13 +1,12 @@
 package test.db;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
 import costtracker.db.repositories.CategoryRepository;
 import costtracker.db.repositories.CompanyRepository;
 import costtracker.db.repositories.PurchaseRepository;
 import costtracker.db.unitofwork.UnitOfWorkImp;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class UnitOfWorkUt {
 

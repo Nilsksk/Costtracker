@@ -1,10 +1,11 @@
 package costtracker.db.repositories;
 
+import costtracker.db.entities.CompanyEntity;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import costtracker.db.entities.CompanyEntity;
 
 public class CompanyRepository extends RepositoryBase implements Repository<CompanyEntity> {
 
@@ -20,7 +21,7 @@ public class CompanyRepository extends RepositoryBase implements Repository<Comp
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 		
-		var result = stmt.executeQuery();
+		ResultSet result = stmt.executeQuery();
 		if(result.next()) {
 			entity = new CompanyEntity(result.getInt("id"), result.getString("name"), result.getString("location"));
 		}
@@ -36,7 +37,7 @@ public class CompanyRepository extends RepositoryBase implements Repository<Comp
 		stmt.setString(2, entity.getLocation());
 		stmt.setInt(3, entity.getId());
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}
@@ -48,7 +49,7 @@ public class CompanyRepository extends RepositoryBase implements Repository<Comp
 		stmt.setString(1, entity.getName());
 		stmt.setString(2, entity.getLocation());
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}
@@ -59,7 +60,7 @@ public class CompanyRepository extends RepositoryBase implements Repository<Comp
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 		
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 		
 		return result == 1;
 	}

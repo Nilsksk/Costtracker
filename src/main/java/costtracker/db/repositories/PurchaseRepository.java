@@ -1,12 +1,13 @@
 package costtracker.db.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import costtracker.db.entities.CategoryEntity;
 import costtracker.db.entities.CompanyEntity;
 import costtracker.db.entities.PurchaseEntity;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PurchaseRepository extends RepositoryBase implements Repository<PurchaseEntity> {
 
@@ -23,7 +24,7 @@ public class PurchaseRepository extends RepositoryBase implements Repository<Pur
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 
-		var result = stmt.executeQuery();
+		ResultSet result = stmt.executeQuery();
 		if (result.next()) {
 			entity = new PurchaseEntity(result.getInt(1),
 					new CompanyEntity(result.getInt(6), result.getString(7),
@@ -51,7 +52,7 @@ public class PurchaseRepository extends RepositoryBase implements Repository<Pur
 		stmt.setInt(6, entity.getCategory().getId());
 		stmt.setInt(7, entity.getId());
 
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 
 		return result == 1;
 	}
@@ -70,7 +71,7 @@ public class PurchaseRepository extends RepositoryBase implements Repository<Pur
 			stmt.setObject(5, null);
 		stmt.setInt(6, entity.getCategory().getId());
 
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 
 		return result == 1;
 	}
@@ -81,7 +82,7 @@ public class PurchaseRepository extends RepositoryBase implements Repository<Pur
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 
-		var result = stmt.executeUpdate();
+		int result = stmt.executeUpdate();
 
 		return result == 1;
 	}
