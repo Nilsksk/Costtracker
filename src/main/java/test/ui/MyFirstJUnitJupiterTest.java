@@ -1,14 +1,14 @@
-package test.api;
+package test.ui;
 
 import costtracker.api.Api;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MyFirstJUnitJupiterTests {
+public class MyFirstJUnitJupiterTest {
 
     @Test
-    void testMyTest() {
+    public void testMyTest() {
         assertEquals(new Api().Test(), "Test");
     }
 }

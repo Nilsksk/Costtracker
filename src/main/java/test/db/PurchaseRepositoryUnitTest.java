@@ -16,7 +16,7 @@ import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PurchaseRepositoryUt {
+public class PurchaseRepositoryUnitTest {
 
 	private static Connection connection;
 
@@ -30,7 +30,7 @@ class PurchaseRepositoryUt {
 	private static DatabaseTestHelper helper;
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		Path path = Paths.get("CreateDatabase.sql");
 		String sql = Files.readString(path);
@@ -40,7 +40,7 @@ class PurchaseRepositoryUt {
 	}
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		helper = new DatabaseTestHelper(connection);
 		categoryid = helper.createCategory("Essen");
@@ -48,7 +48,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@AfterEach
-	void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		connection.close();
 		helper = null;
 		id = 0;
@@ -67,7 +67,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseInsert() throws SQLException {
+	public void testPurchaseInsert() throws SQLException {
 		// Arrange
 		PurchaseRepository repository = new PurchaseRepository(connection);
 		CategoryEntity categoryEntity = createCategoryEntity();
@@ -82,7 +82,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseInsertNoCompany() throws SQLException {
+	public void testPurchaseInsertNoCompany() throws SQLException {
 		// Arrange
 		PurchaseRepository repository = new PurchaseRepository(connection);
 		CategoryEntity categoryEntity = createCategoryEntity();
@@ -96,7 +96,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseInsertNoCompanyNoDescription() throws SQLException {
+	public void testPurchaseInsertNoCompanyNoDescription() throws SQLException {
 		// Arrange
 		PurchaseRepository repository = new PurchaseRepository(connection);
 		CategoryEntity categoryEntity = createCategoryEntity();
@@ -110,7 +110,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseInsertNoDescription() throws SQLException {
+	public void testPurchaseInsertNoDescription() throws SQLException {
 		// Arrange
 		PurchaseRepository repository = new PurchaseRepository(connection);
 		CategoryEntity categoryEntity = createCategoryEntity();
@@ -125,7 +125,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseUpdate() throws SQLException {
+	public void testPurchaseUpdate() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -140,7 +140,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseUpdateNoCompany() throws SQLException {
+	public void testPurchaseUpdateNoCompany() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -156,7 +156,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseUpdateNoCompanyNoDescription() throws SQLException {
+	public void testPurchaseUpdateNoCompanyNoDescription() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -171,7 +171,7 @@ class PurchaseRepositoryUt {
 	}
 	
 	@Test
-	void testPurchaseUpdateNoDescription() throws SQLException {
+	public void testPurchaseUpdateNoDescription() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -186,7 +186,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseDeleteEntity() throws SQLException {
+	public void testPurchaseDeleteEntity() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -200,7 +200,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseDeleteId() throws SQLException {
+	public void testPurchaseDeleteId() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);
@@ -213,7 +213,7 @@ class PurchaseRepositoryUt {
 	}
 
 	@Test
-	void testPurchaseSelect() throws SQLException {
+	public void testPurchaseSelect() throws SQLException {
 		// Arrange
 		id = helper.createPurchase(name, description, date, price, categoryid, companyid);
 		PurchaseRepository repository = new PurchaseRepository(connection);

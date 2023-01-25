@@ -17,7 +17,7 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CompanyRepositoryUt {
+public class CompanyRepositoryUnitTest {
 	
 	private static DatabaseTestHelper helper;
 	private static Connection connection;
@@ -27,7 +27,7 @@ class CompanyRepositoryUt {
 	private String location = "Landau";
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		Path path = Paths.get("CreateDatabase.sql");
 		String sql = Files.readString(path);
@@ -37,20 +37,20 @@ class CompanyRepositoryUt {
 	}
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 		helper = new DatabaseTestHelper(connection);
 	}
 
 	@AfterEach
-	void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		connection.close();
 		helper = null;
 		id = 0;
 	}
 
 	@Test
-	void testCompanyInsert() throws SQLException {
+	public void testCompanyInsert() throws SQLException {
 		// Arrange
 		CompanyRepository repository = new CompanyRepository(connection);
 		CompanyEntity entity = new CompanyEntity(name, location);
@@ -63,7 +63,7 @@ class CompanyRepositoryUt {
 	}
 	
 	@Test
-	void testCompanyInsertNoLocation() throws SQLException {
+	public void testCompanyInsertNoLocation() throws SQLException {
 		// Arrange
 		CompanyRepository repository = new CompanyRepository(connection);
 		CompanyEntity entity = new CompanyEntity(name, location);
@@ -76,7 +76,7 @@ class CompanyRepositoryUt {
 	}
 
 	@Test
-	void testCompanyUpdate() throws SQLException {
+	public void testCompanyUpdate() throws SQLException {
 		// Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -91,7 +91,7 @@ class CompanyRepositoryUt {
 	}
 	
 	@Test
-	void testCompanyUpdateNoLocation() throws SQLException {
+	public void testCompanyUpdateNoLocation() throws SQLException {
 		// Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -106,7 +106,7 @@ class CompanyRepositoryUt {
 	}
 
 	@Test
-	void testCompanyDeleteEntity() throws SQLException {
+	public void testCompanyDeleteEntity() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -120,7 +120,7 @@ class CompanyRepositoryUt {
 	}
 
 	@Test
-	void testCompanyDeleteId() throws SQLException {
+	public void testCompanyDeleteId() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -133,7 +133,7 @@ class CompanyRepositoryUt {
 	}
 
 	@Test
-	void testCompanySelect() throws SQLException {
+	public void testCompanySelect() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
