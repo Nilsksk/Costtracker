@@ -1,4 +1,4 @@
-package test.db;
+package db;
 
 import costtracker.db.entities.CategoryEntity;
 import costtracker.db.entities.CompanyEntity;

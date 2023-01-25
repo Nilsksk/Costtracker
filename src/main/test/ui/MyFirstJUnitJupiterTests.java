@@ -1,4 +1,4 @@
-package test.buisnesslogic;
+package ui;
 
 import costtracker.api.Api;
 import org.junit.jupiter.api.Test;

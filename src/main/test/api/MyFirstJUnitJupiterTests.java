@@ -1,4 +1,4 @@
-package test.api;
+package api;
 
 import costtracker.api.Api;
 import org.junit.jupiter.api.Test;
