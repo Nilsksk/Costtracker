@@ -16,7 +16,7 @@ import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PurchaseRepositoryUt {
+class PurchaseRepositoryUnitTest {
 
 	private static Connection connection;
 

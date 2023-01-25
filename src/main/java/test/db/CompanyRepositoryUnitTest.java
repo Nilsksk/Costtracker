@@ -17,7 +17,7 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CompanyRepositoryUt {
+class CompanyRepositoryUnitTest {
 	
 	private static DatabaseTestHelper helper;
 	private static Connection connection;
