@@ -9,13 +9,13 @@ import java.sql.Statement;
 
 public class DatabaseTestHelper {
 	
-	public Connection connection;
+	private Connection connection;
 	
 	public DatabaseTestHelper(Connection connection) {
 		this.connection = connection;
 	}
 	
-	public int createCompany(String name, String location) throws SQLException {
+	int createCompany(String name, String location) throws SQLException {
 		int id = 0;
 		String sql = "Insert into company" + "(name, location)" + "values (?, ?)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -29,7 +29,7 @@ public class DatabaseTestHelper {
 		return id;
 	}
 	
-	public int createCategory(String name) throws SQLException {
+	int createCategory(String name) throws SQLException {
 		int id = 0;
 		String sql = "Insert into category" + "(name)" + "values (?)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -42,7 +42,7 @@ public class DatabaseTestHelper {
 		return id;
 	}
 	
-	public int createPurchase(String name, String description, Date date, double price, int categoryid, int companyid) throws SQLException {
+	int createPurchase(String name, String description, Date date, double price, int categoryid, int companyid) throws SQLException {
 		int id = 0;
 		String sql = "Insert into purchase" + "(name, description, date, price, category, company)" + "values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

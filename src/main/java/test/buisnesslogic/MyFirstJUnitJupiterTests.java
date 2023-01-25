@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MyFirstJUnitJupiterTests {
+class MyFirstJUnitJupiterTests {
 
     @Test
-    public void testMyTest() {
+    void testMyTest() {
         assertEquals(new Api().Test(), "Test");
     }
 }

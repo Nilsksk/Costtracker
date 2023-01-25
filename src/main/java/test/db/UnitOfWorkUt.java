@@ -8,31 +8,31 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UnitOfWorkUnitTest {
+class UnitOfWorkUt {
 
 	@Test
-	public void TestGetPurchaseRepository() {
+	void TestGetPurchaseRepository() {
 		UnitOfWorkImp uow = new UnitOfWorkImp();
 		PurchaseRepository repo = uow.getPurchaseRepository();
 		assertNotNull(repo);
 	}
 	
 	@Test
-	public void TestGetCompanyRepository() {
+	void TestGetCompanyRepository() {
 		UnitOfWorkImp uow = new UnitOfWorkImp();
 		CompanyRepository repo = uow.getCompanyRepository();
 		assertNotNull(repo);
 	}
 	
 	@Test
-	 public void TestGetCategoryRepository() {
+	void TestGetCategoryRepository() {
 		UnitOfWorkImp uow = new UnitOfWorkImp();
 		CategoryRepository repo = uow.getCategoryRepository();
 		assertNotNull(repo);
 	}
 
 	@Test
-	public void TestSAve() {
+	void TestSAve() {
 		UnitOfWorkImp uow = new UnitOfWorkImp();
 		uow.Save();
 		
