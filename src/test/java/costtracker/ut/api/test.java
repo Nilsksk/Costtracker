@@ -1,10 +1,9 @@
-package costtracker.ut.buisnesslogic;
-//package test.buisnesslogic;
-//
-//import costtracker.api.Api;
-//import org.junit.jupiter.api.Test;
+package costtracker.ut.api;
+//package test.api;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
+//import org.junit.jupiter.api.Test;
+//import costtracker.api.Api;
 //
 //class MyFirstJUnitJupiterTests {
 //
@@ -13,4 +12,4 @@ package costtracker.ut.buisnesslogic;
 //        assertEquals(new Api().Test(), "Test");
 //    }
 //}
-//
+
