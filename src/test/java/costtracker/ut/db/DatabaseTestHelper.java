@@ -1,4 +1,4 @@
-package db;
+package costtracker.ut.db;
 
 import java.sql.Connection;
 import java.sql.Date;

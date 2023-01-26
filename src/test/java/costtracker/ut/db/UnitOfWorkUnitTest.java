@@ -1,4 +1,4 @@
-package db;
+package costtracker.ut.db;
 
 import costtracker.db.repositories.CategoryRepository;
 import costtracker.db.repositories.CompanyRepository;
