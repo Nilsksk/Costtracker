@@ -1,5 +1,5 @@
-package costtracker.ut.buisnesslogic;
-//package test.buisnesslogic;
+package costtracker.ut.db;
+//package test.db;
 //
 //import costtracker.api.Api;
 //import org.junit.jupiter.api.Test;
