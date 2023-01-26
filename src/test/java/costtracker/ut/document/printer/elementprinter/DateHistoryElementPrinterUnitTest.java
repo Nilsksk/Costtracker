@@ -1,4 +1,4 @@
-package test.document.printer.elementprinter;
+package costtracker.ut.document.printer.elementprinter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +13,7 @@ import costtracker.document.elements.DateHistoryElement;
 import costtracker.document.linewriter.CSVLineWriter;
 import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
 
-class DateHistoryElementPrinterUt {
+class DateHistoryElementPrinterUnitTest {
 
 	@Test
 	void TestGetElementHeader() {

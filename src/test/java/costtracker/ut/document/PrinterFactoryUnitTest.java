@@ -1,4 +1,4 @@
-package test.document;
+package costtracker.ut.document;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,7 @@ import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
 import costtracker.document.type.DocumentType;
 import costtracker.document.type.ElementType;
 
-class PrinterFactoryUt {
+class PrinterFactoryUnitTest {
 
 	@Test
 	void testGetPrinter_CSV() throws Exception {

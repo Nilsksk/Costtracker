@@ -1,4 +1,4 @@
-package test.document.linewriter;
+package costtracker.ut.document.linewriter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import costtracker.document.linewriter.CSVLineWriter;
 
-class CSVLineWriterUt {
+class CSVLineWriterUnitTest {
 
 	@Test
 	void TestAppendToLine() {

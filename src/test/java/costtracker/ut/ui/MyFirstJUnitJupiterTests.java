@@ -1,4 +1,5 @@
-//package test.db;
+package costtracker.ut.ui;
+//package test.ui;
 //
 //import costtracker.api.Api;
 //import org.junit.jupiter.api.Test;

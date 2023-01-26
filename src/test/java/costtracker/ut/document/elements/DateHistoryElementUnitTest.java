@@ -1,4 +1,4 @@
-package test.document.elements;
+package costtracker.ut.document.elements;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.DateHistoryElement;
 
-class DateHistoryElementUt {
+class DateHistoryElementUnitTest {
 
 	@Test
 	void TestAddPurchase() {

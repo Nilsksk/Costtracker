@@ -1,8 +1,10 @@
-//package test.api;
+package costtracker.ut.db;
+//package test.db;
+//
+//import costtracker.api.Api;
+//import org.junit.jupiter.api.Test;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
-//import org.junit.jupiter.api.Test;
-//import costtracker.api.Api;
 //
 //class MyFirstJUnitJupiterTests {
 //
@@ -11,4 +13,4 @@
 //        assertEquals(new Api().Test(), "Test");
 //    }
 //}
-
+//

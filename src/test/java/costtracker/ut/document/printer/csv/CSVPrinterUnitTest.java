@@ -1,4 +1,4 @@
-package test.document.printer.csv;
+package costtracker.ut.document.printer.csv;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ import costtracker.document.printer.elementprinter.CompanyHistoryElementPrinter;
 import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
 import costtracker.document.printer.elementprinter.ElementPrinter;
 
-class CSVPrinterUt {
+class CSVPrinterUnitTest {
 
 	@BeforeEach
 	void setUpBefore() {

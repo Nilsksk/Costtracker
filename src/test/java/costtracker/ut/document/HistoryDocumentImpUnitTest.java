@@ -1,4 +1,4 @@
-package test.document;
+package costtracker.ut.document;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ import costtracker.document.elements.HistoryElement;
 import costtracker.document.type.DocumentType;
 import costtracker.document.type.ElementType;
 
-class HistoryDocumentImpUt {
+class HistoryDocumentImpUnitTest {
 
 	@BeforeEach
 	void setUpBefore() {
