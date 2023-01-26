@@ -1,8 +1,9 @@
-package test.api;
+package buisnesslogic;
+
+import costtracker.api.Api;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
-import costtracker.api.Api;
 
 class MyFirstJUnitJupiterTests {
 

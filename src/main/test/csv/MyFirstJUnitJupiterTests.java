@@ -1,4 +1,4 @@
-package test.csv;
+package csv;
 
 import costtracker.api.Api;
 import org.junit.jupiter.api.Test;
