@@ -33,7 +33,7 @@ public class DialogueHelper {
 
 	public static String changeDialogue(String input) {
 
-		System.out.print(input + " -> ");
+		System.out.print(input + fillWhitespaces(0) + " -> ");
 		return returnInput();
 	}
 
@@ -83,7 +83,6 @@ public class DialogueHelper {
 			System.out.print(" " + category.getId() + fillWhitespaces(numberWhitespaces) + " | ");
 			System.out.println(category.getName());
 		}
-		System.out.println();
 	}
 
 	public static void printPurchases(List<Purchase> purchases) {
@@ -110,12 +109,13 @@ public class DialogueHelper {
 			printColumn(longestPurchaseCategory, purchase.getCategory().getName());
 			System.out.println(purchase.getDescription());
 		}
+		System.out.println();
 
 	}
 
 	public static void printColumn(int maxLength, String value) {
 		int numberWhitespaces = maxLength - value.length();
-		System.out.print(" " + value + fillWhitespaces(numberWhitespaces) + " | ");
+		System.out.print(" " + value + fillWhitespaces(numberWhitespaces) + " |");
 	}
 
 	public static boolean saveData(String input, String action) {
