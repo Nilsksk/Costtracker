@@ -22,9 +22,12 @@ public class Controller {
     // Add Handler
     public void addHandler() {
         // Add function handler to Server
-        functionHandler handler = new functionHandler();
-        handler.handleFunc1(server, "/func1");
-        handler.handleFunc2(server, "/func2");
+        exampleGetCall example1 = new exampleGetCall();
+        example1.addGetHandler(server, "/example1");
+
+        exampleGetCallWithBody example2 = new exampleGetCallWithBody();
+        example2.addGetHandler(server, "/example2");
+
     }
 
     // Start Server
