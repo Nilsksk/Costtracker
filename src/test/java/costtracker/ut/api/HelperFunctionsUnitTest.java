@@ -1,13 +1,16 @@
 package costtracker.ut.api;
 
-import costtracker.api.helperFunctions;
+import costtracker.api.handlerHelperFunctions;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HelperFunctionsUnitTest {
     
@@ -16,7 +19,7 @@ public class HelperFunctionsUnitTest {
         final URI uriUnderTest = new URI("/func1");
         final String uriToCheck = "/func1";
 
-        assertTrue(helperFunctions.checkURI(uriUnderTest, uriToCheck));
+        assertTrue(handlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
     }
 
     @Test
@@ -24,6 +27,15 @@ public class HelperFunctionsUnitTest {
         final URI uriUnderTest = new URI("/func1");
         final String uriToCheck = "/func2";
 
-        assertFalse(helperFunctions.checkURI(uriUnderTest, uriToCheck));
+        assertFalse(handlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
+    }
+
+    @Test
+    public void getRequestBodyAsJsonTest() throws IOException {
+        final String stringUnderTest = "{\"id\":\"1\"}";
+        final JSONObject jsonObjectUnderTest = new JSONObject(stringUnderTest);
+        InputStream inputStreamUnderTest = IOUtils.toInputStream("{\"id\":\"1\"}", "UTF-8");
+
+        assertEquals(handlerHelperFunctions.getRequestBodyAsJson(inputStreamUnderTest).toString(), jsonObjectUnderTest.toString());
     }
 }
