@@ -1,4 +1,4 @@
-package costtracker.api;
+package costtracker.api.helper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 
-public class handlerHelperFunctions {
+public class HandlerHelperFunctions {
     public static boolean checkURI(URI uri, String uriToCheck) {
         return uri.toString().equals(uriToCheck);
     }

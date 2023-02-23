@@ -1,4 +1,4 @@
-package costtracker.api;
+package costtracker.api.enums;
 
 
 public enum httpCodes {
