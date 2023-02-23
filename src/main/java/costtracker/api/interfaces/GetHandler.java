@@ -1,8 +1,8 @@
-package costtracker.api;
+package costtracker.api.interfaces;
 
 import com.sun.net.httpserver.HttpServer;
 
-public interface IgetHandler {
+public interface GetHandler {
 
     void addGetHandler(HttpServer server, String path);
 

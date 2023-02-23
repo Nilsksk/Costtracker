@@ -1,6 +1,6 @@
 package costtracker.ut.api;
 
-import costtracker.api.handlerHelperFunctions;
+import costtracker.api.helper.HandlerHelperFunctions;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class HelperFunctionsUnitTest {
         final URI uriUnderTest = new URI("/func1");
         final String uriToCheck = "/func1";
 
-        assertTrue(handlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
+        assertTrue(HandlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class HelperFunctionsUnitTest {
         final URI uriUnderTest = new URI("/func1");
         final String uriToCheck = "/func2";
 
-        assertFalse(handlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
+        assertFalse(HandlerHelperFunctions.checkURI(uriUnderTest, uriToCheck));
     }
 
     @Test
@@ -36,6 +36,6 @@ public class HelperFunctionsUnitTest {
         final JSONObject jsonObjectUnderTest = new JSONObject(stringUnderTest);
         InputStream inputStreamUnderTest = IOUtils.toInputStream("{\"id\":\"1\"}", "UTF-8");
 
-        assertEquals(handlerHelperFunctions.getRequestBodyAsJson(inputStreamUnderTest).toString(), jsonObjectUnderTest.toString());
+        assertEquals(HandlerHelperFunctions.getRequestBodyAsJson(inputStreamUnderTest).toString(), jsonObjectUnderTest.toString());
     }
 }

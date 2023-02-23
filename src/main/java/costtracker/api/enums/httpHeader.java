@@ -1,4 +1,4 @@
-package costtracker.api;
+package costtracker.api.enums;
 
 
 public enum httpHeader {
@@ -6,7 +6,9 @@ public enum httpHeader {
     HEADER_CONTENT_TYPE("Content-Type"),
     METHOD_GET("GET"),
     METHOD_POST("POST"),
-    ALLOWED_METHODS("GET, POST");
+    METHOD_PUT("PUT"),
+    METHOD_DELETE("DELETE"),
+    ALLOWED_METHODS("GET, POST, PUT, DELETE");
 
     public final String headerData;
 

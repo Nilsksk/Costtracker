@@ -1,6 +1,9 @@
 package costtracker.api;
 
 import com.sun.net.httpserver.HttpServer;
+import costtracker.api.routes.category.*;
+import costtracker.api.routes.company.*;
+import costtracker.api.routes.purchase.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,12 +25,86 @@ public class Controller {
     // Add Handler
     public void addHandler() {
         // Add function handler to Server
-        exampleGetCall example1 = new exampleGetCall();
-        example1.addGetHandler(server, "/example1");
+        // Category Routes
+        CreateCategory createCategory = new CreateCategory();
+        createCategory.addPostHandler(server, "/category/createCategory");
 
-        exampleGetCallWithBody example2 = new exampleGetCallWithBody();
-        example2.addGetHandler(server, "/example2");
+        GetCategories getCategories = new GetCategories();
+        getCategories.addGetHandler(server, "/category/getCategories");
 
+        GetCategoryById getCategoryById = new GetCategoryById();
+        getCategoryById.addGetHandler(server, "/category/getCategoryById");
+
+        GetEnabledCategories getEnabledCategories = new GetEnabledCategories();
+        getEnabledCategories.addGetHandler(server, "/category/getEnabledCategories");
+
+        UpdateCategory updateCategory = new UpdateCategory();
+        updateCategory.addPutHandler(server, "/category/updateCategory");
+
+        DeleteCategoryById deleteCategoryById = new DeleteCategoryById();
+        deleteCategoryById.addDeleteHandler(server, "/category/deleteCategoryById");
+
+        DisableCategory disableCategory = new DisableCategory();
+        disableCategory.addPutHandler(server, "/category/disableCategory");
+
+        EnableCategory enableCategory = new EnableCategory();
+        enableCategory.addPutHandler(server, "/category/enableCategory");
+
+        // Company Routes
+        CreateCompany createCompany = new CreateCompany();
+        createCompany.addPostHandler(server, "/company/createCompany");
+
+        GetCompanies getCompanies = new GetCompanies();
+        getCompanies.addGetHandler(server, "/company/getCompanies");
+
+        GetCompanyById getCompanyById = new GetCompanyById();
+        getCompanyById.addGetHandler(server, "/company/getCompanyById");
+
+        GetEnabledCompanies getEnabledCompanies = new GetEnabledCompanies();
+        getEnabledCompanies.addGetHandler(server, "/company/getEnabledCompanies");
+
+        UpdateCompany updateCompany = new UpdateCompany();
+        updateCompany.addPutHandler(server, "/company/updateCompany");
+
+        DeleteCompanyById deleteCompanyById = new DeleteCompanyById();
+        deleteCompanyById.addDeleteHandler(server, "/company/deleteCompanyById");
+
+        DisableCompany disableCompany = new DisableCompany();
+        disableCompany.addPutHandler(server, "/company/disableCompany");
+
+        EnableCompany enableCompany = new EnableCompany();
+        enableCompany.addPutHandler(server, "/company/enableCompany");
+
+        // Purchase Routes
+        CreatePurchase createPurchase = new CreatePurchase();
+        createPurchase.addPostHandler(server, "/purchase/createPurchase");
+
+        GetPurchaseById getPurchaseById = new GetPurchaseById();
+        getPurchaseById.addGetHandler(server, "/purchase/getPurchaseById");
+
+        GetPurchaseByWeek getPurchaseByWeek = new GetPurchaseByWeek();
+        getPurchaseByWeek.addGetHandler(server, "/purchase/getPurchaseByWeek");
+
+        GetPurchaseByMonth getPurchaseByMonth = new GetPurchaseByMonth();
+        getPurchaseByMonth.addGetHandler(server, "/purchase/getPurchaseByMonth");
+
+        GetPurchaseByYear getPurchaseByYear = new GetPurchaseByYear();
+        getPurchaseByYear.addGetHandler(server, "/purchase/getPurchaseByYear");
+
+        GetPurchaseByTimespan getPurchaseByTimespan = new GetPurchaseByTimespan();
+        getPurchaseByTimespan.addGetHandler(server, "/purchase/getPurchaseByTimespan");
+
+        GetPurchaseByCategoryByTimespan getPurchaseByCategoryByTimespan = new GetPurchaseByCategoryByTimespan();
+        getPurchaseByCategoryByTimespan.addGetHandler(server, "/purchase/getPurchaseByCategoryByTimespan");
+
+        GetPurchaseByCompanyByTimespan getPurchaseByCompanyByTimespan = new GetPurchaseByCompanyByTimespan();
+        getPurchaseByCompanyByTimespan.addGetHandler(server, "/purchase/getPurchaseByCompanyByTimespan");
+
+        UpdatePurchase updatePurchase = new UpdatePurchase();
+        updatePurchase.addPutHandler(server, "/purchase/updatePurchase");
+
+        DeletePurchaseById deletePurchaseById = new DeletePurchaseById();
+        deletePurchaseById.addDeleteHandler(server, "/purchase/deletePurchaseById");
     }
 
     // Start Server
