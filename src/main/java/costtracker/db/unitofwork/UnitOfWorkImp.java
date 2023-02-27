@@ -4,11 +4,13 @@ import costtracker.db.repositories.CategoryRepository;
 import costtracker.db.repositories.CompanyRepository;
 import costtracker.db.repositories.PurchaseRepository;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class UnitOfWorkImp implements UnitOfWork {
+public class UnitOfWorkImp implements UnitOfWork, Closeable {
 
 	private CompanyRepository companyRepository;
 	private CategoryRepository categoryRepository;
@@ -51,6 +53,17 @@ public class UnitOfWorkImp implements UnitOfWork {
 		if(companyRepository == null)
 			companyRepository = new CompanyRepository(connection);
 		return companyRepository;
+	}
+
+	@Override
+	public void close() throws IOException {
+		try {
+			this.connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
