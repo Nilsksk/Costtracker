@@ -14,8 +14,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompanyRepositoryUnitTest {
 	
@@ -106,20 +108,6 @@ class CompanyRepositoryUnitTest {
 	}
 
 	@Test
-	void testCompanyDeleteEntity() throws SQLException {
-		//Arrange
-		id = helper.createCompany(name, location);
-		CompanyRepository repository = new CompanyRepository(connection);
-		CompanyEntity entity = new CompanyEntity(id, name, location);
-
-		//Act
-		boolean ret = repository.delete(entity);
-
-		//Assert
-		assertEquals(true, ret);
-	}
-
-	@Test
 	void testCompanyDeleteId() throws SQLException {
 		//Arrange
 		id = helper.createCompany(name, location);
@@ -139,12 +127,49 @@ class CompanyRepositoryUnitTest {
 		CompanyRepository repository = new CompanyRepository(connection);
 		
 		//Act
-		CompanyEntity entity = repository.select(id);
+		CompanyEntity entity = repository.get(id);
 		
 		//Assert
 		assertEquals(id, entity.getId());
 		assertEquals(name, entity.getName());
 		assertEquals(location, entity.getLocation());
+	}
+	
+	@Test
+	void testCompanyGetAll() throws SQLException {
+		helper.createCompany(name, location);
+		helper.createCompany(name + "2", location);
+
+		CompanyRepository repository = new CompanyRepository(connection);
+
+		List<CompanyEntity> entities = repository.getAll();
+
+		assertTrue(entities.size() >= 2);
+	}
+	
+	void testEnable() throws SQLException{
+		id = helper.createCompany(name, location);
+		CompanyRepository repository = new CompanyRepository(connection);
+		repository.disable(id);
+		
+		repository.enable(id);
+		
+		List<CompanyEntity> entities = repository.getEnabled();
+		
+		assertTrue(entities.stream().anyMatch(c -> c.getId() == id));
+		
+	}
+	
+	void testDisable() throws SQLException{
+		id = helper.createCategory(name);
+		CompanyRepository repository = new CompanyRepository(connection);
+
+		repository.disable(id);
+		
+		List<CompanyEntity> entities = repository.getEnabled();
+		
+		assertTrue(entities.stream().noneMatch(c -> c.getId() == id));
+		
 	}
 
 }

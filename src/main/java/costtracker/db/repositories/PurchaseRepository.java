@@ -5,33 +5,34 @@ import costtracker.db.entities.CompanyEntity;
 import costtracker.db.entities.PurchaseEntity;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PurchaseRepository extends RepositoryBase implements Repository<PurchaseEntity> {
+public class PurchaseRepository extends RepositoryBase implements DataRepository<PurchaseEntity> {
 
 	public PurchaseRepository(Connection connection) {
 		super(connection);
 	}
 
 	@Override
-	public PurchaseEntity select(int id) throws SQLException {
+	public PurchaseEntity get(int id) throws SQLException {
 		PurchaseEntity entity = null;
 		String sql = "select p.id, p.name, p.description, p.price, p.date, com.id, com.name, com.location, cat.id, cat.name"
-					+ " from purchase p join company com on p.company = com.id "
-					+ "join category cat on p.category = cat.id where p.id = ?";
+				+ " from purchase p join company com on p.company = com.id "
+				+ "join category cat on p.category = cat.id where p.id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, id);
 
 		ResultSet result = stmt.executeQuery();
 		if (result.next()) {
 			entity = new PurchaseEntity(result.getInt(1),
-					new CompanyEntity(result.getInt(6), result.getString(7),
-							result.getString(8)),
-					new CategoryEntity(result.getInt(9), result.getString(10)),
-					result.getDouble(4), result.getString(2), result.getString(3),
-					result.getDate(5));
+					new CompanyEntity(result.getInt(6), result.getString(7), result.getString(8)),
+					new CategoryEntity(result.getInt(9), result.getString(10)), result.getDouble(4),
+					result.getString(2), result.getString(3), result.getDate(5));
 		}
 
 		return entity;
@@ -88,8 +89,97 @@ public class PurchaseRepository extends RepositoryBase implements Repository<Pur
 	}
 
 	@Override
-	public boolean delete(PurchaseEntity entity) throws SQLException {
-		return this.delete(entity.getId());
+	public List<PurchaseEntity> getAll() throws SQLException {
+		String sql = "select p.id, p.name, p.description, p.price, p.date, com.id, com.name, com.location, cat.id, cat.name"
+				+ " from purchase p join company com on p.company = com.id"
+				+ " join category cat on p.category = cat.id";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+
+		ResultSet result = stmt.executeQuery();
+
+		List<PurchaseEntity> purchases = new ArrayList<PurchaseEntity>();
+
+		while (result.next()) {
+			PurchaseEntity entity = new PurchaseEntity(result.getInt(1),
+					new CompanyEntity(result.getInt(6), result.getString(7), result.getString(8)),
+					new CategoryEntity(result.getInt(9), result.getString(10)), result.getDouble(4),
+					result.getString(2), result.getString(3), result.getDate(5));
+			purchases.add(entity);
+		}
+
+		return purchases;
 	}
 
+	@Override
+	public List<PurchaseEntity> getByTimespan(Date start, Date end) throws SQLException {
+		String sql = "select p.id, p.name, p.description, p.price, p.date, com.id, com.name, com.location, cat.id, cat.name"
+				+ " from purchase p join company com on p.company = com.id"
+				+ " join category cat on p.category = cat.id" + " where p.date > ? and p.date < ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setDate(1, start);
+		stmt.setDate(2, end);
+		ResultSet result = stmt.executeQuery();
+
+		List<PurchaseEntity> purchases = new ArrayList<PurchaseEntity>();
+
+		while (result.next()) {
+			PurchaseEntity entity = new PurchaseEntity(result.getInt(1),
+					new CompanyEntity(result.getInt(6), result.getString(7), result.getString(8)),
+					new CategoryEntity(result.getInt(9), result.getString(10)), result.getDouble(4),
+					result.getString(2), result.getString(3), result.getDate(5));
+			purchases.add(entity);
+		}
+
+		return purchases;
+	}
+
+	@Override
+	public List<PurchaseEntity> getByCategoryByTimespan(CategoryEntity category, Date start, Date end) throws SQLException {
+		String sql = "select p.id, p.name, p.description, p.price, p.date, com.id, com.name, com.location, cat.id, cat.name"
+				+ " from purchase p join company com on p.company = com.id"
+				+ " join category cat on p.category = cat.id" 
+				+ " where cat.id = ? and p.date > ? and p.date < ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, category.getId());
+		stmt.setDate(2, start);
+		stmt.setDate(3, end);
+		ResultSet result = stmt.executeQuery();
+
+		List<PurchaseEntity> purchases = new ArrayList<PurchaseEntity>();
+
+		while (result.next()) {
+			PurchaseEntity entity = new PurchaseEntity(result.getInt(1),
+					new CompanyEntity(result.getInt(6), result.getString(7), result.getString(8)),
+					new CategoryEntity(result.getInt(9), result.getString(10)), result.getDouble(4),
+					result.getString(2), result.getString(3), result.getDate(5));
+			purchases.add(entity);
+		}
+
+		return purchases;
+	}
+
+	@Override
+	public List<PurchaseEntity> getByCompanyByTimespan(CompanyEntity company, Date start, Date end) throws SQLException {
+		String sql = "select p.id, p.name, p.description, p.price, p.date, com.id, com.name, com.location, cat.id, cat.name"
+				+ " from purchase p join company com on p.company = com.id"
+				+ " join category cat on p.category = cat.id" 
+				+ " where com.id = ? and p.date > ? and p.date < ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, company.getId());
+		stmt.setDate(2, start);
+		stmt.setDate(3, end);
+		ResultSet result = stmt.executeQuery();
+
+		List<PurchaseEntity> purchases = new ArrayList<PurchaseEntity>();
+
+		while (result.next()) {
+			PurchaseEntity entity = new PurchaseEntity(result.getInt(1),
+					new CompanyEntity(result.getInt(6), result.getString(7), result.getString(8)),
+					new CategoryEntity(result.getInt(9), result.getString(10)), result.getDouble(4),
+					result.getString(2), result.getString(3), result.getDate(5));
+			purchases.add(entity);
+		}
+
+		return purchases;
+	}
 }
