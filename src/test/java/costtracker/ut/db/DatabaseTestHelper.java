@@ -17,7 +17,7 @@ public class DatabaseTestHelper {
 	
 	int createCompany(String name, String location) throws SQLException {
 		int id = 0;
-		String sql = "Insert into company" + "(name, location)" + "values (?, ?)";
+		String sql = "Insert into company" + "(name, location, isenabled)" + "values (?, ?, true)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		stmt.setString(1, name);
 		stmt.setString(2, location);
@@ -31,7 +31,7 @@ public class DatabaseTestHelper {
 	
 	int createCategory(String name) throws SQLException {
 		int id = 0;
-		String sql = "Insert into category" + "(name)" + "values (?)";
+		String sql = "Insert into category" + "(name, isenabled)" + "values (?,true)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		stmt.setString(1, name);
 		stmt.executeUpdate();
