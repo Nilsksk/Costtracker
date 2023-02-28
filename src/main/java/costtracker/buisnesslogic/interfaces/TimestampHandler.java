@@ -4,20 +4,22 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.Purchase;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TimestampHandler {
 
-    Purchase[] getByTimestamp(LocalDate startDate, LocalDate endDate);
+    List<Purchase> getByTimestamp(LocalDate startDate, LocalDate endDate) throws SQLException;
 
-    Purchase[] getByCompanyByTimestamp(Company company, LocalDate startDate, LocalDate endDate);
+    List<Purchase> getByCompanyByTimestamp(Company company, LocalDate startDate, LocalDate endDate) throws SQLException;
 
-    Purchase[] getByCategoryByTimestamp(Category category, LocalDate startDate, LocalDate endDate);
+    List<Purchase> getByCategoryByTimestamp(Category category, LocalDate startDate, LocalDate endDate) throws SQLException;
 
-    Purchase[] getByWeek(int week, int year);
+    List<Purchase> getByWeek(int week, int year) throws SQLException;
 
-    Purchase[] getByMonth(int month, int year);
+    List<Purchase> getByMonth(int month, int year) throws SQLException;
 
-    Purchase[] getByYear(int year);
+    List<Purchase> getByYear(int year) throws SQLException;
 
 }

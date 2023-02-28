@@ -1,15 +1,18 @@
 package costtracker.buisnesslogic.interfaces;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public interface DatabaseHandler<T> {
 
-    T getById(int id);
+    T getById(int id) throws SQLException;
 
-    T[] getAll();
+    List<T> getAll() throws SQLException;
 
-    T deleteById(int id);
+    boolean deleteById(int id) throws SQLException;
 
-    T update(T object);
+    boolean update(T object) throws SQLException;
 
-    T create(T object);
+    boolean create(T object) throws SQLException;
 
 }

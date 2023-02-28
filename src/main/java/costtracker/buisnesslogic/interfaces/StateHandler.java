@@ -1,11 +1,14 @@
 package costtracker.buisnesslogic.interfaces;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public interface StateHandler<T> {
 
-    boolean enable();
+    boolean enable(int id) throws SQLException;
 
-    boolean disable();
+    boolean disable(int id) throws SQLException;
 
-    T[] getEnabled();
+    List<T> getEnabled() throws SQLException;
 
 }
