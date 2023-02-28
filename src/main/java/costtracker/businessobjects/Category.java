@@ -1,5 +1,7 @@
 package costtracker.businessobjects;
 
+import costtracker.db.entities.CategoryEntity;
+
 public class Category {
 	
 	private int id;	
@@ -24,5 +26,13 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public static Category fromEntity(CategoryEntity entity) {
+		return new Category(entity.getId(), entity.getName());
+	}
+	
+	public CategoryEntity toEntity() {
+		return new CategoryEntity(this.id, this.name);
 	}
 }

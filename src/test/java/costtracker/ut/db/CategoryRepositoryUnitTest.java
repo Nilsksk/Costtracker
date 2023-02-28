@@ -14,7 +14,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CategoryRepositoryUnitTest {
@@ -34,7 +36,7 @@ class CategoryRepositoryUnitTest {
 		stmt.execute(sql);
 		connection.close();
 	}
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
@@ -77,45 +79,67 @@ class CategoryRepositoryUnitTest {
 	}
 
 	@Test
-	void testCategoryDeleteEntity() throws SQLException {
-		//Arrange
-		id = helper.createCategory(name);
-		CategoryRepository repository = new CategoryRepository(connection);
-		CategoryEntity entity = new CategoryEntity(id, name);
-
-		//Act
-		boolean ret = repository.delete(entity);
-
-		//Assert
-		assertEquals(true, ret);
-	}
-
-	@Test
 	void testCategoryDeleteId() throws SQLException {
-		//Arrange
+		// Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
 
-		//Act
+		// Act
 		boolean ret = repository.delete(id);
 
-		//Assert
+		// Assert
 		assertEquals(true, ret);
 	}
 
 	@Test
 	void testCategorySelect() throws SQLException {
-		//Arrange
+		// Arrange
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
-		
-		//Act
-		CategoryEntity entity = repository.select(id);
-		
-		//Assert
+
+		// Act
+		CategoryEntity entity = repository.get(id);
+
+		// Assert
 		assertEquals(id, entity.getId());
 		assertEquals(name, entity.getName());
 	}
 
+	@Test
+	void testCategoryGetAll() throws SQLException {
+		helper.createCategory(name);
+		helper.createCategory(name + "2");
+
+		CategoryRepository repository = new CategoryRepository(connection);
+
+		List<CategoryEntity> entities = repository.getAll();
+
+		assertTrue(entities.size() >= 2);
+	}
+	
+	void testEnable() throws SQLException{
+		id = helper.createCategory(name);
+		CategoryRepository repository = new CategoryRepository(connection);
+		repository.disable(id);
+		
+		repository.enable(id);
+		
+		List<CategoryEntity> entities = repository.getEnabled();
+		
+		assertTrue(entities.stream().anyMatch(c -> c.getId() == id));
+		
+	}
+	
+	void testDisable() throws SQLException{
+		id = helper.createCategory(name);
+		CategoryRepository repository = new CategoryRepository(connection);
+
+		repository.disable(id);
+		
+		List<CategoryEntity> entities = repository.getEnabled();
+		
+		assertTrue(entities.stream().noneMatch(c -> c.getId() == id));
+		
+	}
 
 }

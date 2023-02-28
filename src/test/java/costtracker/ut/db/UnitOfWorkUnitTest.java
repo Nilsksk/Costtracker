@@ -8,33 +8,43 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.IOException;
+
 class UnitOfWorkUnitTest {
 
 	@Test
-	void TestGetPurchaseRepository() {
-		UnitOfWorkImp uow = new UnitOfWorkImp();
-		PurchaseRepository repo = uow.getPurchaseRepository();
+	void TestGetPurchaseRepository() throws IOException {
+		PurchaseRepository repo;
+		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
+			repo = uow.getPurchaseRepository();
+		}
 		assertNotNull(repo);
 	}
 	
 	@Test
-	void TestGetCompanyRepository() {
-		UnitOfWorkImp uow = new UnitOfWorkImp();
-		CompanyRepository repo = uow.getCompanyRepository();
+	void TestGetCompanyRepository() throws IOException {
+		CompanyRepository repo;
+		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
+		repo = uow.getCompanyRepository();
+		}
 		assertNotNull(repo);
 	}
 	
 	@Test
-	void TestGetCategoryRepository() {
-		UnitOfWorkImp uow = new UnitOfWorkImp();
-		CategoryRepository repo = uow.getCategoryRepository();
+	void TestGetCategoryRepository() throws IOException {
+		CategoryRepository repo;
+		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
+		repo = uow.getCategoryRepository();
+		}
 		assertNotNull(repo);
 	}
 
 	@Test
-	void TestSAve() {
-		UnitOfWorkImp uow = new UnitOfWorkImp();
-		uow.Save();
+	void TestSave() throws IOException {
+		
+		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
+			uow.Save();
+		}
 		
 	}
 

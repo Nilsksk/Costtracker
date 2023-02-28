@@ -6,15 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CategoryRepository extends RepositoryBase implements Repository<CategoryEntity> {
+public class CategoryRepository extends RepositoryBase implements BaseDataRepository<CategoryEntity> {
 
 	public CategoryRepository(Connection connection) {
 		super(connection);
 	}
 
 	@Override
-	public CategoryEntity select(int id) throws SQLException {
+	public CategoryEntity get(int id) throws SQLException {
 		CategoryEntity entity = null;
 		String sql = "select * from category where id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -42,7 +44,7 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 
 	@Override
 	public boolean insert(CategoryEntity entity) throws SQLException {
-		String sql = "insert into category(name) values (?)";
+		String sql = "insert into category(name, isenabled) values (?, true)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, entity.getName());
 		
@@ -63,8 +65,56 @@ public class CategoryRepository extends RepositoryBase implements Repository<Cat
 	}
 
 	@Override
-	public boolean delete(CategoryEntity entity) throws SQLException {
-		return this.delete(entity.getId());
+	public List<CategoryEntity> getAll() throws SQLException {
+		String sql = "select id, name from category";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+		
+		while(result.next()) {
+			categories.add(new CategoryEntity(result.getInt("id"), result.getString("name")));
+		}
+		
+		return categories;
 	}
 
+	@Override
+	public boolean enable(int id) throws SQLException {
+		String sql = "update category set isenabled = true where id = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, id);
+		
+		int result = stmt.executeUpdate();
+		
+		return result == 1;
+	}
+
+	@Override
+	public boolean disable(int id) throws SQLException {
+		String sql = "update category set isenabled = false where id = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, id);
+		
+		int result = stmt.executeUpdate();
+		
+		return result == 1;
+	}
+
+	@Override
+	public List<CategoryEntity> getEnabled() throws SQLException {
+		String sql = "select id, name from category where isenabled = true";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+		
+		while(result.next()) {
+			categories.add(new CategoryEntity(result.getInt("id"), result.getString("name")));
+		}
+		
+		return categories;
+	}
 }
