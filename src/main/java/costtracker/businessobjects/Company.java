@@ -1,5 +1,7 @@
 package costtracker.businessobjects;
 
+import costtracker.db.entities.CompanyEntity;
+
 public class Company {
 	
 	private int id;
@@ -35,5 +37,11 @@ public class Company {
 		this.location = location;
 	}
 	
+	public static Company fromEntity(CompanyEntity entity) {
+		return new Company(entity.getId(), entity.getName(), entity.getLocation());
+	}
 	
+	public CompanyEntity toEntity() {
+		return new CompanyEntity(id, name, location);
+	}
 }
