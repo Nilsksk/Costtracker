@@ -116,7 +116,8 @@ class CategoryRepositoryUnitTest {
 
 		assertTrue(entities.size() >= 2);
 	}
-	
+
+	@Test
 	void testEnable() throws SQLException{
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);
@@ -129,7 +130,8 @@ class CategoryRepositoryUnitTest {
 		assertTrue(entities.stream().anyMatch(c -> c.getId() == id));
 		
 	}
-	
+
+	@Test
 	void testDisable() throws SQLException{
 		id = helper.createCategory(name);
 		CategoryRepository repository = new CategoryRepository(connection);

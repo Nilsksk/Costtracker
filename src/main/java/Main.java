@@ -1,9 +1,13 @@
-//import costtracker.api.Api;
+import costtracker.api.Controller;
+
+import java.io.IOException;
 
 public class Main {
     // Start of my Application
-    public static void main(String[] args) {
-//        System.out.println("Test");
-//        System.out.println(new Api().Test());
+
+    public static void main(String[] args) throws IOException {
+        Controller controller = new Controller("localhost", 8080, 1);
+        controller.startServer();
+        controller.addHandler();
     }
 }
