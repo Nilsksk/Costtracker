@@ -1,6 +1,7 @@
 package costtracker.businessobjects;
 
 import costtracker.db.entities.CompanyEntity;
+import org.json.JSONObject;
 
 public class Company {
 	
@@ -43,5 +44,22 @@ public class Company {
 	
 	public CompanyEntity toEntity() {
 		return new CompanyEntity(id, name, location);
+	}
+
+	@Override
+	public String toString() {
+		return "Company{" + "id=" + id + ", name='" + name + ", location='" + location + '}';
+	}
+
+	public JSONObject toJSON(){
+		return new JSONObject().put("id", id).put("name", name).put("location", location);
+	}
+
+	public static Company fromJSONToCompany(JSONObject object){
+		return new Company(
+				Integer.parseInt(object.getJSONObject("company").get("id").toString()),
+				object.getJSONObject("company").get("name").toString(),
+				object.getJSONObject("company").get("location").toString()
+		);
 	}
 }

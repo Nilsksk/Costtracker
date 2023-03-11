@@ -8,6 +8,7 @@ import costtracker.businessobjects.Purchase;
 import costtracker.db.entities.PurchaseEntity;
 import costtracker.db.unitofwork.UnitOfWorkImp;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalField;
@@ -23,7 +24,6 @@ public class PurchaseHandler implements TimestampHandler, DatabaseHandler<Purcha
     @Override
     public Purchase getById(int id) throws SQLException {
         PurchaseEntity purchaseEntity = uow.getPurchaseRepository().get(id);
-
         return Purchase.fromEntity(purchaseEntity);
     }
 
@@ -70,56 +70,31 @@ public class PurchaseHandler implements TimestampHandler, DatabaseHandler<Purcha
     @Override
     public List<Purchase> getByTimestamp(LocalDate startDate, LocalDate endDate) throws SQLException {
         // Get Purchases from Database
-        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getAll();
-        // Map Purchases from Entity's to Business objects
-        List<Purchase> allPurchases = allEntityPurchases.stream().map(Purchase::fromEntity).toList();
-        List<Purchase> purchasesByTimestamp = new ArrayList<>();
+        Date convertedStartDate = Date.valueOf(startDate);
+        Date convertedEndDate = Date.valueOf(endDate);
+        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getByTimespan(convertedStartDate, convertedEndDate);
 
-        for (Purchase purchase : allPurchases) {
-            if (purchase.getDate().isAfter(startDate) && purchase.getDate().isBefore(endDate)) {
-                purchasesByTimestamp.add(purchase);
-            }
-        }
-
-        return purchasesByTimestamp;
+        return allEntityPurchases.stream().map(Purchase::fromEntity).toList();
     }
 
     @Override
     public List<Purchase> getByCompanyByTimestamp(Company company, LocalDate startDate, LocalDate endDate) throws SQLException {
         // Get Purchases from Database
-        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getAll();
-        // Map Purchases from Entity's to Business objects
-        List<Purchase> allPurchases = allEntityPurchases.stream().map(Purchase::fromEntity).toList();
-        List<Purchase> purchasesByCompanyByTimestamp = new ArrayList<>();
+        Date convertedStartDate = Date.valueOf(startDate);
+        Date convertedEndDate = Date.valueOf(endDate);
+        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getByCompanyByTimespan(company.toEntity(), convertedStartDate, convertedEndDate);
 
-        for (Purchase purchase : allPurchases) {
-            if (purchase.getDate().isAfter(startDate) && purchase.getDate().isBefore(endDate)) {
-                if (purchase.getCompany().equals(company)) {
-                    purchasesByCompanyByTimestamp.add(purchase);
-                }
-            }
-        }
-
-        return purchasesByCompanyByTimestamp;
+        return allEntityPurchases.stream().map(Purchase::fromEntity).toList();
     }
 
     @Override
     public List<Purchase> getByCategoryByTimestamp(Category category, LocalDate startDate, LocalDate endDate) throws SQLException {
         // Get Purchases from Database
-        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getAll();
-        // Map Purchases from Entity's to Business objects
-        List<Purchase> allPurchases = allEntityPurchases.stream().map(Purchase::fromEntity).toList();
-        List<Purchase> purchasesByCategoryByTimestamp = new ArrayList<>();
+        Date convertedStartDate = Date.valueOf(startDate);
+        Date convertedEndDate = Date.valueOf(endDate);
+        List<PurchaseEntity> allEntityPurchases = uow.getPurchaseRepository().getByCategoryByTimespan(category.toEntity(), convertedStartDate, convertedEndDate);
 
-        for (Purchase purchase : allPurchases) {
-            if (purchase.getDate().isAfter(startDate) && purchase.getDate().isBefore(endDate)) {
-                if (purchase.getCategory().equals(category)) {
-                    purchasesByCategoryByTimestamp.add(purchase);
-                }
-            }
-        }
-
-        return purchasesByCategoryByTimestamp;
+        return allEntityPurchases.stream().map(Purchase::fromEntity).toList();
     }
 
     @Override

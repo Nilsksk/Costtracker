@@ -6,11 +6,19 @@ import costtracker.api.enums.httpCodes;
 import costtracker.api.enums.httpHeader;
 import costtracker.api.helper.HandlerHelperFunctions;
 import costtracker.api.interfaces.GetHandler;
+import costtracker.buisnesslogic.PurchaseHandler;
+import costtracker.businessobjects.Company;
+import costtracker.businessobjects.Purchase;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+
+import static costtracker.businessobjects.Company.fromJSONToCompany;
 
 public class GetPurchaseByCompanyByTimespan implements GetHandler {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -24,23 +32,25 @@ public class GetPurchaseByCompanyByTimespan implements GetHandler {
                 final String requestMethod = handler.getRequestMethod();
 
                 JSONObject bodyData = HandlerHelperFunctions.getRequestBodyAsJson(handler.getRequestBody());
-                int purchaseID = Integer.parseInt(bodyData.getString("id"));
                 LocalDate purchaseStartDate = LocalDate.parse(bodyData.getString("startDate"));
                 LocalDate purchaseEndDate = LocalDate.parse(bodyData.getString("endDate"));
-                // TODO: Add json to company/category mapper
-                // Category purchaseCompany = bodyData.getString("company");
+                Company purchaseCompany = fromJSONToCompany(bodyData);
 
                 if (httpHeader.METHOD_GET.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
+                        try {
+                            PurchaseHandler purchaseHandler = new PurchaseHandler();
+                            List<Purchase> purchaseList = purchaseHandler.getByCompanyByTimestamp(purchaseCompany, purchaseStartDate, purchaseEndDate);
+                            final String responseBody = new JSONArray(purchaseList).toString();
 
-                        // TODO: Change with Buisnesslogic function call
-                        final String responseBody = new JSONObject().toString();
-
-                        // Set Headers and send Response to client
-                        headers.set(httpHeader.HEADER_CONTENT_TYPE.headerData, String.format("application/json; charset=%s", CHARSET));
-                        final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
-                        handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
-                        handler.getResponseBody().write(responseBodyByte);
+                            // Set Headers and send Response to client
+                            headers.set(httpHeader.HEADER_CONTENT_TYPE.headerData, String.format("application/json; charset=%s", CHARSET));
+                            final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
+                            handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
+                            handler.getResponseBody().write(responseBodyByte);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

@@ -6,10 +6,13 @@ import costtracker.api.enums.httpCodes;
 import costtracker.api.enums.httpHeader;
 import costtracker.api.helper.HandlerHelperFunctions;
 import costtracker.api.interfaces.GetHandler;
+import costtracker.buisnesslogic.CategoryHandler;
+import costtracker.businessobjects.Category;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 public class GetCategoryById implements GetHandler {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -27,15 +30,19 @@ public class GetCategoryById implements GetHandler {
 
                 if (httpHeader.METHOD_GET.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
+                        try {
+                            CategoryHandler categoryHandler = new CategoryHandler();
+                            Category categoryById = categoryHandler.getById(categoryId);
+                            String responseBody = categoryById.toJSON().toString();
 
-                        // TODO: Change with Buisnesslogic function call
-                        final String responseBody = new JSONObject().toString();
-
-                        // Set Headers and send Response to client
-                        headers.set(httpHeader.HEADER_CONTENT_TYPE.headerData, String.format("application/json; charset=%s", CHARSET));
-                        final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
-                        handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
-                        handler.getResponseBody().write(responseBodyByte);
+                            // Set Headers and send Response to client
+                            headers.set(httpHeader.HEADER_CONTENT_TYPE.headerData, String.format("application/json; charset=%s", CHARSET));
+                            final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
+                            handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
+                            handler.getResponseBody().write(responseBodyByte);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

@@ -146,7 +146,8 @@ class CompanyRepositoryUnitTest {
 
 		assertTrue(entities.size() >= 2);
 	}
-	
+
+	@Test
 	void testEnable() throws SQLException{
 		id = helper.createCompany(name, location);
 		CompanyRepository repository = new CompanyRepository(connection);
@@ -159,7 +160,8 @@ class CompanyRepositoryUnitTest {
 		assertTrue(entities.stream().anyMatch(c -> c.getId() == id));
 		
 	}
-	
+
+	@Test
 	void testDisable() throws SQLException{
 		id = helper.createCategory(name);
 		CompanyRepository repository = new CompanyRepository(connection);
