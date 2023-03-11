@@ -107,7 +107,7 @@ public class CompanyRepository extends RepositoryBase implements BaseDataReposit
 
 	@Override
 	public List<CompanyEntity> getEnabled() throws SQLException {
-		String sql = "select id, name from category where isenabled = true";
+		String sql = "select id, name, location from company where isenabled = true";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		
 		ResultSet result = stmt.executeQuery();

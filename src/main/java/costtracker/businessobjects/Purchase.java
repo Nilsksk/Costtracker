@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import costtracker.db.entities.PurchaseEntity;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Purchase {
 
@@ -95,5 +97,10 @@ public class Purchase {
 	public PurchaseEntity toEntity() {
 		return new PurchaseEntity(id, company != null ? company.toEntity() : null, category.toEntity(), price, name,
 				description, Date.valueOf(date));
+	}
+
+	public JSONObject toJSON() {
+		return new JSONObject().put("id", id).put("name", name).put("description", description).put("date", date).put("price", price)
+						.put("category", category.toJSON()).put("company", company.toJSON());
 	}
 }
