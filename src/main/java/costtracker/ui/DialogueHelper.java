@@ -63,6 +63,10 @@ public class DialogueHelper {
 	public static void println(String string) {
 		System.out.println(string);
 	}
+	
+	public static boolean submitEntry() {
+		return saveData("Zum Speichern ihrer Daten '+' eingeben: ", "+");
+	}
 
 	public static void printCompanies(List<Company> companies) {
 		int longestCompanyId = companies.stream().mapToInt(c -> String.valueOf(c.getId()).length()).max().getAsInt();
@@ -121,5 +125,14 @@ public class DialogueHelper {
 	public static boolean saveData(String input, String action) {
 		System.out.print(input);
 		return (sc.nextLine().equals(action));
+	}
+	
+	public static void validateCreation(boolean created) {
+		if (created) {
+			println("Kategorie angelegt");
+		}
+		else {
+			println("Anlegen fehlgeschlagen!");
+		}
 	}
 }

@@ -1,10 +1,13 @@
 package costtracker.ui;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import costtracker.businessobjects.*;
+import costtracker.ui.interfaces.Adder;
+import costtracker.ui.interfaces.Editor;
 
 public class Dialogue {
 
@@ -16,7 +19,7 @@ public class Dialogue {
 
 	}
 
-	public void talk() {
+	public void talk() throws SQLException {
 
 		System.out.println("\tCosttracker!\n");
 
@@ -54,7 +57,7 @@ public class Dialogue {
 		return input < maxInput && input > 0;
 	}
 
-	private void edit() {
+	private void edit() throws SQLException {
 		String question = ("Wollen sie eine Firma ändern (1) oder hinzufügen (2)? Wollen sie eine Kategorie ändern (3) oder hinzufügen (4)?");
 		int action = interactQuestion(question);
 

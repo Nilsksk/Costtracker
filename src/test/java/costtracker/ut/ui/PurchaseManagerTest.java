@@ -1,5 +1,6 @@
 package costtracker.ut.ui;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class PurchaseManagerTest {
 	PurchaseManager pm = new PurchaseManager();
 	
 //	@Test
-	void test() {
+	void test() throws SQLException {
 		
 		List<Company> companies = new ArrayList<Company>();
 		companies.add(new Company(1, "Netto", "Offenbach"));
