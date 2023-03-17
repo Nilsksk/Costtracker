@@ -49,7 +49,7 @@ public class PurchaseManager implements Editor, Adder {
 			submit = DialogueHelper.submitEntry();
 			
 			if (submit) {
-				created = purchaseHandler.create(new Purchase(0, purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));				
+				created = purchaseHandler.create(new Purchase(purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));				
 			}
 			
 			DialogueHelper.validateCreation(created);
@@ -82,7 +82,7 @@ public class PurchaseManager implements Editor, Adder {
 		submit = DialogueHelper.submitEntry();
 		
 		if (submit) {
-			updated = purchaseHandler.update(new Purchase(0, newPurchaseName, newPurchaseDescription, newPurchaseDate, newPurchasePrice, company, category));
+			updated = purchaseHandler.update(new Purchase(newPurchaseName, newPurchaseDescription, newPurchaseDate, newPurchasePrice, company, category));
 		}
 		//Testen!
 	}

@@ -27,6 +27,15 @@ public class Purchase {
 		this.company = company;
 		this.category = category;
 	}
+	
+	public Purchase(String name, String description, LocalDate date, double price, Company company, Category category) {
+		this.name = name;
+		this.description = description;
+		this.date = date;
+		this.price = price;
+		this.company = company;
+		this.category = category;
+	}
 
 	public int getId() {
 		return id;

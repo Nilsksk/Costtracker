@@ -15,6 +15,11 @@ public class Company {
 		this.location = location;
 	}
 	
+	public Company(String name, String location) {
+		this.name = name;
+		this.location = location;
+	}
+	
 	public int getId() {
 		return id;
 	}

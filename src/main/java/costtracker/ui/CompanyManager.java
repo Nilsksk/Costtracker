@@ -27,7 +27,7 @@ public class CompanyManager implements Editor, Adder {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			created = companyHandler.create(new Company(0, newCompanyName, newCompanyLocation));		
+			created = companyHandler.create(new Company(newCompanyName, newCompanyLocation));		
 		}
 
 		DialogueHelper.validateCreation(created);
@@ -56,7 +56,7 @@ public class CompanyManager implements Editor, Adder {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			updated = companyHandler.update(new Company(0, editedName, editedLocation));
+			updated = companyHandler.update(new Company(editedName, editedLocation));
 		}
 
 		DialogueHelper.validateCreation(updated);

@@ -25,7 +25,7 @@ public class CategoryManager implements Editor, Adder {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			created = categoryHandler.create(new Category(0, newCategoryName));			
+			created = categoryHandler.create(new Category(newCategoryName));			
 		}
 		
 		DialogueHelper.validateCreation(created);
@@ -49,7 +49,7 @@ public class CategoryManager implements Editor, Adder {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			updated = categoryHandler.update(new Category(0, editedName));			
+			updated = categoryHandler.update(new Category(editedName));			
 		}
 		// Kategorie mit editierter Kategorie überschreiben
 	}
