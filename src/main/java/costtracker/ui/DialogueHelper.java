@@ -31,9 +31,9 @@ public class DialogueHelper {
 		return returnInput();
 	}
 
-	public static String changeDialogue(String input) {
+	public static String changeDialogue(String descriptionOfField, String input) {
 
-		System.out.print(input + fillWhitespaces(0) + " -> ");
+		System.out.print("(" + descriptionOfField + ")" + " " + input + fillWhitespaces(0) + " -> ");
 		return returnInput();
 	}
 
@@ -129,7 +129,7 @@ public class DialogueHelper {
 	
 	public static void validateCreation(boolean created) {
 		if (created) {
-			println("Kategorie angelegt");
+			println("Angelegt!");
 		}
 		else {
 			println("Anlegen fehlgeschlagen!");

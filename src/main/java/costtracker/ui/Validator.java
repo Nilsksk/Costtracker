@@ -11,54 +11,42 @@ public class Validator {
 
 	public static double checkPrize(Purchase purchase) {
 		String newPurchasePrice = null;
-		try {
-			newPurchasePrice = DialogueHelper.changeDialogue(String.valueOf(purchase.getPrice()));
-			ReSet.setNewDouble(newPurchasePrice, purchase::setPrice);
-		}catch (Exception e) {
-			System.out.println("Kein gültiger Pries!");
-			checkPrize(purchase);
+		newPurchasePrice = DialogueHelper.changeDialogue("Preis", String.valueOf(purchase.getPrice()));
+		//ReSet.setNewDouble(newPurchasePrice, purchase::setPrice);
+		if (newPurchasePrice.isEmpty()) {
+			return purchase.getPrice();
 		}
 		return Double.parseDouble(newPurchasePrice);
 	}
 	
 	public static LocalDate checkDate(Purchase purchase) {
 		String newPurchaseDate = null;
-		try {
-			newPurchaseDate = DialogueHelper.changeDialogue(purchase.getDateString());
-		}catch (Exception e) {
-			System.out.println("Kein gültiges Datum!");
-			checkDate(purchase);
+		newPurchaseDate = DialogueHelper.changeDialogue("Datum", purchase.getDateString());
+		if (newPurchaseDate.isEmpty()) {
+			return purchase.getDate();
 		}
 		return LocalDate.parse(newPurchaseDate);
 	}
 		
 	public static int checkCompanyId(Purchase purchase, List<Company> companies) {
-		int newPurchaseCompanyId = -1;
+		String newPurchaseCompanyId;
+		newPurchaseCompanyId = DialogueHelper.changeDialogue("Firmen-ID", Integer.toString(purchase.getCompany().getId()));		
 		try {
-			try {
-				newPurchaseCompanyId = Integer.parseInt(DialogueHelper.changeDialogue("Firmen-ID: " + Integer.toString(purchase.getCompany().getId())));		
-			}catch (Exception e) {			
-				newPurchaseCompanyId = Integer.parseInt(DialogueHelper.changeDialogue("Firmen-ID: "));
-			}	
-		}catch (Exception e) {
-			System.out.println("Keine gültige Firmen-ID!");
-			checkCompanyId(purchase, companies);
+			return Integer.parseInt(newPurchaseCompanyId);
 		}
-		return newPurchaseCompanyId;
+		catch(NumberFormatException e){
+			return purchase.getCompany().getId();
+		}
 	}
 	
 	public static int checkCategoryId(Purchase purchase, List<Category> categories) {
-		int newPurchaseCategory = -1;	
+		String newPurchaseCategory;	
+		newPurchaseCategory = DialogueHelper.changeDialogue("Kategorie-ID", Integer.toString(purchase.getCategory().getId()));		
 		try {
-			try {
-				newPurchaseCategory = Integer.parseInt(DialogueHelper.changeDialogue("Firmen-ID: " + Integer.toString(purchase.getCategory().getId())));	
-			}catch (Exception e) {
-				newPurchaseCategory = Integer.parseInt(DialogueHelper.changeDialogue("Firmen-ID: "));
-			}			
-		}catch (Exception e) {
-			System.out.println("Keine gültige Firmen-ID!");
-			checkCategoryId(purchase, categories);
+			return purchase.getCategory().getId();
 		}
-		return newPurchaseCategory;
+		catch(NumberFormatException e){
+			return Integer.parseInt(newPurchaseCategory);			
+		}
 	}
 }

@@ -20,7 +20,7 @@ public class UnitOfWorkImp implements UnitOfWork, Closeable {
 	
 	public UnitOfWorkImp() {
 		try {
-			connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "test");
+			connection = DriverManager.getConnection("jdbc:h2:~/testdb", "sa", "test");
 			connection.setAutoCommit(false);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

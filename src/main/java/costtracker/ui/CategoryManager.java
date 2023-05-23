@@ -17,6 +17,9 @@ public class CategoryManager implements Editor, Adder {
 	private CategoryHandler categoryHandler;
 	boolean submit;
 
+	public CategoryManager() {
+		this.categoryHandler = new CategoryHandler();
+	}
 	@Override
 	public void add() throws SQLException {
 		boolean created = false;
@@ -24,12 +27,13 @@ public class CategoryManager implements Editor, Adder {
 		String newCategoryName = DialogueHelper.inputDialogue("Name");	
 		submit = DialogueHelper.submitEntry();
 		
-		if(submit) {
+		if(submit && !newCategoryName.isEmpty()) {
 			created = categoryHandler.create(new Category(newCategoryName));			
+			DialogueHelper.validateCreation(created);
 		}
-		
-		DialogueHelper.validateCreation(created);
-		//Testen!
+		else {
+			DialogueHelper.print("Unzureichende Eingaben!");
+		}
 	}
 	
 
@@ -42,27 +46,27 @@ public class CategoryManager implements Editor, Adder {
 
 		Category category = getCategoryToEdit();
 
-		String editedName = DialogueHelper.changeDialogue(category.getName());
-		if (!editedName.isEmpty()) {
+		String editedName = DialogueHelper.changeDialogue("Name", category.getName());
+		if(editedName.isEmpty()) {
+			editedName = category.getName();
+		}
+		else{
 			category.setName(editedName);
 		}
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			updated = categoryHandler.update(new Category(editedName));			
+			updated = categoryHandler.update(new Category(category.getId(), editedName));			
 		}
-		// Kategorie mit editierter Kategorie überschreiben
+		DialogueHelper.validateCreation(updated);
 	}
 
-	private Category getCategoryToEdit() throws SQLException {
-		Category category;
+	private Category getCategoryToEdit() throws SQLException {	
+		int id;
 		do {
-			int id = DialogueHelper.getIdDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten: ");
-			category = GetBusinessObject.getById(id, categoryHandler.getAll(), Category::getId);
-			if (category.equals(null)) {
-				DialogueHelper.println("ID " + id + " nicht vorhanden");
-			}
-		} while (category.equals(null));
+			id = DialogueHelper.getIdDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten: ");
+		}while(id == -1);
+		Category category = GetBusinessObject.getById(id, categoryHandler.getAll(), Category::getId);
 
 		return category;
 	}

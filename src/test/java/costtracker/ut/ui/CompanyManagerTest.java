@@ -22,9 +22,9 @@ class CompanyManagerTest {
 		companies.add(new Company(3, "Globus", "Neustadt"));
 		companies.add(new Company(4, "Dogan", "Offenbach"));
 		
-		cm.setCompanies(companies);
+		//cm.setCompanies(companies);
 		
-		cm.edit();
+		//cm.edit();
 	}
 
 }

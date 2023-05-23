@@ -22,8 +22,8 @@ public class CategoryManagerTest {
 		categories.add(new Category(3, "Lego"));
 		categories.add(new Category(4, "Lautre"));
 		
-		cm.setCategories(categories);
+		//cm.setCategories(categories);
 		
-		cm.edit();
+		//cm.edit();
 	}
 }

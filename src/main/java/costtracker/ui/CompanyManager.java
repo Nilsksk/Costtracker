@@ -14,62 +14,70 @@ import costtracker.ui.interfaces.Editor;
 
 public class CompanyManager implements Editor, Adder {
 
-	private CompanyHandler companyHandler;
+	private CompanyHandler companyHandler = new CompanyHandler();
 	boolean submit;
 
+	public CompanyManager() {
+		this.companyHandler = new CompanyHandler();
+	}
 	@Override
 	public void add() throws SQLException {
 		boolean created = false;
 		DialogueHelper.startDialogue("Enter Taste drücken um neue  Firma und optional dessen Standort hinzuzufügen");
 
-		String newCompanyName = DialogueHelper.inputDialogue("Name");
+		String newCompanyName = DialogueHelper.inputDialogue("Name");			
 		String newCompanyLocation = DialogueHelper.inputDialogue("Standort");
 		submit = DialogueHelper.submitEntry();
 		
-		if(submit) {
+		if(submit && !newCompanyName.isEmpty() && !newCompanyLocation.isEmpty()) {
 			created = companyHandler.create(new Company(newCompanyName, newCompanyLocation));		
+			DialogueHelper.validateCreation(created);
 		}
-
-		DialogueHelper.validateCreation(created);
-		//Testen!
+		else{
+			DialogueHelper.print("Unzureichende Eingaben!");
+		}
 	}
 
 	@Override
 	public void edit() throws SQLException {
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen");
-		// this.companies = new ArrayList<Company>();
 
 		DialogueHelper.printCompanies(companyHandler.getAll());
 
 		Company company = getCompanyToEdit();
 
-		String editedName = DialogueHelper.changeDialogue(company.getName());
-		if (!editedName.isEmpty()) {
+		String editedName = DialogueHelper.changeDialogue("Name", company.getName());
+		if (editedName.isEmpty()) {
+			editedName = company.getName();
+		}
+		else{
 			company.setName(editedName);
 		}
-		String editedLocation = DialogueHelper.changeDialogue(company.getLocation());
-		if (!editedLocation.isEmpty()) {
+		String editedLocation = DialogueHelper.changeDialogue("Standort", company.getLocation());
+		if (editedLocation.isEmpty()) {
+			editedLocation = company.getLocation();
+		}
+		else {
 			company.setLocation(editedLocation);
 		}
 
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit) {
-			updated = companyHandler.update(new Company(editedName, editedLocation));
+			updated = companyHandler.update(new Company(company.getId(),editedName, editedLocation));
 		}
 
 		DialogueHelper.validateCreation(updated);
 	}
 
 	private Company getCompanyToEdit() throws SQLException {
-		Company company;
-
+		int id;
 		do {
-			int id = DialogueHelper.getIdDialogue("ID der Firma auswählen, die Sie bearbeiten möchten: ");
-			company = GetBusinessObject.getById(id, companyHandler.getAll(), Company::getId);
+			id = DialogueHelper.getIdDialogue("ID der Firma auswählen, die Sie bearbeiten möchten: ");
+		}while(id == -1);
+		Company company = GetBusinessObject.getById(id, companyHandler.getAll(), Company::getId);
 
-		} while (company.equals(null));
 
 		return company;
 	}

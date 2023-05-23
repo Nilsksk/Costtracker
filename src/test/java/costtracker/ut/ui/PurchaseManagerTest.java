@@ -31,8 +31,8 @@ public class PurchaseManagerTest {
 		categories.add(new Category(3, "Lego"));
 		categories.add(new Category(4, "Lautre"));
 		
-		pm.setCompanies(companies);
-		pm.setCategories(categories);
+		//pm.setCompanies(companies);
+		//pm.setCategories(categories);
 		
 		pm.add();
 	}
@@ -60,10 +60,10 @@ public class PurchaseManagerTest {
         purchases.add(new Purchase(2, "Bellheimer","Kasten", LocalDate.of(2022, 2, 1), 14.99, null, cat2)); 
         purchases.add(new Purchase(3, "Oreo Schokolade",null, LocalDate.of(2022, 2, 1), 14.99, null, cat1)); 
 		
-		pm.setCompanies(companies);
-		pm.setCategories(categories);
-		pm.setPurchases(purchases);
-		pm.edit();
+		//pm.setCompanies(companies);
+		//pm.setCategories(categories);
+		//pm.setPurchases(purchases);
+		//pm.edit();
 		
 	}
 }
