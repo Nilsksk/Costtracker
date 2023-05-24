@@ -18,8 +18,8 @@ public class CompanyImportFile {
 			while (this.importFile.hasNextEntry()) {
 				HashMap<String, String> entry = importFile.getNextEntry();
 				String name = entry.get("name");
-				String description = entry.get("description");
-				Company category = new Company(0, name, description);
+				String location = entry.get("location");
+				Company category = new Company(0, name, location);
 				companies.add(category);
 			}
 			return companies;
