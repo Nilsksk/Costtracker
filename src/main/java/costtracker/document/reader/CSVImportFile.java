@@ -21,16 +21,21 @@ public class CSVImportFile {
 		readLines(file);
 		columns = new ArrayList<CSVImportColumn>();
 		extractHeaderLine();
-		readDataLines();
-		
+		readDataLines();	
 	}
 
 	private void readDataLines() {
 		for (String dataLine : lines) {
-			int i = 0;
+			int currentPosition = 0;
 			for (String column : dataLine.split(";")) {
-				columns.get(i).addRow(column);
-				i++;
+				columns.get(currentPosition).addRow(column);
+				currentPosition++;
+			}
+			if(currentPosition < columns.size()) {
+				while(currentPosition < columns.size()) {
+					columns.get(currentPosition).addRow("");
+					currentPosition++;
+				}
 			}
 		}		
 	}

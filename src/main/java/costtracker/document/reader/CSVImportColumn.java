@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVImportColumn {
-	private String header;
 	
+	private String header;
 	private List<String> data;
 	
 	public CSVImportColumn(String header) {
 		this.data = new ArrayList<>();
-		this.header = header;
+		this.header = header.toLowerCase();
 	}
 	
 	public void addRow(String entry) {
@@ -28,5 +28,4 @@ public class CSVImportColumn {
 	public boolean hasElements() {
 		return this.data.size() > 0; 
 	}
-	
 }
