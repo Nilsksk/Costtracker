@@ -3,6 +3,7 @@ package costtracker.ui;
 import java.awt.Dialog;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -39,7 +40,7 @@ public class PurchaseManager implements Editor, Adder {
 			DialogueHelper.startDialogue("Enter Taste drücken um neuen Einkauf hinzuzufügen");
 			String purchaseName = DialogueHelper.inputDialogue("Name");
 			double validatedValue = validatedValue();
-			LocalDate validatedDate = validateDate();	
+			LocalDate validatedDate = DateConverter.convertDate("Datum des Kaufs (TT:MM:JJJJ)");	
 			System.out.println();
 			DialogueHelper.printCompanies(companyHandler.getAll());	
 			System.out.println();
@@ -64,45 +65,72 @@ public class PurchaseManager implements Editor, Adder {
 
 	@Override
 	public void edit() throws SQLException {
+		boolean validInput = true;
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken um Liste aller getätigten Einkäufe zu erhalten");
 	    DialogueHelper.printPurchases(purchaseHandler.getAll());
 	    
+	    int input = DialogueHelper.interactQuestion("Wollen sie einen Kauf anpassen (1) oder löschen (2)?");
 		Purchase purchase = getPurchaseToEdit();
-		if (purchase == null) {
-			DialogueHelper.println("Kein Einkauf unter dieser ID hinterlegt!");
-			
-		}
-		else {
-			String newPurchaseName = DialogueHelper.changeDialogue("Name", purchase.getName());
-			if (newPurchaseName.isEmpty()) {
-				newPurchaseName = purchase.getName();
+		
+		while(validInput) {
+			if (!DialogueHelper.isValidInput(input, 3)) {
+				DialogueHelper.println("Falsche Eingabe " + input + "!");
+				break;
+			}	
+			if (input == 1) {
+				validInput = false;
+				if (purchase == null) {
+					DialogueHelper.println("Kein Einkauf unter dieser ID hinterlegt!");
+					
+				}
+				else {
+					String newPurchaseName = DialogueHelper.changeDialogue("Name", purchase.getName());
+					if (newPurchaseName.isEmpty()) {
+						newPurchaseName = purchase.getName();
+					}
+					double newPurchasePrice = Validator.checkPrize(purchase);
+					if (String.valueOf(newPurchasePrice).isEmpty()) {
+						newPurchasePrice = purchase.getPrice();
+					}
+					LocalDate newPurchaseDate = Validator.checkDate(purchase);
+					if (newPurchaseDate == null) {
+						newPurchaseDate = purchase.getDate();
+					}
+					DialogueHelper.printCompanies(companyHandler.getAll());
+					Company company = validateCompany();
+					if (company == null) {
+						company = purchase.getCompany();
+					}
+					DialogueHelper.printCategories(categoryHandler.getAll());
+					Category category = validateCategory();
+					if (category == null) {
+						category = purchase.getCategory();
+					}
+					String newPurchaseDescription = DialogueHelper.changeDialogue("Beschreibung", purchase.getDescription());
+					submit = DialogueHelper.submitEntry();
+					
+					if (submit) {
+						updated = purchaseHandler.update(new Purchase(purchase.getId(), newPurchaseName, newPurchaseDescription, newPurchaseDate, newPurchasePrice, company, category));
+						DialogueHelper.validateCreation(updated);
+					}	
+				}
 			}
-			double newPurchasePrice = Validator.checkPrize(purchase);
-			if (String.valueOf(newPurchasePrice).isEmpty()) {
-				newPurchasePrice = purchase.getPrice();
-			}
-			LocalDate newPurchaseDate = Validator.checkDate(purchase);
-			if (newPurchaseDate == null) {
-				newPurchaseDate = purchase.getDate();
-			}
-			DialogueHelper.printCompanies(companyHandler.getAll());
-			Company company = validateCompany();
-			if (company == null) {
-				company = purchase.getCompany();
-			}
-			DialogueHelper.printCategories(categoryHandler.getAll());
-			Category category = validateCategory();
-			if (category == null) {
-				category = purchase.getCategory();
-			}
-			String newPurchaseDescription = DialogueHelper.changeDialogue("Beschreibung", purchase.getDescription());
-			submit = DialogueHelper.submitEntry();
-			
-			if (submit) {
-				updated = purchaseHandler.update(new Purchase(purchase.getId(), newPurchaseName, newPurchaseDescription, newPurchaseDate, newPurchasePrice, company, category));
-				DialogueHelper.validateCreation(updated);
-			}				
+			else if (input == 2) {
+				validInput = false;
+				List<Purchase> purchaseToDelete = new ArrayList<Purchase>();
+				purchaseToDelete.add(purchase);
+				DialogueHelper.println("");
+				try {
+					DialogueHelper.printPurchases(purchaseToDelete);					
+				}
+				catch(Exception e) {
+					break;
+				}
+				if (DialogueHelper.validateDeleteOrDeactivation("Erfolgreich gelöscht!")) {
+					purchaseHandler.deleteById(purchase.getId());
+				}
+			}	
 		}
 	}
 	
@@ -118,22 +146,6 @@ public class PurchaseManager implements Editor, Adder {
 		}		
 		return doublePurchaseValue;
 	}
-	
-	
-	private LocalDate validateDate() {
-		LocalDate date;
-
-		String purchaseDate = DialogueHelper.inputDialogue("Datum des Kaufs (TT:MM:JJJJ)");	
-		String[] dateValues = purchaseDate.split(":");
-		try {
-			date = LocalDate.of(Integer.parseInt(dateValues[2]), Integer.parseInt(dateValues[1]), Integer.parseInt(dateValues[0]));		
-		}
-		catch(Exception e) {
-			date = null;
-		}
-	
-		return date;
-	}
 
 	private boolean breakInput() {
 		System.out.println();
@@ -143,7 +155,7 @@ public class PurchaseManager implements Editor, Adder {
 	private Company validateCompany() throws SQLException {
 		Company company;
 		try {
-			int companyId = DialogueHelper.getIdDialogue("Geben sie die ID der Firma an, bei welcher Ihr Kauf geätigt wurde");	
+			int companyId = DialogueHelper.getIntDialogue("Geben sie die ID der Firma an, bei welcher Ihr Kauf geätigt wurde");	
 			company = GetBusinessObject.getById(companyId, companyHandler.getAll(), Company::getId);
 		}
 		catch(Exception e) {
@@ -155,7 +167,7 @@ public class PurchaseManager implements Editor, Adder {
 	private Category validateCategory() throws SQLException {
 		Category category;
 		try {
-			int categoryId = DialogueHelper.getIdDialogue("Geben sie die ID der Kategorie an, zu welcher ihr Kauf am besten passt");	
+			int categoryId = DialogueHelper.getIntDialogue("Geben sie die ID der Kategorie an, zu welcher ihr Kauf am besten passt");	
 			category = GetBusinessObject.getById(categoryId, categoryHandler.getAll(), Category::getId);
 		}
 		catch(Exception e) {
@@ -167,7 +179,7 @@ public class PurchaseManager implements Editor, Adder {
 	private Purchase getPurchaseToEdit() throws SQLException {
 		Purchase purchase;
 		try {
-			int id = DialogueHelper.getIdDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten");
+			int id = DialogueHelper.getIntDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten");
 			purchase = GetBusinessObject.getById(id, purchaseHandler.getAll(), Purchase::getId);
 
 		} 

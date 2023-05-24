@@ -41,11 +41,10 @@ public class DialogueHelper {
 		return sc.nextLine();
 	}
 
-	public static int getIdDialogue(String input) {
+	public static int getIntDialogue(String input) {
 		System.out.print(input + ": ");
-		String ret;
-		ret = sc.nextLine();
-		return mapToId(ret);
+		String id = sc.nextLine();
+		return mapToId(id);
 	}
 
 	private static int mapToId(String ret) {
@@ -135,4 +134,31 @@ public class DialogueHelper {
 			println("Anlegen fehlgeschlagen!");
 		}
 	}
+	
+	public static int interactQuestion(String question) {
+		System.out.print(question);
+
+		Scanner sc = new Scanner(System.in);
+		int action = sc.nextInt();
+		System.out.println();
+		
+		return action;
+	}
+	
+	public static boolean isValidInput(int input, int maxInput) {
+		return input < maxInput && input > 0;
+	}
+	
+	public static boolean validateDeleteOrDeactivation(String deleteOrDeactivate) {
+		print("Löschung oder Deaktivierung durchführen (-)? ");
+		String input = sc.nextLine();
+		println("");
+		if (input.equals("-")) {
+			println(deleteOrDeactivate);
+			println("");
+			return true;
+		}
+		return false;
+	}
+
 }

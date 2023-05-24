@@ -9,10 +9,13 @@ import java.util.Scanner;
 import costtracker.buisnesslogic.CompanyHandler;
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.Purchase;
+import costtracker.ui.interfaces.Activator;
 import costtracker.ui.interfaces.Adder;
+import costtracker.ui.interfaces.Deactivator;
 import costtracker.ui.interfaces.Editor;
 
-public class CompanyManager implements Editor, Adder {
+public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 
 	private CompanyHandler companyHandler = new CompanyHandler();
 	boolean submit;
@@ -43,7 +46,7 @@ public class CompanyManager implements Editor, Adder {
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen");
 
-		DialogueHelper.printCompanies(companyHandler.getAll());
+		DialogueHelper.printCompanies(companyHandler.getEnabled());
 
 		Company company = getCompanyToEdit();
 
@@ -70,13 +73,33 @@ public class CompanyManager implements Editor, Adder {
 
 		DialogueHelper.validateCreation(updated);
 	}
+	
+	@Override
+	public void deactivate() throws SQLException {
+		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen");
+		DialogueHelper.printCompanies(companyHandler.getEnabled());
+		Company company = getCompanyToEdit();
+		if (company != null) {
+			List<Company> companyToDisable= new ArrayList<Company>();
+			companyToDisable.add(company);
+			DialogueHelper.printCompanies(companyToDisable);
+			if(DialogueHelper.validateDeleteOrDeactivation("Erfolgreich deaktiviert!")) {
+				companyHandler.disable(company.getId());
+			}			
+		}
+	}
+	
+	@Override
+	public void activate() {
+		
+	}
 
 	private Company getCompanyToEdit() throws SQLException {
 		int id;
 		do {
-			id = DialogueHelper.getIdDialogue("ID der Firma auswählen, die Sie bearbeiten möchten: ");
+			id = DialogueHelper.getIntDialogue("ID der Firma auswählen, die Sie bearbeiten möchten");
 		}while(id == -1);
-		Company company = GetBusinessObject.getById(id, companyHandler.getAll(), Company::getId);
+		Company company = GetBusinessObject.getById(id, companyHandler.getEnabled(), Company::getId);
 
 
 		return company;
