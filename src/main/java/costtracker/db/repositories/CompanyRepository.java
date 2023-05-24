@@ -121,4 +121,19 @@ public class CompanyRepository extends RepositoryBase implements BaseDataReposit
 		return companies;
 	}
 
+	@Override
+	public List<CompanyEntity> getDisabled() throws SQLException {
+		String sql = "select id, name, location from company where isenabled = false";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+
+		ResultSet result = stmt.executeQuery();
+
+		List<CompanyEntity> companies = new ArrayList<CompanyEntity>();
+
+		while(result.next()) {
+			companies.add(new CompanyEntity(result.getInt("id"), result.getString("name"), result.getString("location")));
+		}
+
+		return companies;
+	}
 }

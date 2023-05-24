@@ -11,4 +11,6 @@ public interface StateHandler<T> {
 
     List<T> getEnabled() throws SQLException;
 
+    List<T> getDisabled() throws SQLException;
+
 }
