@@ -117,4 +117,20 @@ public class CategoryRepository extends RepositoryBase implements BaseDataReposi
 		
 		return categories;
 	}
+
+	@Override
+	public List<CategoryEntity> getDisabled() throws SQLException {
+		String sql = "select id, name from category where isenabled = false";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+
+		ResultSet result = stmt.executeQuery();
+
+		List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+
+		while(result.next()) {
+			categories.add(new CategoryEntity(result.getInt("id"), result.getString("name")));
+		}
+
+		return categories;
+	}
 }

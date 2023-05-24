@@ -86,4 +86,11 @@ public class CategoryHandler implements DatabaseHandler<Category>, StateHandler<
 
         return categoryEntityList.stream().map(Category::fromEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Category> getDisabled() throws SQLException {
+        List<CategoryEntity> categoryEntityList = uow.getCategoryRepository().getDisabled();
+
+        return categoryEntityList.stream().map(Category::fromEntity).collect(Collectors.toList());
+    }
 }

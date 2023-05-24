@@ -87,4 +87,11 @@ public class CompanyHandler implements DatabaseHandler<Company>, StateHandler<Co
 
         return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Company> getDisabled() throws SQLException {
+        List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getDisabled();
+
+        return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
+    }
 }
