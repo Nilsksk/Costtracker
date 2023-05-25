@@ -1,6 +1,8 @@
 package costtracker.ui.interfaces;
 
+import java.sql.SQLException;
+
 public interface Activator {
 
-	void activate();
+	void activate() throws SQLException;
 }

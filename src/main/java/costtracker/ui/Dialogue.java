@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import costtracker.buisnesslogic.CompanyHandler;
 import costtracker.businessobjects.*;
+import costtracker.ui.interfaces.Activator;
 import costtracker.ui.interfaces.Adder;
 import costtracker.ui.interfaces.Deactivator;
 import costtracker.ui.interfaces.Editor;
@@ -17,10 +18,13 @@ public class Dialogue {
 	private Editor editor;
 	private Adder adder;
 	private Deactivator deactivator;
+	private Activator activator;
 	private History history;
+	private PurchaseModelFactory purchaseModelFactory;
 
 	public Dialogue() {
 		this.history = new History();
+		this.purchaseModelFactory = new PurchaseModelFactory();
 	}
 
 	public void talk() throws SQLException {
@@ -39,22 +43,17 @@ public class Dialogue {
 				if (action == 1) {			//Done
 					validInput = false;
 					editCompanyOrCategory();
-	
 				} else if (action == 2) {	//Done
 					validInput = false;
 					adder = new PurchaseManager();
-					adder.add();
-					
-	
+					adder.add();	
 				} else if (action == 3) {	//Done
 					validInput = false;
 					editor = new PurchaseManager();
 					editor.edit();
-	
 				} else if (action == 4) {	//Done
 					validInput = false;
 					historyAction();
-					
 				} else if (action == 5) {
 					break;
 				}
@@ -68,12 +67,12 @@ public class Dialogue {
 
 	private void editCompanyOrCategory() throws SQLException {
 		do {
-			int action = DialogueHelper.interactQuestion("Wollen sie eine Firma ändern (1), hinzufügen (2) oder ausblenden (3)? "
-													    + "Wollen sie eine Kategorie ändern (4), hinzufügen (5) oder ausblenden (6)? "
-													    + "Oder zurück gehen (7)?");
+			int action = DialogueHelper.interactQuestion("Wollen sie eine Firma ändern (1), hinzufügen (2), ausblenden (3) oder einblenden (4)? "
+													    + "Wollen sie eine Kategorie ändern (5), hinzufügen (6), ausblenden (7) oder einblenden (8)? "
+													    + "Oder zurück gehen (9)?");
 			boolean validInput = true;
 			while (validInput) {
-				if (!DialogueHelper.isValidInput(action, 8)) {
+				if (!DialogueHelper.isValidInput(action, 10)) {
 					System.out.println("Falsche Eingabe " + action + "!");
 				}
 				if (action == 1) {
@@ -90,28 +89,34 @@ public class Dialogue {
 					validInput = false;
 					deactivator = new CompanyManager();
 					deactivator.deactivate();
-					
-				} else if (action == 4) {
+				}else if (action == 4) {
+					validInput = false;
+					activator = new CompanyManager();
+					activator.activate();
+				} else if (action == 5) {
 					validInput = false;
 					editor = new CategoryManager();
 					editor.edit();
-	
-				} else if (action == 5) {
+				} else if (action == 6) {
 					validInput = false;
 					adder = new CategoryManager();
 					adder.add();
-				} else if (action == 6) {
+				} else if (action == 7) {
 					validInput = false;
 					deactivator = new CategoryManager();
 					deactivator.deactivate();
+				} else if (action == 8) {
+					validInput = false;
+					activator = new CategoryManager();
+					activator.activate();
 				}
 					
-				else if (action == 7) {
+				else if (action == 9) {
 					break;
 				}
 			}
 			System.out.println();
-			if (action == 7) {
+			if (action == 9) {
 				break;
 			}
 		}while(true);
@@ -185,7 +190,6 @@ public class Dialogue {
 					break;
 				}
 			}
-			System.out.println();
 			if (action == 5) {
 				break;
 			}

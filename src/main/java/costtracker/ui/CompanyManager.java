@@ -17,11 +17,13 @@ import costtracker.ui.interfaces.Editor;
 
 public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 
-	private CompanyHandler companyHandler = new CompanyHandler();
+	private CompanyHandler companyHandler;
+	private CompanyModelFactory companyModelFactory;
 	boolean submit;
 
 	public CompanyManager() {
 		this.companyHandler = new CompanyHandler();
+		this.companyModelFactory = new CompanyModelFactory();
 	}
 	@Override
 	public void add() throws SQLException {
@@ -46,7 +48,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen");
 
-		DialogueHelper.printCompanies(companyHandler.getEnabled());
+		DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyHandler.getEnabled()));
 
 		Company company = getCompanyToEdit();
 
@@ -76,13 +78,13 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	
 	@Override
 	public void deactivate() throws SQLException {
-		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen");
-		DialogueHelper.printCompanies(companyHandler.getEnabled());
+		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von aktivierten Firmen");
+		DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyHandler.getEnabled()));
 		Company company = getCompanyToEdit();
 		if (company != null) {
 			List<Company> companyToDisable= new ArrayList<Company>();
 			companyToDisable.add(company);
-			DialogueHelper.printCompanies(companyToDisable);
+			DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyToDisable));
 			if(DialogueHelper.validateDeleteOrDeactivation("Erfolgreich deaktiviert!")) {
 				companyHandler.disable(company.getId());
 			}			
@@ -90,18 +92,28 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	}
 	
 	@Override
-	public void activate() {
-		
+	public void activate() throws SQLException {
+		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von deaktivierten Firmen");
+		DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyHandler.getDisabled()));
+		Company company = getCompanyToEdit();
+		if (company != null) {
+			List<Company> companyToEnable= new ArrayList<Company>();
+			companyToEnable.add(company);
+			DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyToEnable));
+			if(DialogueHelper.validateEnable("Erfolgreich aktiviert!")) {
+				companyHandler.enable(company.getId());
+			}			
+		}
 	}
 
 	private Company getCompanyToEdit() throws SQLException {
-		int id;
-		do {
-			id = DialogueHelper.getIntDialogue("ID der Firma auswählen, die Sie bearbeiten möchten");
-		}while(id == -1);
-		Company company = GetBusinessObject.getById(id, companyHandler.getEnabled(), Company::getId);
-
-
+		Company company;
+		try {
+			int id = DialogueHelper.getIntDialogue("ID der Firma auswählen, die Sie bearbeiten möchten");
+			company = companyHandler.getById(id);
+		}catch(Exception e) {
+			company = null;
+		}
 		return company;
 	}
 }

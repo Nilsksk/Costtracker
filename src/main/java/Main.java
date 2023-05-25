@@ -2,6 +2,7 @@ import costtracker.api.Controller;
 import costtracker.ui.Dialogue;
 import costtracker.ui.History;
 
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -15,5 +16,6 @@ public class Main {
         
 		Dialogue dialogue = new Dialogue();
         dialogue.talk();
+
     }
 }

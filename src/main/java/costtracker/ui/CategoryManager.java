@@ -9,18 +9,21 @@ import java.util.Scanner;
 import costtracker.buisnesslogic.CategoryHandler;
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.ui.interfaces.Activator;
 import costtracker.ui.interfaces.Adder;
 import costtracker.ui.interfaces.Deactivator;
 import costtracker.ui.interfaces.Editor;
 import costtracker.ui.DialogueHelper;
 
-public class CategoryManager implements Editor, Adder, Deactivator {
+public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 
 	private CategoryHandler categoryHandler;
+	private CategoryModelFactory categoryModelFactory;
 	boolean submit;
 
 	public CategoryManager() {
 		this.categoryHandler = new CategoryHandler();
+		this.categoryModelFactory = new CategoryModelFactory();
 	}
 	@Override
 	public void add() throws SQLException {
@@ -44,7 +47,7 @@ public class CategoryManager implements Editor, Adder, Deactivator {
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien");
 
-		DialogueHelper.printCategories(categoryHandler.getAll());
+		DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryHandler.getAll()));
 
 		Category category = getCategoryToEdit();
 
@@ -66,23 +69,31 @@ public class CategoryManager implements Editor, Adder, Deactivator {
 	@Override
 	public void deactivate() throws SQLException {
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien");
-		DialogueHelper.printCategories(categoryHandler.getEnabled());
+		DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryHandler.getEnabled()));
 		Category category = getCategoryToEdit();
 		if (category != null) {
 			List<Category> categoryToDisable= new ArrayList<Category>();
 			categoryToDisable.add(category);
-			DialogueHelper.printCategories(categoryToDisable);
+			DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryToDisable));
 			if(DialogueHelper.validateDeleteOrDeactivation("Erfolgreich deaktiviert!")) {
 				categoryHandler.disable(category.getId());
 			}			
 		}
 	}
 	
+	@Override
+	public void activate() {
+		
+	}
+	
 	private Category getCategoryToEdit() throws SQLException {	
-		int id = DialogueHelper.getIntDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten");
-		Category category = null;
-		if (id != -1) {
-			category = GetBusinessObject.getById(id, categoryHandler.getAll(), Category::getId);		
+		Category category;
+		try {
+			int id = DialogueHelper.getIntDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten");
+			category = categoryHandler.getById(id);	
+		}catch(Exception e) {
+			
+			category = null;
 		}
 		return category;
 	}

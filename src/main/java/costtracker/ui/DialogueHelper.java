@@ -67,50 +67,50 @@ public class DialogueHelper {
 		return saveData("Zum Speichern ihrer Daten '+' eingeben: ", "+");
 	}
 
-	public static void printCompanies(List<Company> companies) {
-		int longestCompanyId = companies.stream().mapToInt(c -> String.valueOf(c.getId()).length()).max().getAsInt();
-		int longestCompanyName = companies.stream().mapToInt(c -> c.getName().length()).max().getAsInt();
-		for (Company company : companies) {
-			int numberWhitespaces = (longestCompanyId - String.valueOf(company.getId()).length());
-			System.out.print(" " + company.getId() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ");
-			numberWhitespaces = (longestCompanyName - company.getName().length());
-			System.out.print(company.getName() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ");
-			System.out.println(company.getLocation());
+	public static void printCompanies(List<CompanyModel> companies) {
+		int longestCompanyId = companies.stream().mapToInt(c -> String.valueOf(c.getPosition()).length()).max().getAsInt();
+		int longestCompanyName = companies.stream().mapToInt(c -> c.getCompany().getName().length()).max().getAsInt();
+		for (CompanyModel companyModel : companies) {
+			int numberWhitespaces = (longestCompanyId - String.valueOf(companyModel.getPosition()).length());
+			System.out.print(" " + companyModel.getPosition() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ");
+			numberWhitespaces = (longestCompanyName - companyModel.getCompany().getName().length());
+			System.out.print(companyModel.getCompany().getName() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ");
+			System.out.println(companyModel.getCompany().getLocation());
 		}
 	}
 
-	public static void printCategories(List<Category> categories) {
-		int longestCategoryId = categories.stream().mapToInt(c -> String.valueOf(c.getId()).length()).max().getAsInt();
-		for (Category category : categories) {
-			int numberWhitespaces = longestCategoryId - String.valueOf(category.getId()).length();
-			System.out.print(" " + category.getId() + fillWhitespaces(numberWhitespaces) + " | ");
-			System.out.println(category.getName());
+	public static void printCategories(List<CategoryModel> categories) {
+		int longestCategoryId = categories.stream().mapToInt(c -> String.valueOf(c.getPosition()).length()).max().getAsInt();
+		for (CategoryModel categoryModel : categories) {
+			int numberWhitespaces = longestCategoryId - String.valueOf(categoryModel.getPosition()).length();
+			System.out.print(" " + categoryModel.getPosition() + fillWhitespaces(numberWhitespaces) + " | ");
+			System.out.println(categoryModel.getCategory().getName());
 		}
 	}
 
-	public static void printPurchases(List<Purchase> purchases) {
-		int longestPurchaseId = purchases.stream().mapToInt(p -> String.valueOf(p.getId()).length()).max().getAsInt();
-		int longestPurchaseName = purchases.stream().mapToInt(p -> p.getName().length()).max().getAsInt();
-		int longestPurchasePrice = purchases.stream().mapToInt(p -> String.valueOf(p.getPrice()).length()).max()
+	public static void printPurchases(List<PurchaseModel> purchases) {
+		int longestPurchaseId = purchases.stream().mapToInt(p -> String.valueOf(p.getPostion()).length()).max().getAsInt();
+		int longestPurchaseName = purchases.stream().mapToInt(p -> p.getPurchase().getName().length()).max().getAsInt();
+		int longestPurchasePrice = purchases.stream().mapToInt(p -> String.valueOf(p.getPurchase().getPrice()).length()).max()
 				.getAsInt();
-		int longestPurchaseDate = purchases.stream().mapToInt(p -> p.getDateString().length()).max().getAsInt();
+		int longestPurchaseDate = purchases.stream().mapToInt(p -> p.getPurchase().getDateString().length()).max().getAsInt();
 
 		int longestPurchaseCompany = purchases.stream()
-				.mapToInt(p -> p.getCompany() == null ? 0 : p.getCompany().getName().length()).max().getAsInt();
-		int longestPurchaseCategory = purchases.stream().mapToInt(p -> p.getCategory().getName().length()).max()
+				.mapToInt(p -> p.getPurchase().getCompany() == null ? 0 : p.getPurchase().getCompany().getName().length()).max().getAsInt();
+		int longestPurchaseCategory = purchases.stream().mapToInt(p -> p.getPurchase().getCategory().getName().length()).max()
 				.getAsInt();
-		for (Purchase purchase : purchases) {
-			printColumn(longestPurchaseId, String.valueOf(purchase.getId()));
-			printColumn(longestPurchaseName, purchase.getName());
-			printColumn(longestPurchasePrice, String.valueOf(purchase.getPrice()));
-			printColumn(longestPurchaseDate, purchase.getDateString());
-			if (purchase.getCompany() == null) {
+		for (PurchaseModel purchaseModel : purchases) {
+			printColumn(longestPurchaseId, String.valueOf(purchaseModel.getPostion()));
+			printColumn(longestPurchaseName, purchaseModel.getPurchase().getName());
+			printColumn(longestPurchasePrice, String.valueOf(purchaseModel.getPurchase().getPrice()));
+			printColumn(longestPurchaseDate, purchaseModel.getPurchase().getDateString());
+			if (purchaseModel.getPurchase().getCompany() == null) {
 				printColumn(longestPurchaseCompany, "");
 			} else {
-				printColumn(longestPurchaseCompany, purchase.getCompany().getName());
+				printColumn(longestPurchaseCompany, purchaseModel.getPurchase().getCompany().getName());
 			}
-			printColumn(longestPurchaseCategory, purchase.getCategory().getName());
-			System.out.println(purchase.getDescription());
+			printColumn(longestPurchaseCategory, purchaseModel.getPurchase().getCategory().getName());
+			System.out.println(purchaseModel.getPurchase().getDescription());
 		}
 		System.out.println();
 
@@ -150,11 +150,21 @@ public class DialogueHelper {
 	}
 	
 	public static boolean validateDeleteOrDeactivation(String deleteOrDeactivate) {
-		print("Löschung oder Deaktivierung durchführen (-)? ");
-		String input = sc.nextLine();
+		String input = inputDialogue("Löschung oder Deaktivierung durchführen (-)? ");
 		println("");
 		if (input.equals("-")) {
 			println(deleteOrDeactivate);
+			println("");
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean validateEnable(String activate) {
+		String input = inputDialogue("Aktivierung durchführen (+)?");
+		println("");
+		if (input.equals("+")) {
+			println(activate);
 			println("");
 			return true;
 		}
