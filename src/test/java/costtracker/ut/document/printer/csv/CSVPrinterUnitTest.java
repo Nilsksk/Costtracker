@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.CategoryHistoryElement;
 import costtracker.document.elements.CompanyHistoryElement;
@@ -37,12 +38,20 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_Date() {
+	void TestPrint_Date() throws IncorrectEntryException {
 		LocalDate dateStart = LocalDate.of(2022, 1, 1);
 		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(dateEnd);
-		Purchase purchase = new Purchase(0, "purchase", "description", dateEnd, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", dateEnd, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
 		CSVPrinter printer = new CSVPrinter(elementPrinter);
@@ -57,12 +66,20 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_Category() {
+	void TestPrint_Category() throws IncorrectEntryException {
 		LocalDate dateStart = LocalDate.of(2022, 1, 1);
 		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
-		Category category = new Category(1, "cat");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new CategoryHistoryElement(category);
-		Purchase purchase = new Purchase(0, "purchase", "description", dateEnd, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", dateEnd, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		ElementPrinter elementPrinter = new CategoryHistoryElementPrinter();
 		CSVPrinter printer = new CSVPrinter(elementPrinter);
@@ -77,13 +94,25 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_Company() {
+	void TestPrint_Company() throws IncorrectEntryException {
 		LocalDate dateStart = LocalDate.of(2022, 1, 1);
 		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
-		Category category = new Category(1, "cat");
-		Company company = new Company(1, "comp", "loc");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
 		HistoryElement element = new CompanyHistoryElement(company);
-		Purchase purchase = new Purchase(0, "purchase", "description", dateEnd, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", dateEnd, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withCompany(company)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		ElementPrinter elementPrinter = new CompanyHistoryElementPrinter();
 		CSVPrinter printer = new CSVPrinter(elementPrinter);
@@ -98,13 +127,21 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_FileExists() {
+	void TestPrint_FileExists() throws IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
 		CSVPrinter printer = new CSVPrinter(elementPrinter);
@@ -121,13 +158,21 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_FileLines_OnePurchase() throws IOException {
+	void TestPrint_FileLines_OnePurchase() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
 		CSVPrinter printer = new CSVPrinter(elementPrinter);
@@ -147,14 +192,27 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_FileLines_TwoPurchase() throws IOException {
+	void TestPrint_FileLines_TwoPurchase() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 =Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build(); 
 		element.addPurchase(purchase);
 		element.addPurchase(purchase2);
 		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
@@ -175,15 +233,28 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_FileLines_TwoElements() throws IOException {
+	void TestPrint_FileLines_TwoElements() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
 		HistoryElement element2 = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		element.addPurchase(purchase2);
 		element2.addPurchase(purchase);
@@ -206,15 +277,29 @@ class CSVPrinterUnitTest {
 	}
 
 	@Test
-	void TestPrint_FileLines_TwoElements_TwoPurchases() throws IOException {
+	void TestPrint_FileLines_TwoElements_TwoPurchases() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
 		HistoryElement element2 = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date.plusDays(1), 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = 
+				Purchase.PurchaseBuilder
+				.withValues("purchase", date.plusDays(1), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		element.addPurchase(purchase2);
 		element2.addPurchase(purchase);

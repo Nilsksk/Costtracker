@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.HistoryDocumentImp;
 import costtracker.document.elements.CategoryHistoryElement;
@@ -35,13 +36,21 @@ class HistoryDocumentImpUnitTest {
 	}
 	
 	@Test
-	void TestPrint_Date() throws IOException {
+	void TestPrint_Date() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 
 		var list = new ArrayList<HistoryElement>();
@@ -62,13 +71,21 @@ class HistoryDocumentImpUnitTest {
 		assertEquals(4, lineCount);
 	}
 	@Test
-	void TestPrint_Category() throws IOException {
+	void TestPrint_Category() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		HistoryElement element = new CategoryHistoryElement(category);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		
 		var list = new ArrayList<HistoryElement>();
@@ -89,14 +106,26 @@ class HistoryDocumentImpUnitTest {
 		assertEquals(4, lineCount);
 	}
 	@Test
-	void TestPrint_Company() throws IOException {
+	void TestPrint_Company() throws IOException, IncorrectEntryException {
 		String path = "Test.csv";
 		LocalDate dateS = LocalDate.of(2023, 1, 1);
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = new Category(1, "");
-		Company company = new Company(1, "comp", "loc");
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
 		HistoryElement element = new CompanyHistoryElement(company);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, company, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build();
 		element.addPurchase(purchase);
 		
 		var list = new ArrayList<HistoryElement>();
