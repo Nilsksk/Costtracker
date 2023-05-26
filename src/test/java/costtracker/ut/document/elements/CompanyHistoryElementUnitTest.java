@@ -8,17 +8,32 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.CompanyHistoryElement;
 
 class CompanyHistoryElementUnitTest {
 
 	@Test
-	void TestAddPurchase() {
-		Company company = new Company(1, "","");
+	void TestAddPurchase() throws IncorrectEntryException {
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
-		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023,1, 21), 0, company, null);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build(); 
 		
 		element.addPurchase(purchase);
 		
@@ -28,11 +43,30 @@ class CompanyHistoryElementUnitTest {
 	}
 
 	@Test
-	void TestAddPurchases() {
-		Company company = new Company(1, "","");
+	void TestAddPurchases() throws IncorrectEntryException {
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
-		Purchase purchase1 = new Purchase(0, "purchase", "description", LocalDate.of(2023,1, 21), 0, company, null);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", LocalDate.of(2023,1, 21), 0, company, null);
+		Purchase purchase1 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build();
 		
 		List<Purchase> purchases = new ArrayList<Purchase>();
 		purchases.add(purchase1);
@@ -46,9 +80,12 @@ class CompanyHistoryElementUnitTest {
 	}
 	
 	@Test
-	void TestGetHeader() {
+	void TestGetHeader() throws IncorrectEntryException {
 		String header = "head";
-		Company company = new Company(1, header,"");
+		Company company = Company.CompanyBuilder
+				.withName(header)
+				.withId(1)
+				.build();
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
 	
 		var ret = element.getHeader();
@@ -57,13 +94,32 @@ class CompanyHistoryElementUnitTest {
 	}
 	
 	@Test
-	void TestGetTotal() {
-		Company company = new Company(1, "","");
+	void TestGetTotal() throws IncorrectEntryException {
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		CompanyHistoryElement element = new CompanyHistoryElement(company);
 		double price1 = 4.5;
 		double price2 = 5.5;
-		Purchase purchase1 = new Purchase(0, "purchase", "description", LocalDate.of(2023,1, 21), price1, company, null);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", LocalDate.of(2023,1, 21), price2, company, null);
+		Purchase purchase1 =Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), price1)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), price2)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.withCompany(company)
+				.build();
 		element.addPurchase(purchase1);
 		element.addPurchase(purchase2);
 

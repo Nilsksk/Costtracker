@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.DateHistoryElement;
 import costtracker.document.linewriter.CSVLineWriter;
@@ -16,11 +17,20 @@ import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
 class DateHistoryElementPrinterUnitTest {
 
 	@Test
-	void TestGetElementHeader() {
+	void TestGetElementHeader() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		LocalDate date = LocalDate.of(2023, 1, 21);
-		String header = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + ";0.0;\n";
+		String header = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() + ";1.0;\n";
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, null);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", date, 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
@@ -33,10 +43,19 @@ class DateHistoryElementPrinterUnitTest {
 	}
 
 	@Test
-	void TestGetType() {
+	void TestGetType() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		LocalDate date = LocalDate.of(2023, 1, 21);
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, null);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 		
@@ -48,11 +67,20 @@ class DateHistoryElementPrinterUnitTest {
 	}
 
 	@Test
-	void TestGetElementDescription() {
+	void TestGetElementDescription() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		String description = "Date;Name;Description;Price;Category;Company;\n";
 		LocalDate date = LocalDate.of(2023, 1, 21);
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", LocalDate.of(2023, 1, 21), 0, null, null);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase);
 		DateHistoryElementPrinter printer = new DateHistoryElementPrinter();
 
@@ -65,16 +93,28 @@ class DateHistoryElementPrinterUnitTest {
 	}
 
 	@Test
-	void TestGetElementLines() {
+	void TestGetElementLines() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		String name = "purchase";
 		String description = "description";
 		LocalDate date = LocalDate.of(2023, 1, 21);
 		String dateString = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();
 		double price = 5.5;
-		Category category = new Category(1, "cat");
-		Company company = new Company(1, "comp", "");
+		Company company = Company.CompanyBuilder
+				.withName("comp")
+				.withId(1)
+				.build();
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, name, description, date, price, company, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues(name, date, price)
+				.withId(1)
+				.withCategory(category)
+				.withCompany(company)
+				.withDescription(description)
+				.build();
 		element.addPurchase(purchase);
 		String line = dateString + ";" + name + ";" + description + ";" + price + ";"  +category.getName() + ";"
 				+ company.getName() + ";\n";
@@ -89,15 +129,23 @@ class DateHistoryElementPrinterUnitTest {
 	}
 
 	@Test
-	void TestGetElementLinesNoCompany() {
+	void TestGetElementLinesNoCompany() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		String name = "purchase";
 		String description = "description";
 		LocalDate date = LocalDate.of(2023, 1, 21);
 		String dateString = date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();
 		double price = 5.5;
-		Category category = new Category(1, "cat");
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, name, description, date, price, null, category);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues(name, date, price)
+				.withId(1)
+				.withCategory(category)
+				.withDescription(description)
+				.build();
 		element.addPurchase(purchase);
 		String line = dateString + ";" + name + ";" + description + ";" + price  +  ";"
 				+ category.getName() + ";;\n";

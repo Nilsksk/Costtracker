@@ -8,19 +8,30 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import costtracker.businessobjects.Category;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.elements.DateHistoryElement;
 
 class DateHistoryElementUnitTest {
 
 	@Test
-	void TestAddPurchase() {
+	void TestAddPurchase() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		int day = 21;
 		int month = 1;
 		int year = 2023;
 		LocalDate date = LocalDate.of(year, month, day);
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = new Purchase(0, "purchase", "description", date, 0, null, null);
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		
 		element.addPurchase(purchase);
 		
@@ -30,14 +41,28 @@ class DateHistoryElementUnitTest {
 	}
 
 	@Test
-	void TestAddPurchases() {
+	void TestAddPurchases() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		int day = 21;
 		int month = 1;
 		int year = 2023;
 		LocalDate date = LocalDate.of(year, month, day);
 		DateHistoryElement element = new DateHistoryElement(date);
-		Purchase purchase1 = new Purchase(0, "purchase", "description", date, 0, null, null);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date, 0, null, null);
+		Purchase purchase1 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		
 		List<Purchase> purchases = new ArrayList<Purchase>();
 		purchases.add(purchase1);
@@ -65,7 +90,11 @@ class DateHistoryElementUnitTest {
 	}
 	
 	@Test
-	void TestGetTotal() {
+	void TestGetTotal() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
 		int day = 21;
 		int month = 1;
 		int year = 2023;
@@ -73,8 +102,18 @@ class DateHistoryElementUnitTest {
 		DateHistoryElement element = new DateHistoryElement(date);
 		double price1 = 4.5;
 		double price2 = 5.5;
-		Purchase purchase1 = new Purchase(0, "purchase", "description", date, price1, null, null);
-		Purchase purchase2 = new Purchase(0, "purchase", "description", date, price2, null, null);
+		Purchase purchase1 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), price1)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 =Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), price2)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
 		element.addPurchase(purchase1);
 		element.addPurchase(purchase2);
 

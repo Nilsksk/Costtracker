@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 import costtracker.db.entities.CategoryEntity;
 import costtracker.db.entities.CompanyEntity;
@@ -55,7 +56,7 @@ class PurchaseUnitTest {
 	@Test
 	void testFromEntityNoCompany() {
 
-		PurchaseEntity entity = new PurchaseEntity(1, null, new CategoryEntity(1), 0.0, "", "",
+		PurchaseEntity entity = new PurchaseEntity(1, null, new CategoryEntity(1,"cat"), 1.0, "purchase", "",
 				Date.valueOf("2023-02-27"));
 		Purchase purchase = Purchase.fromEntity(entity);
 
@@ -63,7 +64,7 @@ class PurchaseUnitTest {
 	}
 
 	@Test
-	void testToEntity() {
+	void testToEntity() throws IncorrectEntryException {
 		int id = 1;
 		String name = "name";
 		String description = "description";
@@ -75,11 +76,24 @@ class PurchaseUnitTest {
 		int compId = 1;
 		String compName = "comp";
 		String compLocation = "location";
-		Company company = new Company(compId, compName, compLocation);
+		Company company = Company.CompanyBuilder
+				.withName(compName)
+				.withId(compId)
+				.withLocation(compLocation)
+				.build();
 		int catId = 1;
 		String catName = "cat";
-		Category category = new Category(catId, catName);
-		Purchase purchase = new Purchase(id, name, description, date, price, company, category);
+		Category category = Category.CategoryBuilder
+				.withName(catName)
+				.withId(catId)
+				.build();
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues(name, date, price)
+				.withId(id)
+				.withCategory(category)
+				.withCompany(company)
+				.withDescription(description)
+				.build();
 		PurchaseEntity entity = purchase.toEntity();
 
 		assertEquals(id, entity.getId());
@@ -96,8 +110,17 @@ class PurchaseUnitTest {
 	}
 
 	@Test
-	void testToEntityNoCompany() {
-		Purchase purchase = new Purchase(1, "na", "na", LocalDate.now(), 0.0, null, new Category(1, "na"));
+	void testToEntityNoCompany() throws IncorrectEntryException {
+		Category category = Category.CategoryBuilder
+				.withName("na")
+				.withId(1)
+				.build();
+		Purchase purchase =Purchase.PurchaseBuilder
+				.withValues("na", LocalDate.now(), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription( "na")
+				.build();
 		PurchaseEntity entity = purchase.toEntity();
 
 		assertEquals(null, entity.getCompany());
