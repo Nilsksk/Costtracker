@@ -51,7 +51,7 @@ public class CreatePurchase implements PostHandler {
                             // Set Headers and send Response to client
                             headers.set(httpHeader.HEADER_CONTENT_TYPE.headerData, String.format("application/json; charset=%s", CHARSET));
                             final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
-                            handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
+                            handler.sendResponseHeaders(httpCodes.STATUS_CREATED.code, responseBodyByte.length);
                             handler.getResponseBody().write(responseBodyByte);
                         } catch (SQLException e) {
                             e.printStackTrace();
