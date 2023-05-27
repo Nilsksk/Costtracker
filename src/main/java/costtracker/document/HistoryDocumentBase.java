@@ -13,7 +13,6 @@ import costtracker.document.type.ElementType;
 public abstract class HistoryDocumentBase {
 
 	protected HistoryDocumentHeader header;
-	protected List<HistoryElement> elements;
 	protected String name;
 	protected String path;
 	protected List<HistoryElement> historyElements;
