@@ -30,7 +30,7 @@ class HistoryDocumentImpUnitTest {
 	void TestCreateCSVDocument() throws IncorrectEntryException {
 		String description = "Data for";
 		String name = "Categories";
-		String path = ".\\";
+		String path = "./";
 		LocalDate dateStart = LocalDate.of(2023,05,22);
 		LocalDate dateEnd = LocalDate.of(2023,05,23);
 		List<Purchase> purchases = new ArrayList<Purchase>();
