@@ -2,14 +2,9 @@ package costtracker.ut.document.printer.csv;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,85 +13,72 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
-import costtracker.document.elements.CategoryHistoryElement;
-import costtracker.document.elements.CompanyHistoryElement;
-import costtracker.document.elements.DateHistoryElement;
+import costtracker.document.elements.HistoryDocumentHeader;
 import costtracker.document.elements.HistoryElement;
-import costtracker.document.printer.CSVPrinter;
-import costtracker.document.printer.elementprinter.CategoryHistoryElementPrinter;
-import costtracker.document.printer.elementprinter.CompanyHistoryElementPrinter;
-import costtracker.document.printer.elementprinter.DateHistoryElementPrinter;
-import costtracker.document.printer.elementprinter.ElementPrinter;
+import costtracker.document.elements.HistoryElementsCreator;
+import costtracker.document.elements.PurchaseEntry;
+import costtracker.document.printer.CSVDocumentPrinter;
+import costtracker.document.type.ElementType;
 
 class CSVPrinterUnitTest {
 
 	@BeforeEach
 	void setUpBefore() {
-		File file = new File("Test.csv");
-		if (file.exists())
-			file.delete();
+
 	}
 
 	@Test
-	void TestPrint_Date() throws IncorrectEntryException {
-		LocalDate dateStart = LocalDate.of(2022, 1, 1);
-		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
+	void TestPrintElement() throws IncorrectEntryException {
+		LocalDate date = LocalDate.of(2022, 1, 21);
 		Category category = Category.CategoryBuilder
 				.withName("cat")
 				.withId(1)
 				.build();
-		HistoryElement element = new DateHistoryElement(dateEnd);
 		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", dateEnd, 1.0)
+				.withValues("purchase", date, 1.0)
 				.withId(1)
 				.withCategory(category)
 				.withDescription("description")
 				.build();
-		element.addPurchase(purchase);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath("Test.csv");
-		printer.setTimespan(dateStart, dateEnd);
+		List<Purchase> purchases = new ArrayList<Purchase>();
+		purchases.add(purchase);
+		HistoryElement element = new HistoryElementsCreator(purchases, ElementType.Date).createHistoryElements().get(0);
+		CSVDocumentPrinter printer = new CSVDocumentPrinter();
+		var firstLine = "Date:;" + element.getHeader() + ";" + "Gesamt:" + ";" + element.getTotal() +";\n";
+		var secondLine = "Name;Preis;Datum;Kategorie;Firma;Beschreibung;\n";
+		
+		var sb = printer.printElement(element);
 
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		var ret = printer.print(list);
-
-		assertEquals(true, ret);
+		assertEquals(firstLine + secondLine, sb.toString());
 	}
 
 	@Test
-	void TestPrint_Category() throws IncorrectEntryException {
-		LocalDate dateStart = LocalDate.of(2022, 1, 1);
-		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
+	void TestPrintEntryNoCompany() throws IncorrectEntryException {
+		LocalDate date = LocalDate.of(2022, 1, 21);
 		Category category = Category.CategoryBuilder
 				.withName("cat")
 				.withId(1)
 				.build();
-		HistoryElement element = new CategoryHistoryElement(category);
 		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", dateEnd, 1.0)
+				.withValues("purchase", date, 1.0)
 				.withId(1)
 				.withCategory(category)
 				.withDescription("description")
 				.build();
-		element.addPurchase(purchase);
-		ElementPrinter elementPrinter = new CategoryHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath("Test.csv");
-		printer.setTimespan(dateStart, dateEnd);
+		
+		PurchaseEntry entry = new PurchaseEntry(purchase);
+		CSVDocumentPrinter printer = new CSVDocumentPrinter();
+		
+		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
+		
+		var sb = printer.printEntry(entry);
 
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		var ret = printer.print(list);
-
-		assertEquals(true, ret);
+		assertEquals(line, sb.toString());
 	}
 
 	@Test
-	void TestPrint_Company() throws IncorrectEntryException {
-		LocalDate dateStart = LocalDate.of(2022, 1, 1);
-		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
+	void TestPrintEntryNoDescription() throws IncorrectEntryException {
+		LocalDate date = LocalDate.of(2022, 1, 21);
 		Category category = Category.CategoryBuilder
 				.withName("cat")
 				.withId(1)
@@ -105,221 +87,255 @@ class CSVPrinterUnitTest {
 				.withName("comp")
 				.withId(1)
 				.build();
-		HistoryElement element = new CompanyHistoryElement(company);
 		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", dateEnd, 1.0)
+				.withValues("purchase", date, 1.0)
 				.withId(1)
 				.withCategory(category)
 				.withCompany(company)
-				.withDescription("description")
 				.build();
-		element.addPurchase(purchase);
-		ElementPrinter elementPrinter = new CompanyHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath("Test.csv");
-		printer.setTimespan(dateStart, dateEnd);
-
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		var ret = printer.print(list);
-
-		assertEquals(true, ret);
+		
+		PurchaseEntry entry = new PurchaseEntry(purchase);
+		CSVDocumentPrinter printer = new CSVDocumentPrinter();
+		
+		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
+		
+		var sb = printer.printEntry(entry);
+		
+		assertEquals(line, sb.toString());
 	}
-
 	@Test
-	void TestPrint_FileExists() throws IncorrectEntryException {
-		String path = "Test.csv";
-		LocalDate dateS = LocalDate.of(2023, 1, 1);
-		LocalDate date = LocalDate.of(2023, 1, 21);
+	void TestPrintEntryNoCompanyNoDescription() throws IncorrectEntryException {
+		LocalDate date = LocalDate.of(2022, 1, 21);
 		Category category = Category.CategoryBuilder
 				.withName("cat")
 				.withId(1)
 				.build();
-		HistoryElement element = new DateHistoryElement(date);
 		Purchase purchase = Purchase.PurchaseBuilder
 				.withValues("purchase", date, 1.0)
 				.withId(1)
 				.withCategory(category)
-				.withDescription("description")
 				.build();
-		element.addPurchase(purchase);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath(path);
-		printer.setTimespan(dateS, date);
-
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		printer.print(list);
-
-		File file = new File(path);
-
-		assertTrue(file.exists());
+		
+		PurchaseEntry entry = new PurchaseEntry(purchase);
+		CSVDocumentPrinter printer = new CSVDocumentPrinter();
+		
+		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
+		
+		var sb = printer.printEntry(entry);
+		
+		assertEquals(line, sb.toString());
 	}
 
 	@Test
-	void TestPrint_FileLines_OnePurchase() throws IOException, IncorrectEntryException {
-		String path = "Test.csv";
-		LocalDate dateS = LocalDate.of(2023, 1, 1);
-		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = Category.CategoryBuilder
-				.withName("cat")
-				.withId(1)
-				.build();
-		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		element.addPurchase(purchase);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath(path);
-		printer.setTimespan(dateS, date);
-
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		printer.print(list);
-
-		long lineCount;
-		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
-		  lineCount = stream.count();
-		}
+	void TestPrintHeader() throws IncorrectEntryException {
+		LocalDate dateStart = LocalDate.of(2022, 1, 1);
+		LocalDate dateEnd = LocalDate.of(2022, 1, 21);
+		String description = "Data for";
 		
-		assertEquals(4, lineCount);
+		HistoryDocumentHeader header = new HistoryDocumentHeader(dateStart, dateEnd, description);
+		CSVDocumentPrinter printer = new CSVDocumentPrinter();
+
+		String line = description + ";Startdatum:;" + dateStart.toString() + ";Enddatum:;" + dateEnd.toString() + ";\n";
+		
+		var sb = printer.printHeader(header);
+
+		assertEquals(line, sb.toString());
 	}
-
-	@Test
-	void TestPrint_FileLines_TwoPurchase() throws IOException, IncorrectEntryException {
-		String path = "Test.csv";
-		LocalDate dateS = LocalDate.of(2023, 1, 1);
-		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = Category.CategoryBuilder
-				.withName("cat")
-				.withId(1)
-				.build();
-		HistoryElement element = new DateHistoryElement(date);
-		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		Purchase purchase2 =Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build(); 
-		element.addPurchase(purchase);
-		element.addPurchase(purchase2);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath(path);
-		printer.setTimespan(dateS, date);
-		
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		printer.print(list);
-		
-		long lineCount;
-		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
-			lineCount = stream.count();
-		}
-		
-		assertEquals(5, lineCount);
-	}
-
-	@Test
-	void TestPrint_FileLines_TwoElements() throws IOException, IncorrectEntryException {
-		String path = "Test.csv";
-		LocalDate dateS = LocalDate.of(2023, 1, 1);
-		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = Category.CategoryBuilder
-				.withName("cat")
-				.withId(1)
-				.build();
-		HistoryElement element = new DateHistoryElement(date);
-		HistoryElement element2 = new DateHistoryElement(date);
-		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		Purchase purchase2 = Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		element.addPurchase(purchase);
-		element.addPurchase(purchase2);
-		element2.addPurchase(purchase);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath(path);
-		printer.setTimespan(dateS, date);
-		
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		list.add(element2);
-		printer.print(list);
-		
-		long lineCount;
-		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
-			lineCount = stream.count();
-		}
-		
-		assertEquals(8, lineCount);
-	}
-
-	@Test
-	void TestPrint_FileLines_TwoElements_TwoPurchases() throws IOException, IncorrectEntryException {
-		String path = "Test.csv";
-		LocalDate dateS = LocalDate.of(2023, 1, 1);
-		LocalDate date = LocalDate.of(2023, 1, 21);
-		Category category = Category.CategoryBuilder
-				.withName("cat")
-				.withId(1)
-				.build();
-		HistoryElement element = new DateHistoryElement(date);
-		HistoryElement element2 = new DateHistoryElement(date);
-		Purchase purchase = Purchase.PurchaseBuilder
-				.withValues("purchase", date, 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		Purchase purchase2 = 
-				Purchase.PurchaseBuilder
-				.withValues("purchase", date.plusDays(1), 1.0)
-				.withId(1)
-				.withCategory(category)
-				.withDescription("description")
-				.build();
-		element.addPurchase(purchase);
-		element.addPurchase(purchase2);
-		element2.addPurchase(purchase);
-		element2.addPurchase(purchase2);
-		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
-		CSVPrinter printer = new CSVPrinter(elementPrinter);
-		printer.setPath(path);
-		printer.setTimespan(dateS, date);
-		
-		var list = new ArrayList<HistoryElement>();
-		list.add(element);
-		list.add(element2);
-		printer.print(list);
-		
-		long lineCount;
-		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
-			lineCount = stream.count();
-		}
-		
-		assertEquals(9, lineCount);
-	}
+//
+//	@Test
+//	void TestPrint_FileExists() throws IncorrectEntryException {
+//		String path = "Test.csv";
+//		LocalDate dateS = LocalDate.of(2023, 1, 1);
+//		LocalDate date = LocalDate.of(2023, 1, 21);
+//		Category category = Category.CategoryBuilder
+//				.withName("cat")
+//				.withId(1)
+//				.build();
+//		HistoryElement element = new DateHistoryElement(date);
+//		Purchase purchase = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		element.addPurchase(purchase);
+//		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
+//		CSVPrinter printer = new CSVPrinter(elementPrinter);
+//		printer.setPath(path);
+//		printer.setTimespan(dateS, date);
+//
+//		var list = new ArrayList<HistoryElement>();
+//		list.add(element);
+//		printer.print(list);
+//
+//		File file = new File(path);
+//
+//		assertTrue(file.exists());
+//	}
+//
+//	@Test
+//	void TestPrint_FileLines_OnePurchase() throws IOException, IncorrectEntryException {
+//		String path = "Test.csv";
+//		LocalDate dateS = LocalDate.of(2023, 1, 1);
+//		LocalDate date = LocalDate.of(2023, 1, 21);
+//		Category category = Category.CategoryBuilder
+//				.withName("cat")
+//				.withId(1)
+//				.build();
+//		HistoryElement element = new DateHistoryElement(date);
+//		Purchase purchase = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		element.addPurchase(purchase);
+//		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
+//		CSVPrinter printer = new CSVPrinter(elementPrinter);
+//		printer.setPath(path);
+//		printer.setTimespan(dateS, date);
+//
+//		var list = new ArrayList<HistoryElement>();
+//		list.add(element);
+//		printer.print(list);
+//
+//		long lineCount;
+//		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
+//		  lineCount = stream.count();
+//		}
+//		
+//		assertEquals(4, lineCount);
+//	}
+//
+//	@Test
+//	void TestPrint_FileLines_TwoPurchase() throws IOException, IncorrectEntryException {
+//		String path = "Test.csv";
+//		LocalDate dateS = LocalDate.of(2023, 1, 1);
+//		LocalDate date = LocalDate.of(2023, 1, 21);
+//		Category category = Category.CategoryBuilder
+//				.withName("cat")
+//				.withId(1)
+//				.build();
+//		HistoryElement element = new DateHistoryElement(date);
+//		Purchase purchase = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		Purchase purchase2 =Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build(); 
+//		element.addPurchase(purchase);
+//		element.addPurchase(purchase2);
+//		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
+//		CSVPrinter printer = new CSVPrinter(elementPrinter);
+//		printer.setPath(path);
+//		printer.setTimespan(dateS, date);
+//		
+//		var list = new ArrayList<HistoryElement>();
+//		list.add(element);
+//		printer.print(list);
+//		
+//		long lineCount;
+//		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
+//			lineCount = stream.count();
+//		}
+//		
+//		assertEquals(5, lineCount);
+//	}
+//
+//	@Test
+//	void TestPrint_FileLines_TwoElements() throws IOException, IncorrectEntryException {
+//		String path = "Test.csv";
+//		LocalDate dateS = LocalDate.of(2023, 1, 1);
+//		LocalDate date = LocalDate.of(2023, 1, 21);
+//		Category category = Category.CategoryBuilder
+//				.withName("cat")
+//				.withId(1)
+//				.build();
+//		HistoryElement element = new DateHistoryElement(date);
+//		HistoryElement element2 = new DateHistoryElement(date);
+//		Purchase purchase = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		Purchase purchase2 = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		element.addPurchase(purchase);
+//		element.addPurchase(purchase2);
+//		element2.addPurchase(purchase);
+//		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
+//		CSVPrinter printer = new CSVPrinter(elementPrinter);
+//		printer.setPath(path);
+//		printer.setTimespan(dateS, date);
+//		
+//		var list = new ArrayList<HistoryElement>();
+//		list.add(element);
+//		list.add(element2);
+//		printer.print(list);
+//		
+//		long lineCount;
+//		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
+//			lineCount = stream.count();
+//		}
+//		
+//		assertEquals(8, lineCount);
+//	}
+//
+//	@Test
+//	void TestPrint_FileLines_TwoElements_TwoPurchases() throws IOException, IncorrectEntryException {
+//		String path = "Test.csv";
+//		LocalDate dateS = LocalDate.of(2023, 1, 1);
+//		LocalDate date = LocalDate.of(2023, 1, 21);
+//		Category category = Category.CategoryBuilder
+//				.withName("cat")
+//				.withId(1)
+//				.build();
+//		HistoryElement element = new DateHistoryElement(date);
+//		HistoryElement element2 = new DateHistoryElement(date);
+//		Purchase purchase = Purchase.PurchaseBuilder
+//				.withValues("purchase", date, 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		Purchase purchase2 = 
+//				Purchase.PurchaseBuilder
+//				.withValues("purchase", date.plusDays(1), 1.0)
+//				.withId(1)
+//				.withCategory(category)
+//				.withDescription("description")
+//				.build();
+//		element.addPurchase(purchase);
+//		element.addPurchase(purchase2);
+//		element2.addPurchase(purchase);
+//		element2.addPurchase(purchase2);
+//		ElementPrinter elementPrinter = new DateHistoryElementPrinter();
+//		CSVPrinter printer = new CSVPrinter(elementPrinter);
+//		printer.setPath(path);
+//		printer.setTimespan(dateS, date);
+//		
+//		var list = new ArrayList<HistoryElement>();
+//		list.add(element);
+//		list.add(element2);
+//		printer.print(list);
+//		
+//		long lineCount;
+//		try (Stream<String> stream = Files.lines(Path.of(path), StandardCharsets.UTF_8)) {
+//			lineCount = stream.count();
+//		}
+//		
+//		assertEquals(9, lineCount);
+//	}
 
 }
