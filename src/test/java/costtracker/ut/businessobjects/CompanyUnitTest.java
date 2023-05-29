@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.db.entities.CompanyEntity;
 
 class CompanyUnitTest {
@@ -23,11 +24,11 @@ class CompanyUnitTest {
 	}
 	
 	@Test
-	void testToEntity() {
+	void testToEntity() throws IncorrectEntryException {
 		int id = 1;
 		String name = "name";
 		String location = "location";
-		Company company = new Company(id, name, location); 
+		Company company = Company.CompanyBuilder.withName(name).withId(id).withLocation(location).build();
 		CompanyEntity entity = company.toEntity();
 		
 		assertEquals(id, entity.getId());

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import costtracker.businessobjects.Category;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.db.entities.CategoryEntity;
 
 class CategoryUnitTest {
@@ -21,10 +22,13 @@ class CategoryUnitTest {
 	}
 	
 	@Test
-	void testToEntity() {
+	void testToEntity() throws IncorrectEntryException {
 		int id = 1;
 		String name = "name";
-		Category category = new Category(id, name); 
+		Category category = Category.CategoryBuilder
+				.withName(name)
+				.withId(id)
+				.build();
 		CategoryEntity entity = category.toEntity();
 		
 		assertEquals(id, entity.getId());
