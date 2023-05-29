@@ -1,0 +1,29 @@
+SOLID
+	- SRP
+		Positiv (2): CategoryHandler, CompanyHandler
+		Negativ (1): CreateCategory (Iwelche Funktion der API (Routes))
+
+	- OCP
+		Positiv (2): CSVDocumentPrinter, CSVHistoryDocument??? --> Mit Flo nochmal sprechen
+		Negativ (1):
+
+	- LSP/ISP (Wahl ISP --> BL mit DatabaseHandler & StateHandler)
+		Positiv (1): PurchaseHandler
+		Negativ (1): DeleteCategoryById (Iwelche Funktion der API (Routes))
+
+	- DIP
+		Positiv (1):
+		Negativ (1): CategoryHandler (Klasse aus der BL wegen UnitOfWork Implementation (ändert die sich, muss sich die BL auch ändern :( ))
+
+GRASP
+	- Geringere Kopplung
+		Positiv (1): CategoryManager (--> Abhängig von den vier Interfaces etc.)
+
+	- Polymorphismus
+		Positiv (1):
+
+	- Pure Fabrication
+		Positiv (1): HandlerHelperFunctions
+
+	- DRY
+		Ein Commit wo Duplicate Code aufgelöst wurde: 
