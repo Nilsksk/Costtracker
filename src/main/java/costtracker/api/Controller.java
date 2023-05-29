@@ -38,6 +38,9 @@ public class Controller {
         GetEnabledCategories getEnabledCategories = new GetEnabledCategories();
         getEnabledCategories.addGetHandler(server, "/category/getEnabledCategories");
 
+        GetDisabledCategories getDisabledCategories = new GetDisabledCategories();
+        getDisabledCategories.addGetHandler(server, "/category/getDisabledCategories");
+
         UpdateCategory updateCategory = new UpdateCategory();
         updateCategory.addPutHandler(server, "/category/updateCategory");
 
@@ -62,6 +65,9 @@ public class Controller {
 
         GetEnabledCompanies getEnabledCompanies = new GetEnabledCompanies();
         getEnabledCompanies.addGetHandler(server, "/company/getEnabledCompanies");
+
+        GetDisabledCompanies getDisabledCompanies = new GetDisabledCompanies();
+        getDisabledCompanies.addGetHandler(server,"/company/getDisabledCompanies");
 
         UpdateCompany updateCompany = new UpdateCompany();
         updateCompany.addPutHandler(server, "/company/updateCompany");
