@@ -54,7 +54,7 @@ public class PurchaseManager implements Editor, Adder {
 			submit = DialogueHelper.submitEntry();
 			
 			if (submit && checkIfAllParametersPresent(purchaseName, validatedDate, validatedValue, company, category)) {
-				created = purchaseHandler.create(new Purchase(purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));				
+				created = purchaseHandler.create(new Purchase(0, purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));
 				DialogueHelper.validateCreation(created);
 			}			
 			else {

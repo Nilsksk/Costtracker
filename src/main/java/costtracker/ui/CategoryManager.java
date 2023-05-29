@@ -33,7 +33,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit && !newCategoryName.isEmpty()) {
-			created = categoryHandler.create(new Category(newCategoryName));			
+			created = categoryHandler.create(new Category(0, newCategoryName));
 			DialogueHelper.validateCreation(created);
 		}
 		else {

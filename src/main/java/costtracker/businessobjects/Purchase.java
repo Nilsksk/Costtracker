@@ -19,7 +19,7 @@ public class Purchase {
 	@Deprecated()
 	/**
 	 * Please use the builder pattern instead
-	 * 
+	 *
 	 * @param id
 	 * @param name
 	 * @param description
@@ -29,17 +29,8 @@ public class Purchase {
 	 * @param category
 	 */
 	public Purchase(int id, String name, String description, LocalDate date, double price, Company company,
-			Category category) {
+					Category category) {
 		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.date = date;
-		this.price = price;
-		this.company = company;
-		this.category = category;
-	}
-	
-	public Purchase(String name, String description, LocalDate date, double price, Company company, Category category) {
 		this.name = name;
 		this.description = description;
 		this.date = date;

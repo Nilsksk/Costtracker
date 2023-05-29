@@ -35,7 +35,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		submit = DialogueHelper.submitEntry();
 		
 		if(submit && !newCompanyName.isEmpty() && !newCompanyLocation.isEmpty()) {
-			created = companyHandler.create(new Company(newCompanyName, newCompanyLocation));		
+			created = companyHandler.create(new Company(0, newCompanyName, newCompanyLocation));
 			DialogueHelper.validateCreation(created);
 		}
 		else{

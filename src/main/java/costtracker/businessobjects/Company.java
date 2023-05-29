@@ -6,11 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Company {
-	
+
 	private int id;
 	private String name;
 	private String location;
-	
+
 	@Deprecated
 	/**
 	 * Please use the builder pattern instead
@@ -23,30 +23,36 @@ public class Company {
 		this.name = name;
 		this.location = location;
 	}
-	
+
+	public Company(CompanyBuilder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.location = builder.location;
+	}
+
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getLocation() {
 		return location;
 	}
-	
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	public static Company fromEntity(CompanyEntity entity) {
 		try {
 			return CompanyBuilder
@@ -58,7 +64,7 @@ public class Company {
 			return null;
 		}
 	}
-	
+
 	public CompanyEntity toEntity() {
 		return new CompanyEntity(id, name, location);
 	}
@@ -86,7 +92,7 @@ public class Company {
 			return null;
 		}
 	}
-	
+
 	public static class CompanyBuilder{
 		private String name;
 		private String location;
@@ -99,17 +105,17 @@ public class Company {
 		public static CompanyBuilder withName(String name) {
 			return new CompanyBuilder(name);
 		}
-		
+
 		public CompanyBuilder withId(int id) {
 			this.id = id;
 			return this;
 		}
-		
+
 		public CompanyBuilder withLocation(String location) {
 			this.location = location;
 			return this;
 		}
-		
+
 		public Company build() throws IncorrectEntryException {
 			Company company = new Company(this);
 			validateCompany(company);
@@ -119,7 +125,7 @@ public class Company {
 		private void validateCompany(Company company) throws IncorrectEntryException {
 			if(name == null||name.isBlank())
 				throw new IncorrectEntryException("Incorrect entry for Name: " + name + "!");
-			
+
 		}
 	}
 }
