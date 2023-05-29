@@ -1,14 +1,10 @@
 package costtracker.document.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import costtracker.businessobjects.Purchase;
+import costtracker.document.printer.DocumentPrinter;
 
 public interface HistoryElement {
-	ArrayList<Purchase> getPurchases();
-	void addPurchase(Purchase purchase);
-	void addPurchases(List<Purchase> purchases);
 	double getTotal();	
 	String getHeader();
+	String printWith(DocumentPrinter printer);
+	String getType();
 }
