@@ -126,12 +126,12 @@ public class DialogueHelper {
 		return (sc.nextLine().equals(action));
 	}
 	
-	public static void validateCreation(boolean created) {
+	public static void validateCreation(boolean created, String succesful, String unsuccesful) {
 		if (created) {
-			println("Angelegt!");
+			println(succesful);
 		}
 		else {
-			println("Anlegen fehlgeschlagen!");
+			println(unsuccesful);
 		}
 	}
 	
