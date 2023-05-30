@@ -29,9 +29,8 @@ public class HistoryHandler implements PrinterHandler{
 
     @Override
     public void printToXML(String description, String name, String path, LocalDate startDate, LocalDate endDate, List<Purchase> purchases) throws IncorrectEntryException {
-        // TODO: Change asCSV() to asXML() when its implemented
         HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
-                .asCSV()
+                .asXML()
                 .withDescription(description)
                 .withKpi(ElementType.Category)
                 .withName(name)
@@ -45,9 +44,8 @@ public class HistoryHandler implements PrinterHandler{
 
     @Override
     public void printToJSON(String description, String name, String path, LocalDate startDate, LocalDate endDate, List<Purchase> purchases) throws IncorrectEntryException {
-        // TODO: Change asCSV() to asJSON() when its implemented
         HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
-                .asCSV()
+                .asJSON()
                 .withDescription(description)
                 .withKpi(ElementType.Category)
                 .withName(name)
