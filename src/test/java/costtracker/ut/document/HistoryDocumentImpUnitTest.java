@@ -90,4 +90,37 @@ class HistoryDocumentImpUnitTest {
 		document.print();
 		
 	}
+
+	@Test
+	void TestCreateJSONDocument() throws IncorrectEntryException {
+		String description = "Data for";
+		String name = "Categories";
+		String path = "./";
+		LocalDate dateStart = LocalDate.of(2023,05,22);
+		LocalDate dateEnd = LocalDate.of(2023,05,23);
+		List<Purchase> purchases = new ArrayList<Purchase>();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		purchases.add(purchase);
+		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
+				.asJSON()
+				.withDescription(description)
+				.withKpi(ElementType.Category)
+				.withName(name)
+				.withPath(path)
+				.withTimespan(dateStart, dateEnd)
+				.withData(purchases)
+				.build();
+		
+		document.print();
+		
+	}
 }

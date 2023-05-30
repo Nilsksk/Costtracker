@@ -10,6 +10,7 @@ import costtracker.businessobjects.Purchase;
 import costtracker.document.csv.CSVHistoryDocument.CSVHistoryDocumentBuilder;
 import costtracker.document.elements.HistoryDocumentHeader;
 import costtracker.document.elements.HistoryElement;
+import costtracker.document.json.JSONHistoryDocument.JSONHistoryDocumentBuilder;
 import costtracker.document.printer.DocumentPrinter;
 import costtracker.document.type.ElementType;
 import costtracker.document.xml.XMLHistoryDocument.XMLHistoryDocumentBuilder;
@@ -38,6 +39,10 @@ public abstract class HistoryDocumentBase {
 		
 		public static XMLHistoryDocumentBuilder asXML() {
 			return new XMLHistoryDocumentBuilder();
+		}
+
+		public static JSONHistoryDocumentBuilder asJSON() {
+			return new JSONHistoryDocumentBuilder();
 		}
 
 		public T withName(String name) {
