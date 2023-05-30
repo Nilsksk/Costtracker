@@ -12,14 +12,15 @@ public class CompanyModelFactory {
 	
 	public List<CompanyModel> createCompanyModels(List<Company> companies){
 		try {
-			return createModel(companies);			
+			companyModels.clear();
+			return createModels(companies);			
 		}catch(Exception e) {
 			companyModels.clear();
 			return null;
 		}
 	}
 	
-	private List<CompanyModel> createModel(List<Company> companies){
+	private List<CompanyModel> createModels(List<Company> companies){
 		for (int i = 1; i <= companies.size(); i++) {
 			addCompanyToList(companies, i);
 		}

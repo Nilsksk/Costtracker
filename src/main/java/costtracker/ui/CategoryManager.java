@@ -14,6 +14,7 @@ import costtracker.ui.interfaces.Activator;
 import costtracker.ui.interfaces.Adder;
 import costtracker.ui.interfaces.Deactivator;
 import costtracker.ui.interfaces.Editor;
+import costtracker.ui.CategoryModel.CategoryModelBuilder;
 import costtracker.ui.DialogueHelper;
 
 public class CategoryManager implements Editor, Adder, Deactivator, Activator {
@@ -39,7 +40,8 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			String insufficientInput = "Unzureichende Eingabe!";
 			DialogueHelper.println(insufficientInput);
 		}
-		if(submit && created) {
+		boolean correct = submit && created;
+		if(correct) {
 			String succesful = "Angelegt!";
 			String unsuccesful = "Anlegen fehlgeschlagen!";
 			DialogueHelper.validateCreation(created, succesful, unsuccesful);
@@ -48,15 +50,30 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 
 	@Override
 	public void edit() throws SQLException {
-		boolean updated = false;
 		CategoryModelFactory categoryModelFactory = new CategoryModelFactory();
 		CategoryHandler categoryHandler = new CategoryHandler();
 		String printCategories = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien";
 		DialogueHelper.startDialogue(printCategories);
 		List<Category> allCategories = categoryHandler.getAll();
 		List<CategoryModel> allCategoryModels = categoryModelFactory.createCategoryModels(allCategories);
+		boolean moreThenZeroModels = allCategoryModels.size() > 0;
+		if (moreThenZeroModels) {
+			editCategory(allCategoryModels, categoryHandler);
+		}
+	}
+
+	private void editCategory(List<CategoryModel> allCategoryModels, CategoryHandler categoryHandler) throws SQLException {
 		DialogueHelper.printCategories(allCategoryModels);
-		Category category = getCategoryToEdit(categoryHandler);
+		String idCategory = "ID der Kategorie die Sie bearbeiten möchten";
+		Category category = getCategoryToEdit(categoryHandler, idCategory);
+		boolean isNotNull = category != null;
+		if (isNotNull) {
+			editIfNotNull(category, categoryHandler);
+		}
+	}
+	
+	private void editIfNotNull(Category category, CategoryHandler categoryHandler) throws SQLException {
+		boolean updated = false;
 		String categoryName = category.getName();
 		String name = "Name";
 		String editedName = DialogueHelper.changeDialogue(name, categoryName);
@@ -69,9 +86,10 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		}
 		submit = DialogueHelper.submitEntry();
 		try {
+			int id = category.getId();
 			category = Category.CategoryBuilder
 					.withName(editedName)
-					.withId(0)
+					.withId(id)
 					.build();
 			updated = categoryHandler.update(category);		
 		} catch (IncorrectEntryException e) {
@@ -84,7 +102,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			DialogueHelper.validateCreation(updated, succesful, unsuccesful);					
 		}
 	}
-
+	
 	@Override
 	public void deactivate() throws SQLException {
 		CategoryModelFactory categoryModelFactory = new CategoryModelFactory();
@@ -93,20 +111,30 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		DialogueHelper.startDialogue(printAllCategories);
 		List<Category> enabledCategories = categoryHandler.getEnabled();
 		List<CategoryModel> enabledCategoryModels = categoryModelFactory.createCategoryModels(enabledCategories);
-		DialogueHelper.printCategories(enabledCategoryModels);
-		Category category = getCategoryToEdit(categoryHandler);
-		if (category != null) {
-			// Hier weiter machen mit schön machen!
+		boolean moreThenZeroModels = enabledCategoryModels.size() > 0;
+		if (moreThenZeroModels) {
+			DialogueHelper.printCategories(enabledCategoryModels);
+			String idCategory = "ID der Kategorie die sie deaktiviveren möchten";
+			Category category = getCategoryToEdit(categoryHandler, idCategory);
+			deactivateCategory(category, categoryModelFactory, categoryHandler);
+		}
+	}
+	
+	private void deactivateCategory(Category category, CategoryModelFactory categoryModelFactory, CategoryHandler categoryHandler) throws SQLException {
+		boolean categoryIsNotNull = category != null;
+		if (categoryIsNotNull) {
 			List<Category> categoryToDisable= new ArrayList<Category>();
 			categoryToDisable.add(category);
-			DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryToDisable));
+			List<CategoryModel> categoriesToDisable = categoryModelFactory.createCategoryModels(categoryToDisable);
+			DialogueHelper.printCategories(categoriesToDisable);
 			succesfulDeactivated(category, categoryHandler);	
 		}
 	}
 	
 	private void succesfulDeactivated(Category category, CategoryHandler categoryHandler) throws SQLException {
 		String succes = "Erfolgreich deaktiviert!";
-		if(DialogueHelper.validateDeleteOrDeactivation(succes)) {
+		boolean hasSucceded = DialogueHelper.validateDeleteOrDeactivation(succes);
+		if(hasSucceded) {
 			int id = category.getId();
 			categoryHandler.disable(id);
 		}		
@@ -120,29 +148,40 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		DialogueHelper.startDialogue(deactivatedCategories);
 		List<Category> disabledCategories = categoryHandler.getDisabled();
 		List<CategoryModel> disabledCategoryModels = categoryModelFactory.createCategoryModels(disabledCategories);
-		DialogueHelper.printCategories(disabledCategoryModels);
-		Category category = getCategoryToEdit(categoryHandler);
-		if (category != null) {
-			List<Category> categoryToEnable = new ArrayList<Category>();
-			categoryToEnable.add(category);
-			DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryToEnable));
-			succesfulActivated(category, categoryHandler);
+		boolean moreThenZeroModels = disabledCategoryModels.size() > 0;
+		if(moreThenZeroModels) {
+			DialogueHelper.printCategories(disabledCategoryModels);
+			String idCategory = "ID der Firma die Sie aktivieren möchten";
+			Category category = getCategoryToEdit(categoryHandler, idCategory);
+			activateCategory(category, categoryModelFactory, categoryHandler);	
 		}
 	}
 	
-	private void succesfulActivated(Category category, CategoryHandler categoryHandler) throws SQLException {
-		if(DialogueHelper.validateEnable("Erfolgreich aktiviert!")) {
-			categoryHandler.enable(category.getId());
+	private void activateCategory(Category category, CategoryModelFactory categoryModelFactory, CategoryHandler categoryHandler) throws SQLException {
+		boolean categoryIsNotNull = category != null;
+		if (categoryIsNotNull) {
+			List<Category> categoryToEnable = new ArrayList<Category>();
+			categoryToEnable.add(category);
+			List<CategoryModel> categoriesToEnable = categoryModelFactory.createCategoryModels(categoryToEnable);
+			DialogueHelper.printCategories(categoriesToEnable);
+			succesfulActivated(category, categoryHandler);
 		}	
 	}
 	
-	private Category getCategoryToEdit(CategoryHandler categoryHandler) throws SQLException {	
+	private void succesfulActivated(Category category, CategoryHandler categoryHandler) throws SQLException {
+		boolean activated = DialogueHelper.validateEnable("Erfolgreich aktiviert!"); 
+		if(activated) {
+			int id = category.getId();
+			categoryHandler.enable(id);
+		}	
+	}
+	
+	private Category getCategoryToEdit(CategoryHandler categoryHandler, String input) throws SQLException {	
 		Category category;
 		try {
-			int id = DialogueHelper.getIntDialogue("ID der Kategorie auswählen, die Sie bearbeiten möchten");
+			int id = DialogueHelper.getIntDialogue(input);
 			category = categoryHandler.getById(id);	
 		}catch(Exception e) {
-			
 			category = null;
 		}
 		return category;
