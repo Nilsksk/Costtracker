@@ -54,8 +54,10 @@ public class PurchaseManager implements Editor, Adder {
 			submit = DialogueHelper.submitEntry();
 			
 			if (submit && checkIfAllParametersPresent(purchaseName, validatedDate, validatedValue, company, category)) {
-				created = purchaseHandler.create(new Purchase(purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));				
-				DialogueHelper.validateCreation(created);
+				created = purchaseHandler.create(new Purchase(0, purchaseName, purchaseDescription, validatedDate, validatedValue, company, category));
+				String succesful = "Angelegt!";
+				String unsuccesful = "Anlegen fehlgeschlagen!";
+				DialogueHelper.validateCreation(created, succesful, unsuccesful);
 			}			
 			else {
 				DialogueHelper.print("Unzureichende Eingaben!");
@@ -114,7 +116,9 @@ public class PurchaseManager implements Editor, Adder {
 					
 					if (submit) {
 						updated = purchaseHandler.update(new Purchase(purchase.getId(), newPurchaseName, newPurchaseDescription, newPurchaseDate, newPurchasePrice, company, category));
-						DialogueHelper.validateCreation(updated);
+						String succesful = "Erfolgreich bearbeitet!";
+						String unsuccesful = "Bearbeiten fehlgeschlagen!";
+						DialogueHelper.validateCreation(updated, succesful, unsuccesful);
 					}	
 				}
 			}

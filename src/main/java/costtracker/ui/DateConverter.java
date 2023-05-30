@@ -9,7 +9,10 @@ public class DateConverter {
 		String purchaseDate = DialogueHelper.inputDialogue(input);	
 		String[] dateValues = purchaseDate.split(":");
 		try {
-			date = LocalDate.of(Integer.parseInt(dateValues[2]), Integer.parseInt(dateValues[1]), Integer.parseInt(dateValues[0]));		
+			int day =  Integer.parseInt(dateValues[0]);
+			int month = Integer.parseInt(dateValues[1]);
+			int year = Integer.parseInt(dateValues[2]);
+			date = LocalDate.of(year, month, day);		
 		}
 		catch(Exception e) {
 			date = null;

@@ -7,11 +7,7 @@ import costtracker.businessobjects.Category;
 
 public class CategoryModelFactory {
 
-	private List<CategoryModel> categoryModels;
-	
-	public CategoryModelFactory() {
-		this.categoryModels = new ArrayList<>();
-	}
+	private List<CategoryModel> categoryModels = new ArrayList<>();
 	
 	public List<CategoryModel> createCategoryModels(List<Category> categories){
 		try {
@@ -24,9 +20,18 @@ public class CategoryModelFactory {
 	
 	private List<CategoryModel> CreateModels(List<Category> categories) {
 		for (int i = 1; i <= categories.size(); i++) {
-			CategoryModel categoryModel = new CategoryModel(i, categories.get(i-1));
-			categoryModels.add(categoryModel);
+			addCategoryToList(categories, i);
 		}
 		return categoryModels;
+	}
+	
+	private void addCategoryToList (List<Category> categories, int i) {
+		try {
+			CategoryModel categoryModel = CategoryModel.CategoryModelBuilder.withCategory(categories.get(i-1)).withPosition(i).build();
+			categoryModels.add(categoryModel);
+		} catch (Exception e) {
+			
+			DialogueHelper.println("Fehler!");
+		}
 	}
 }
