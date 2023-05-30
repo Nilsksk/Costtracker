@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 class UnitOfWorkUnitTest {
 
 	@Test
-	void TestGetPurchaseRepository() throws IOException {
+	void TestGetPurchaseRepository() throws IOException, SQLException {
 		PurchaseRepository repo;
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
 			repo = uow.getPurchaseRepository();
@@ -22,7 +23,7 @@ class UnitOfWorkUnitTest {
 	}
 	
 	@Test
-	void TestGetCompanyRepository() throws IOException {
+	void TestGetCompanyRepository() throws IOException, SQLException {
 		CompanyRepository repo;
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
 		repo = uow.getCompanyRepository();
@@ -31,7 +32,7 @@ class UnitOfWorkUnitTest {
 	}
 	
 	@Test
-	void TestGetCategoryRepository() throws IOException {
+	void TestGetCategoryRepository() throws IOException, SQLException {
 		CategoryRepository repo;
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
 		repo = uow.getCategoryRepository();
@@ -40,8 +41,7 @@ class UnitOfWorkUnitTest {
 	}
 
 	@Test
-	void TestSave() throws IOException {
-		
+	void TestSave() throws IOException, SQLException {	
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
 			uow.Save();
 		}
