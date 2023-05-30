@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import costtracker.plugin.db.entities.CompanyEntity;
+import costtracker.adapter.entities.CompanyEntity;
+import costtracker.adapter.persistence.BaseDataRepository;
 
 public class CompanyRepository extends RepositoryBase implements BaseDataRepository<CompanyEntity> {
 

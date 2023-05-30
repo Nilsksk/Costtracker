@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import costtracker.adapter.persistence.UnitOfWork;
 import costtracker.plugin.db.repositories.CategoryRepository;
 import costtracker.plugin.db.repositories.CompanyRepository;
 import costtracker.plugin.db.repositories.PurchaseRepository;
@@ -37,7 +38,7 @@ public class UnitOfWorkImp implements UnitOfWork {
 	}
 	
 	@Override
-	public void Save() {
+	public void save() {
 		try {
 			connection.commit();
 		} catch (SQLException e) {

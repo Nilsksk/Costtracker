@@ -44,7 +44,7 @@ class UnitOfWorkUnitTest {
 	@Test
 	void TestSave() throws IOException, SQLException {	
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
-			uow.Save();
+			uow.save();
 		}
 		
 	}

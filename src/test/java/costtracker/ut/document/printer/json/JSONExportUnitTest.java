@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.application.in.json.JSONDouble;
-import costtracker.application.in.json.JSONObject;
-import costtracker.application.in.json.JSONPair;
-import costtracker.application.in.json.JSONString;
+import costtracker.plugin.in.json.JSONDouble;
+import costtracker.plugin.in.json.JSONObject;
+import costtracker.plugin.in.json.JSONPair;
+import costtracker.plugin.in.json.JSONString;
 
 public class JSONExportUnitTest {
 	@Test

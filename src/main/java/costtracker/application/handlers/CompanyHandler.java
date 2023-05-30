@@ -1,124 +1,58 @@
 package costtracker.application.handlers;
 
+import costtracker.adapter.repositoryadapters.CompanyRepositoryAdapterImp;
 import costtracker.application.handlers.interfaces.DatabaseHandler;
 import costtracker.application.handlers.interfaces.StateHandler;
+import costtracker.application.interfaces.CompanyRepositoryAdapter;
 import costtracker.domain.businessobjects.Company;
-import costtracker.plugin.db.entities.CompanyEntity;
-import costtracker.plugin.db.unitofwork.UnitOfWork;
-import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CompanyHandler implements DatabaseHandler<Company>, StateHandler<Company> {
 
+	private CompanyRepositoryAdapter companyRepositoryAdapter = new CompanyRepositoryAdapterImp();
+	
 	@Override
-	public Company getById(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			CompanyEntity companyEntity = uow.getCompanyRepository().get(id);
-			return Company.fromEntity(companyEntity);
-		}
+	public Company getById(int id) {
+		return companyRepositoryAdapter.get(id);
 	}
 
 	@Override
-	public List<Company> getAll() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getAll();
-
-			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-		}
+	public List<Company> getAll() {
+		return companyRepositoryAdapter.getAll();
 	}
 
 	@Override
-	public boolean deleteById(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			boolean state = uow.getCompanyRepository().delete(id);
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean deleteById(int id) {
+		return companyRepositoryAdapter.delete(id);
 	}
 
 	@Override
-	public boolean update(Company company) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			boolean state = uow.getCompanyRepository().update(company.toEntity());
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean update(Company company) {
+		return companyRepositoryAdapter.update(company);
 	}
 
 	@Override
-	public boolean create(Company company) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			boolean state = uow.getCompanyRepository().insert(company.toEntity());
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean create(Company company) {
+		return companyRepositoryAdapter.insert(company);
 	}
 
 	@Override
-	public boolean enable(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			boolean state = uow.getCompanyRepository().enable(id);
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean enable(int id) {
+		return companyRepositoryAdapter.enable(id);
 	}
 
 	@Override
-	public boolean disable(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			boolean state = uow.getCompanyRepository().disable(id);
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean disable(int id) {
+		return companyRepositoryAdapter.disable(id);
+	}
+	@Override
+	public List<Company> getEnabled() {
+		return companyRepositoryAdapter.getEnabled();
 	}
 
 	@Override
-	public List<Company> getEnabled() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getEnabled();
-
-			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-		}
-	}
-
-	@Override
-	public List<Company> getDisabled() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-
-			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getDisabled();
-
-			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-		}
+	public List<Company> getDisabled() {
+		return companyRepositoryAdapter.getDisabled();
 	}
 }

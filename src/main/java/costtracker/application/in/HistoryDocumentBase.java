@@ -5,9 +5,12 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
-import costtracker.application.in.csv.CSVHistoryDocument.CSVHistoryDocumentBuilder;
-import costtracker.application.in.json.JSONHistoryDocument.JSONHistoryDocumentBuilder;
-import costtracker.application.in.xml.XMLHistoryDocument.XMLHistoryDocumentBuilder;
+import costtracker.adapter.in.DocumentPrinter;
+import costtracker.adapter.in.HistoryDocumentHeader;
+import costtracker.adapter.in.HistoryElement;
+import costtracker.adapter.in.CSVHistoryDocument.CSVHistoryDocumentBuilder;
+import costtracker.adapter.in.JSONHistoryDocument.JSONHistoryDocumentBuilder;
+import costtracker.adapter.in.XMLHistoryDocument.XMLHistoryDocumentBuilder;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
 

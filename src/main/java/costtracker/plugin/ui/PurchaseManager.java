@@ -54,7 +54,7 @@ public class PurchaseManager implements Editor, Adder {
 			if (correct) {
 				try {
 					created = purchaseHandler.create(Purchase.PurchaseBuilder.withValues(purchaseName, validatedDate, validatedValue).withCompany(company).withCategory(category).withDescription(purchaseDescription).build());
-				} catch (SQLException | IncorrectEntryException e) {
+				} catch (IncorrectEntryException e) {
 					String errorMsg = "Fehler!";
 					DialogueHelper.println(errorMsg);
 				}
@@ -133,7 +133,7 @@ public class PurchaseManager implements Editor, Adder {
 					if (submit) {
 						try {
 							updated = purchaseHandler.update(Purchase.PurchaseBuilder.withValues(newPurchaseName, newPurchaseDate, newPurchasePrice).withCompany(company).withCategory(category).withDescription(newPurchaseDescription).build());
-						} catch (SQLException | IncorrectEntryException e) {
+						} catch (IncorrectEntryException e) {
 							String errorMsg = "Fehler!";
 							DialogueHelper.println(errorMsg);
 						}

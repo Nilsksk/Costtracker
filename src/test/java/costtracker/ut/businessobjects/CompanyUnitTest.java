@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import costtracker.adapter.entities.CompanyEntity;
+import costtracker.adapter.mappers.EntityMapper;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.IncorrectEntryException;
-import costtracker.plugin.db.entities.CompanyEntity;
 
 class CompanyUnitTest {
 
@@ -16,7 +17,7 @@ class CompanyUnitTest {
 		String name = "name";
 		String location = "location";
 		CompanyEntity entity = new CompanyEntity(id, name, location); 
-		Company company = Company.fromEntity(entity);
+		Company company = EntityMapper.toBo(entity);
 		
 		assertEquals(id, company.getId());
 		assertEquals(name, company.getName());
@@ -29,7 +30,7 @@ class CompanyUnitTest {
 		String name = "name";
 		String location = "location";
 		Company company = Company.CompanyBuilder.withName(name).withId(id).withLocation(location).build();
-		CompanyEntity entity = company.toEntity();
+		CompanyEntity entity = EntityMapper.toEntity(company);
 		
 		assertEquals(id, entity.getId());
 		assertEquals(name, entity.getName());

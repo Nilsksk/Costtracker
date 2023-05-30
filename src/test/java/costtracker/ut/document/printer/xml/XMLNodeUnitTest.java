@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.application.in.xml.XMLAttribute;
-import costtracker.application.in.xml.XMLNode;
+import costtracker.plugin.in.xml.XMLAttribute;
+import costtracker.plugin.in.xml.XMLNode;
 
 
 public class XMLNodeUnitTest {

@@ -1,11 +1,9 @@
 package costtracker.domain.businessobjects;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.json.JSONObject;
 
-import costtracker.plugin.db.entities.PurchaseEntity;
 
 public class Purchase {
 
@@ -112,25 +110,6 @@ public class Purchase {
 
 	public String getDateString() {
 		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();
-	}
-
-	public static Purchase fromEntity(PurchaseEntity entity) {
-		try {
-			return PurchaseBuilder
-					.withValues(entity.getName(), entity.getDate().toLocalDate(), entity.getPrice())
-					.withId(entity.getId())
-					.withCategory(Category.fromEntity(entity.getCategory()))
-					.withCompany(entity.getCompany() != null ? Company.fromEntity(entity.getCompany()) : null)
-					.withDescription(entity.getDescription()).build();
-		} catch (IncorrectEntryException e) {
-			// TODO Auto-generated catch block
-			return null;
-		}
-	}
-
-	public PurchaseEntity toEntity() {
-		return new PurchaseEntity(id, company != null ? company.toEntity() : null, category.toEntity(), price, name,
-				description, Date.valueOf(date));
 	}
 
 	public JSONObject toJSON() {

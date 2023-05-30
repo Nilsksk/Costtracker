@@ -36,7 +36,6 @@ public class CreateCompany implements PostHandler {
 
                 if (httpHeader.METHOD_POST.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
-                        try {
                             CompanyHandler companyHandler = new CompanyHandler();
                             boolean returnState = companyHandler.create(new Company(companyId, companyName, companyLocation));
                             final String responseBody = new JSONObject().put("state", returnState).toString();
@@ -46,9 +45,6 @@ public class CreateCompany implements PostHandler {
                             final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
                             handler.sendResponseHeaders(httpCodes.STATUS_CREATED.code, responseBodyByte.length);
                             handler.getResponseBody().write(responseBodyByte);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

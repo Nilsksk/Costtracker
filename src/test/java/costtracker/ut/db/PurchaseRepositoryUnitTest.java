@@ -1,8 +1,8 @@
 package costtracker.ut.db;
 
-import costtracker.plugin.db.entities.CategoryEntity;
-import costtracker.plugin.db.entities.CompanyEntity;
-import costtracker.plugin.db.entities.PurchaseEntity;
+import costtracker.adapter.entities.CategoryEntity;
+import costtracker.adapter.entities.CompanyEntity;
+import costtracker.adapter.entities.PurchaseEntity;
 import costtracker.plugin.db.repositories.PurchaseRepository;
 
 import org.junit.jupiter.api.AfterEach;

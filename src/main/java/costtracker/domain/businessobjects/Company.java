@@ -3,8 +3,6 @@ package costtracker.domain.businessobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import costtracker.plugin.db.entities.CompanyEntity;
-
 public class Company {
 
 	private int id;
@@ -51,22 +49,6 @@ public class Company {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public static Company fromEntity(CompanyEntity entity) {
-		try {
-			return CompanyBuilder
-					.withName(entity.getName())
-					.withId(entity.getId())
-					.withLocation(entity.getLocation())
-					.build();
-		} catch (IncorrectEntryException e) {
-			return null;
-		}
-	}
-
-	public CompanyEntity toEntity() {
-		return new CompanyEntity(id, name, location);
 	}
 
 	@Override

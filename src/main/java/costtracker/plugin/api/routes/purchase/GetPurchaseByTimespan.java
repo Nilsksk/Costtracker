@@ -36,7 +36,6 @@ public class GetPurchaseByTimespan implements GetHandler {
 
                 if (httpHeader.METHOD_GET.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
-                        try {
                             PurchaseHandler purchaseHandler = new PurchaseHandler();
                             List<Purchase> purchaseList = purchaseHandler.getByTimestamp(purchaseStartDate, purchaseEndDate);
                             final String responseBody = new JSONArray(purchaseList).toString();
@@ -46,9 +45,6 @@ public class GetPurchaseByTimespan implements GetHandler {
                             final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
                             handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
                             handler.getResponseBody().write(responseBodyByte);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

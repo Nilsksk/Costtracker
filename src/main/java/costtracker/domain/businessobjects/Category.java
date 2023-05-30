@@ -3,8 +3,6 @@ package costtracker.domain.businessobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import costtracker.plugin.db.entities.CategoryEntity;
-
 public class Category {
 
 	private int id;
@@ -41,22 +39,7 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public static Category fromEntity(CategoryEntity entity) {
-		try {
-			return CategoryBuilder
-					.withName(entity.getName())
-					.withId(entity.getId())
-					.build();
-		} catch (IncorrectEntryException e) {
-			return null;
-		}
-	}
-
-	public CategoryEntity toEntity() {
-		return new CategoryEntity(this.id, this.name);
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Category{" + "id=" + id + ", name='" + name + '}';

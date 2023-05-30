@@ -31,7 +31,6 @@ public class EnableCategory implements PutHandler {
 
                 if (httpHeader.METHOD_PUT.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
-                        try {
                             CategoryHandler categoryHandler = new CategoryHandler();
                             boolean returnState = categoryHandler.enable(categoryId);
                             final String responseBody = new JSONObject().put("state", returnState).toString();
@@ -41,9 +40,6 @@ public class EnableCategory implements PutHandler {
                             final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
                             handler.sendResponseHeaders(httpCodes.STATUS_OK.code, responseBodyByte.length);
                             handler.getResponseBody().write(responseBodyByte);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

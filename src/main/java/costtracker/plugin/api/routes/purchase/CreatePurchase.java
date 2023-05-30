@@ -44,7 +44,6 @@ public class CreatePurchase implements PostHandler {
 
                 if (httpHeader.METHOD_POST.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
-                        try {
                             PurchaseHandler purchaseHandler = new PurchaseHandler();
                             boolean returnState = purchaseHandler.create(
                                     new Purchase(purchaseID, purchaseName, purchaseDescription, purchaseDate, purchasePrice, purchaseCompany, purchaseCategory));
@@ -55,9 +54,6 @@ public class CreatePurchase implements PostHandler {
                             final byte[] responseBodyByte = responseBody.getBytes(CHARSET);
                             handler.sendResponseHeaders(httpCodes.STATUS_CREATED.code, responseBodyByte.length);
                             handler.getResponseBody().write(responseBodyByte);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
                     } else {
                         handler.sendResponseHeaders(httpCodes.STATUS_BAD_REQUEST.code, NO_RESPONSE_LENGTH);
                     }

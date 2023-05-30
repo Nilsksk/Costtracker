@@ -1,110 +1,63 @@
 package costtracker.application.handlers;
 
+import costtracker.adapter.repositoryadapters.CategoryRepositoryAdapterImp;
 import costtracker.application.handlers.interfaces.DatabaseHandler;
 import costtracker.application.handlers.interfaces.StateHandler;
+import costtracker.application.interfaces.CategoryRepositoryAdapter;
 import costtracker.domain.businessobjects.Category;
-import costtracker.plugin.db.entities.CategoryEntity;
-import costtracker.plugin.db.unitofwork.UnitOfWork;
-import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoryHandler implements DatabaseHandler<Category>, StateHandler<Category> {
 
+	private CategoryRepositoryAdapter categoryRepositoryAdapter = new CategoryRepositoryAdapterImp();
+	
+	public CategoryHandler() {
+		
+	}
+	
 	@Override
-	public Category getById(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			CategoryEntity categoryEntity = uow.getCategoryRepository().get(id);
-			return Category.fromEntity(categoryEntity);
-		}
+	public Category getById(int id){
+		return categoryRepositoryAdapter.get(id);
 	}
 
 	@Override
-	public List<Category> getAll() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			List<CategoryEntity> categoryEntityList = uow.getCategoryRepository().getAll();
-			return categoryEntityList.stream().map(Category::fromEntity).collect(Collectors.toList());
-		}
+	public List<Category> getAll() {
+		return categoryRepositoryAdapter.getAll();
 	}
 
 	@Override
-	public boolean deleteById(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			boolean state = uow.getCategoryRepository().delete(id);
-			if (state) {
-				uow.Save();
-			}
-			return state;
-		}
+	public boolean deleteById(int id) {
+		return categoryRepositoryAdapter.delete(id);
 	}
 
 	@Override
-	public boolean update(Category category) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			boolean state = uow.getCategoryRepository().update(category.toEntity());
-			if (state) {
-				uow.Save();
-			}
-			return state;
-		}
+	public boolean update(Category category) {
+		return categoryRepositoryAdapter.update(category);
 	}
 
 	@Override
-	public boolean create(Category category) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			boolean state = uow.getCategoryRepository().insert(category.toEntity());
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean create(Category category) {
+		return categoryRepositoryAdapter.insert(category);
 	}
 
 	@Override
-	public boolean enable(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			boolean state = uow.getCategoryRepository().enable(id);
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean enable(int id) {
+		return categoryRepositoryAdapter.enable(id);
 	}
 
 	@Override
-	public boolean disable(int id) throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			boolean state = uow.getCategoryRepository().disable(id);
-
-			if (state) {
-				uow.Save();
-			}
-
-			return state;
-		}
+	public boolean disable(int id) {
+		return categoryRepositoryAdapter.disable(id);
 	}
 
 	@Override
-	public List<Category> getEnabled() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			List<CategoryEntity> categoryEntityList = uow.getCategoryRepository().getEnabled();
-
-			return categoryEntityList.stream().map(Category::fromEntity).collect(Collectors.toList());
-		}
+	public List<Category> getEnabled()  {
+		return categoryRepositoryAdapter.getEnabled();
 	}
 
 	@Override
-	public List<Category> getDisabled() throws SQLException {
-		try (UnitOfWork uow = new UnitOfWorkImp()) {
-			List<CategoryEntity> categoryEntityList = uow.getCategoryRepository().getDisabled();
-
-			return categoryEntityList.stream().map(Category::fromEntity).collect(Collectors.toList());
-		}
+	public List<Category> getDisabled() {
+		return categoryRepositoryAdapter.getDisabled();
 	}
 }

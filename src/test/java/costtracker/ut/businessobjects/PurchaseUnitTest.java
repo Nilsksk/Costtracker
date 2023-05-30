@@ -7,13 +7,14 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import costtracker.adapter.entities.CategoryEntity;
+import costtracker.adapter.entities.CompanyEntity;
+import costtracker.adapter.entities.PurchaseEntity;
+import costtracker.adapter.mappers.EntityMapper;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
-import costtracker.plugin.db.entities.CategoryEntity;
-import costtracker.plugin.db.entities.CompanyEntity;
-import costtracker.plugin.db.entities.PurchaseEntity;
 
 class PurchaseUnitTest {
 
@@ -36,7 +37,7 @@ class PurchaseUnitTest {
 		String catName = "cat";
 		CategoryEntity category = new CategoryEntity(catId, catName);
 		PurchaseEntity entity = new PurchaseEntity(id, company, category, price, name, description, date);
-		Purchase purchase = Purchase.fromEntity(entity);
+		Purchase purchase = EntityMapper.toBo(entity);
 
 		assertEquals(id, purchase.getId());
 		assertEquals(name, purchase.getName());
@@ -58,7 +59,7 @@ class PurchaseUnitTest {
 
 		PurchaseEntity entity = new PurchaseEntity(1, null, new CategoryEntity(1,"cat"), 1.0, "purchase", "",
 				Date.valueOf("2023-02-27"));
-		Purchase purchase = Purchase.fromEntity(entity);
+		Purchase purchase = EntityMapper.toBo(entity);
 
 		assertEquals(null, purchase.getCompany());
 	}
@@ -94,7 +95,7 @@ class PurchaseUnitTest {
 				.withCompany(company)
 				.withDescription(description)
 				.build();
-		PurchaseEntity entity = purchase.toEntity();
+		PurchaseEntity entity = EntityMapper.toEntity(purchase);
 
 		assertEquals(id, entity.getId());
 		assertEquals(name, entity.getName());
@@ -121,7 +122,7 @@ class PurchaseUnitTest {
 				.withCategory(category)
 				.withDescription( "na")
 				.build();
-		PurchaseEntity entity = purchase.toEntity();
+		PurchaseEntity entity = EntityMapper.toEntity(purchase);
 
 		assertEquals(null, entity.getCompany());
 	}
