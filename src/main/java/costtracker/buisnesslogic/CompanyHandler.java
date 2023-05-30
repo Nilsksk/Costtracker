@@ -4,6 +4,7 @@ import costtracker.buisnesslogic.interfaces.DatabaseHandler;
 import costtracker.buisnesslogic.interfaces.StateHandler;
 import costtracker.businessobjects.Company;
 import costtracker.db.entities.CompanyEntity;
+import costtracker.db.unitofwork.UnitOfWork;
 import costtracker.db.unitofwork.UnitOfWorkImp;
 
 import java.sql.SQLException;
@@ -11,87 +12,113 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CompanyHandler implements DatabaseHandler<Company>, StateHandler<Company> {
-    UnitOfWorkImp uow = new UnitOfWorkImp();
 
-    @Override
-    public Company getById(int id) throws SQLException {
-        CompanyEntity companyEntity = uow.getCompanyRepository().get(id);
-        return Company.fromEntity(companyEntity);
-    }
+	@Override
+	public Company getById(int id) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-    @Override
-    public List<Company> getAll() throws SQLException {
-        List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getAll();
+			CompanyEntity companyEntity = uow.getCompanyRepository().get(id);
+			return Company.fromEntity(companyEntity);
+		}
+	}
 
-        return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-    }
+	@Override
+	public List<Company> getAll() throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-    @Override
-    public boolean deleteById(int id) throws SQLException {
-        boolean state = uow.getCompanyRepository().delete(id);
+			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getAll();
 
-        if (state) {
-            uow.Save();
-        }
+			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
+		}
+	}
 
-        return state;
-    }
+	@Override
+	public boolean deleteById(int id) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-    @Override
-    public boolean update(Company company) throws SQLException {
-        boolean state = uow.getCompanyRepository().update(company.toEntity());
+			boolean state = uow.getCompanyRepository().delete(id);
 
-        if (state) {
-            uow.Save();
-        }
+			if (state) {
+				uow.Save();
+			}
 
-        return state;
-    }
+			return state;
+		}
+	}
 
-    @Override
-    public boolean create(Company company) throws SQLException {
-        boolean state = uow.getCompanyRepository().insert(company.toEntity());
+	@Override
+	public boolean update(Company company) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-        if (state) {
-            uow.Save();
-        }
+			boolean state = uow.getCompanyRepository().update(company.toEntity());
 
-        return state;
-    }
+			if (state) {
+				uow.Save();
+			}
 
-    @Override
-    public boolean enable(int id) throws SQLException {
-        boolean state = uow.getCompanyRepository().enable(id);
+			return state;
+		}
+	}
 
-        if (state) {
-            uow.Save();
-        }
+	@Override
+	public boolean create(Company company) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-        return state;
-    }
+			boolean state = uow.getCompanyRepository().insert(company.toEntity());
 
-    @Override
-    public boolean disable(int id) throws SQLException {
-        boolean state = uow.getCompanyRepository().disable(id);
+			if (state) {
+				uow.Save();
+			}
 
-        if (state) {
-            uow.Save();
-        }
+			return state;
+		}
+	}
 
-        return state;
-    }
+	@Override
+	public boolean enable(int id) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
 
-    @Override
-    public List<Company> getEnabled() throws SQLException {
-        List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getEnabled();
+			boolean state = uow.getCompanyRepository().enable(id);
 
-        return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-    }
+			if (state) {
+				uow.Save();
+			}
 
-    @Override
-    public List<Company> getDisabled() throws SQLException {
-        List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getDisabled();
+			return state;
+		}
+	}
 
-        return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
-    }
+	@Override
+	public boolean disable(int id) throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
+
+			boolean state = uow.getCompanyRepository().disable(id);
+
+			if (state) {
+				uow.Save();
+			}
+
+			return state;
+		}
+	}
+
+	@Override
+	public List<Company> getEnabled() throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
+
+			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getEnabled();
+
+			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
+		}
+	}
+
+	@Override
+	public List<Company> getDisabled() throws SQLException {
+		try (UnitOfWork uow = new UnitOfWorkImp()) {
+
+			List<CompanyEntity> companyEntityList = uow.getCompanyRepository().getDisabled();
+
+			return companyEntityList.stream().map(Company::fromEntity).collect(Collectors.toList());
+		}
+	}
 }
