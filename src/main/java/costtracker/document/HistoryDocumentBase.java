@@ -1,14 +1,18 @@
 package costtracker.document;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
-import costtracker.document.CSVHistoryDocument.CSVHistoryDocumentBuilder;
+import costtracker.document.csv.CSVHistoryDocument.CSVHistoryDocumentBuilder;
 import costtracker.document.elements.HistoryDocumentHeader;
 import costtracker.document.elements.HistoryElement;
+import costtracker.document.printer.DocumentPrinter;
 import costtracker.document.type.ElementType;
+import costtracker.document.xml.XMLHistoryDocument.XMLHistoryDocumentBuilder;
 
 public abstract class HistoryDocumentBase {
 
@@ -17,8 +21,8 @@ public abstract class HistoryDocumentBase {
 	protected String path;
 	protected List<HistoryElement> historyElements;
 	protected File file;
-
-
+	protected DocumentPrinter printer;
+	
 	public static class HistoryDocumentBuilder<T extends HistoryDocumentBuilder<T>> {
 		protected String name;
 		protected String path;
@@ -30,6 +34,10 @@ public abstract class HistoryDocumentBase {
 
 		public static CSVHistoryDocumentBuilder asCSV() {
 			return new CSVHistoryDocumentBuilder();
+		}
+		
+		public static XMLHistoryDocumentBuilder asXML() {
+			return new XMLHistoryDocumentBuilder();
 		}
 
 		public T withName(String name) {
@@ -65,8 +73,21 @@ public abstract class HistoryDocumentBase {
 
 		@SuppressWarnings("unchecked")
 		private T self() {
-			// TODO Auto-generated method stub
 			return (T) this;
+		}
+		
+		protected void validateDocument() throws IncorrectEntryException {
+			Path p = Path.of(path);
+			if(dateStart == null)
+				throw new IncorrectEntryException("No start date!");
+			else if(dateEnd == null)
+				throw new IncorrectEntryException("No end date!");
+			else if(!p.toFile().isDirectory())
+				throw new IncorrectEntryException("Invalid path!");
+			else if(purchases == null || purchases.size() == 0)
+				throw new IncorrectEntryException("No purchases available to create history!");
+			else if(name == null || name.equals(""))
+				throw new IncorrectEntryException("No name!");
 		}
 	}
 

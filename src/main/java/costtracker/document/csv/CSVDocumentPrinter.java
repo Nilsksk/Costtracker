@@ -1,9 +1,15 @@
-package costtracker.document.printer;
+package costtracker.document.csv;
 
 import costtracker.document.elements.HistoryDocumentHeader;
 import costtracker.document.elements.HistoryElement;
 import costtracker.document.elements.PurchaseEntry;
+import costtracker.document.printer.DocumentPrinter;
 
+/**
+ * This class is an internal class. Don't use, it might not work!
+ * @author Florian Felix
+ *
+ */
 public class CSVDocumentPrinter implements DocumentPrinter {
 
 	@Override

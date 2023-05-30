@@ -4,13 +4,16 @@ import costtracker.db.repositories.CategoryRepository;
 import costtracker.db.repositories.CompanyRepository;
 import costtracker.db.repositories.PurchaseRepository;
 
-import java.io.Closeable;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-public class UnitOfWorkImp implements UnitOfWork, Closeable {
+public class UnitOfWorkImp implements UnitOfWork {
 
 	private CompanyRepository companyRepository;
 	private CategoryRepository categoryRepository;
@@ -20,10 +23,15 @@ public class UnitOfWorkImp implements UnitOfWork, Closeable {
 	
 	public UnitOfWorkImp() {
 		try {
-			connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "test");
+			connection = DriverManager.getConnection("jdbc:h2:~/costtracker", "sa", "ct2023!");
 			connection.setAutoCommit(false);
+			Path path = Paths.get("CreateDatabase.sql");
+			String sql = Files.readString(path);
+			Statement stmt = connection.createStatement();
+			stmt.execute(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}	
 	}
@@ -56,14 +64,8 @@ public class UnitOfWorkImp implements UnitOfWork, Closeable {
 	}
 
 	@Override
-	public void close() throws IOException {
-		try {
-			this.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void close() throws SQLException{
+			this.connection.close();		
 	}
 
 }
