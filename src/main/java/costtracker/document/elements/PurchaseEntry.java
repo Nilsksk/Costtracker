@@ -3,6 +3,11 @@ package costtracker.document.elements;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.printer.DocumentPrinter;
 
+/**
+ * This class is an internal class. Don't use, it might not work!
+ * @author Florian Felix
+ *
+ */
 public class PurchaseEntry {
 
 	private String name;

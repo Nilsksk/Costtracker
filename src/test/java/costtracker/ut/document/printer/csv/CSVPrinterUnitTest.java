@@ -13,11 +13,11 @@ import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
 import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
+import costtracker.document.csv.CSVDocumentPrinter;
 import costtracker.document.elements.HistoryDocumentHeader;
 import costtracker.document.elements.HistoryElement;
 import costtracker.document.elements.HistoryElementsCreator;
 import costtracker.document.elements.PurchaseEntry;
-import costtracker.document.printer.CSVDocumentPrinter;
 import costtracker.document.type.ElementType;
 
 class CSVPrinterUnitTest {
