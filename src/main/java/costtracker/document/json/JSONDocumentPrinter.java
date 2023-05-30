@@ -14,7 +14,7 @@ import costtracker.document.printer.DocumentPrinter;
 public class JSONDocumentPrinter implements DocumentPrinter {
 
 	@Override
-	public StringBuilder printHeader(HistoryDocumentHeader historyDocumentHeader) {
+	public String printHeader(HistoryDocumentHeader historyDocumentHeader) {
 		JSONObject headerObject = new JSONObject();
 		
 		JSONString jsonDescription = new JSONString(historyDocumentHeader.getDescription());
@@ -27,14 +27,11 @@ public class JSONDocumentPrinter implements DocumentPrinter {
 		
 		JSONPair header = new JSONPair("header", headerObject);
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append(header.toString());
-		sb.append(",");
-		return sb;
+		return header.toString();
 	}
 
 	@Override
-	public StringBuilder printElement(HistoryElement historyElement) {
+	public String printElement(HistoryElement historyElement) {
 		JSONObject elementHeaderObject = new JSONObject();
 		
 		JSONPair header = new JSONPair(historyElement.getType(), new JSONString(historyElement.getHeader()));
@@ -45,16 +42,11 @@ public class JSONDocumentPrinter implements DocumentPrinter {
 		
 		JSONPair elementHeader = new JSONPair("elementHeader", elementHeaderObject);
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append(elementHeader.toString());
-		sb.append(",\n");
-		sb.append("\"purchases\":[");
-		
-		return sb;
+		return elementHeader.toString();	
 	}
 
 	@Override
-	public StringBuilder printEntry(PurchaseEntry purchaseEntry) {
+	public String printEntry(PurchaseEntry purchaseEntry) {
 		JSONObject purchaseObject = new JSONObject();
 		
 		JSONPair name = new JSONPair("name", new JSONString(purchaseEntry.getName()));
@@ -71,10 +63,22 @@ public class JSONDocumentPrinter implements DocumentPrinter {
 		purchaseObject.addPair(company);
 		purchaseObject.addPair(description);
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append(purchaseObject);
-		sb.append(", ");
-		return sb;
+		return purchaseObject.toString();
+	}
+
+	@Override
+	public String printPurchaseEntryStart() {
+		return ",\n\"purchases\":[";
+	}
+
+	@Override
+	public String printPurchaseEntrySeperator() {
+		return ",\n";
+	}
+
+	@Override
+	public String printPurchaseEntryEnd() {
+		return "]\n";
 	}
 	
 

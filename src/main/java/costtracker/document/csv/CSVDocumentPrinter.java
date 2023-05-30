@@ -13,7 +13,7 @@ import costtracker.document.printer.DocumentPrinter;
 public class CSVDocumentPrinter implements DocumentPrinter {
 
 	@Override
-	public StringBuilder printHeader(HistoryDocumentHeader historyDocumentHeader) {
+	public String printHeader(HistoryDocumentHeader historyDocumentHeader) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(historyDocumentHeader.getDescription());
 		sb.append(";");
@@ -26,11 +26,11 @@ public class CSVDocumentPrinter implements DocumentPrinter {
 		sb.append(historyDocumentHeader.getDateEnd().toString());
 		sb.append(";");
 		sb.append("\n");
-		return sb;
+		return sb.toString();
 	}
 
 	@Override
-	public StringBuilder printElement(HistoryElement historyElement) {
+	public String printElement(HistoryElement historyElement) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(historyElement.getType() + ":");
 		sb.append(";");
@@ -42,7 +42,7 @@ public class CSVDocumentPrinter implements DocumentPrinter {
 		sb.append(";");
 		sb.append("\n");
 		sb.append(printHeaderLineForEntries());
-		return sb;
+		return sb.toString();
 	}
 	
 	private StringBuilder printHeaderLineForEntries() {
@@ -64,7 +64,7 @@ public class CSVDocumentPrinter implements DocumentPrinter {
 	}
 	
 	@Override
-	public StringBuilder printEntry(PurchaseEntry purchaseEntry) {
+	public String printEntry(PurchaseEntry purchaseEntry) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(purchaseEntry.getName());
 		sb.append(";");
@@ -79,6 +79,24 @@ public class CSVDocumentPrinter implements DocumentPrinter {
 		sb.append(purchaseEntry.getDescription());
 		sb.append(";");
 		sb.append("\n");
-		return sb;
+		return sb.toString();
+	}
+
+	@Override
+	public String printPurchaseEntryStart() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public String printPurchaseEntrySeperator() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public String printPurchaseEntryEnd() {
+		// TODO Auto-generated method stub
+		return "";
 	}
 }

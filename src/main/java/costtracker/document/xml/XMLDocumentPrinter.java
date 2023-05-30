@@ -13,8 +13,7 @@ import costtracker.document.printer.DocumentPrinter;
 public class XMLDocumentPrinter implements DocumentPrinter {
 
 	@Override
-	public StringBuilder printHeader(HistoryDocumentHeader historyDocumentHeader) {
-		StringBuilder sb = new StringBuilder();
+	public String printHeader(HistoryDocumentHeader historyDocumentHeader) {
 		XMLNode headerNode = new XMLNode("header", "");
 		XMLAttribute descriptionAttribute = new XMLAttribute("description", historyDocumentHeader.getDescription());
 		XMLAttribute startDateAttribute = new XMLAttribute("startDate", historyDocumentHeader.getDateStart().toString());
@@ -22,25 +21,21 @@ public class XMLDocumentPrinter implements DocumentPrinter {
 		headerNode.addChild(descriptionAttribute);
 		headerNode.addChild(startDateAttribute);
 		headerNode.addChild(endDateAttribute);
-		sb.append(headerNode.toString());
-		return sb;
+		return headerNode.toString();
 	}
 
 	@Override
-	public StringBuilder printElement(HistoryElement historyElement) {
-		StringBuilder sb = new StringBuilder();
+	public String printElement(HistoryElement historyElement) {
 		XMLNode elementNode = new XMLNode("elementHeader", "");
 		XMLAttribute headerAttribute = new XMLAttribute(historyElement.getType().toLowerCase(), historyElement.getHeader());
 		XMLAttribute totalAttribute = new XMLAttribute("total",String.valueOf(historyElement.getTotal()));
 		elementNode.addChild(headerAttribute);
 		elementNode.addChild(totalAttribute);
-		sb.append(elementNode.toString());
-		return sb;
+		return elementNode.toString();
 	}
 
 	@Override
-	public StringBuilder printEntry(PurchaseEntry purchaseEntry) {
-		StringBuilder sb = new StringBuilder();
+	public String printEntry(PurchaseEntry purchaseEntry) {
 		XMLNode purchaseNode = new XMLNode("purchase","");
 		XMLAttribute nameAttribute = new XMLAttribute("name", purchaseEntry.getName());
 		 XMLAttribute priceAttribute = new XMLAttribute("price", purchaseEntry.getPrice());
@@ -54,8 +49,22 @@ public class XMLDocumentPrinter implements DocumentPrinter {
 		purchaseNode.addChild(categoryAttribute);
 		purchaseNode.addChild(companyAttribute);
 		purchaseNode.addChild(descriptionAttribute);
-		sb.append(purchaseNode.toString());
-		return sb;
+		return purchaseNode.toString();
+	}
+
+	@Override
+	public String printPurchaseEntryStart() {
+		return "<purchases>\n";
+	}
+
+	@Override
+	public String printPurchaseEntrySeperator() {
+		return "";
+	}
+
+	@Override
+	public String printPurchaseEntryEnd() {
+		return "</purchases>\n";
 	}
 
 }

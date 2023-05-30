@@ -71,9 +71,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 
 	@Test
@@ -99,9 +99,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 		
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 	@Test
 	void TestPrintEntryNoCompanyNoDescription() throws IncorrectEntryException {
@@ -121,9 +121,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 		
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 
 	@Test
@@ -137,9 +137,9 @@ class CSVPrinterUnitTest {
 
 		String line = description + ";Startdatum:;" + dateStart.toString() + ";Enddatum:;" + dateEnd.toString() + ";\n";
 		
-		var sb = printer.printHeader(header);
+		var ret = printer.printHeader(header);
 
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 //
 //	@Test

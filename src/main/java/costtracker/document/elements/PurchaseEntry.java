@@ -5,6 +5,7 @@ import costtracker.document.printer.DocumentPrinter;
 
 /**
  * This class is an internal class. Don't use, it might not work!
+ * 
  * @author Florian Felix
  *
  */
@@ -52,7 +53,8 @@ public class PurchaseEntry {
 	}
 
 	public StringBuilder printWith(DocumentPrinter printer) {
-		StringBuilder sb = printer.printEntry(this);
+		StringBuilder sb = new StringBuilder();
+		sb.append(printer.printEntry(this));
 		return sb;
 	}
 

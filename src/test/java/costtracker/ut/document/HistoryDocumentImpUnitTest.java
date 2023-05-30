@@ -34,16 +34,34 @@ class HistoryDocumentImpUnitTest {
 		LocalDate dateEnd = LocalDate.of(2023,05,23);
 		List<Purchase> purchases = new ArrayList<Purchase>();
 		Category category = Category.CategoryBuilder
-		.withName("cat")
-		.withId(1)
-		.build();
+				.withName("cat")
+				.withId(1)
+				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
 		Purchase purchase = Purchase.PurchaseBuilder
-		.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
-		.withId(1)
-		.withCategory(category)
-		.withDescription("description")
-		.build();
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
 		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
 		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
 		.asCSV()
 		.withDescription(description)
@@ -70,13 +88,31 @@ class HistoryDocumentImpUnitTest {
 				.withName("cat")
 				.withId(1)
 				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
 		Purchase purchase = Purchase.PurchaseBuilder
 				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
 				.withId(1)
 				.withCategory(category)
 				.withDescription("description")
 				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
 		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
 		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
 				.asXML()
 				.withDescription(description)
@@ -103,13 +139,31 @@ class HistoryDocumentImpUnitTest {
 				.withName("cat")
 				.withId(1)
 				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
 		Purchase purchase = Purchase.PurchaseBuilder
 				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
 				.withId(1)
 				.withCategory(category)
 				.withDescription("description")
 				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
 		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
 		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
 				.asJSON()
 				.withDescription(description)
