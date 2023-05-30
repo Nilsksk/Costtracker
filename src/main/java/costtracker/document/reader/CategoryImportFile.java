@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import costtracker.businessobjects.Category;
+import costtracker.businessobjects.IncorrectEntryException;
 
 public class CategoryImportFile {
-	private CSVImportFile importFile;
+	private ImportFile importFile;
 
-	public CategoryImportFile(CSVImportFile importFile) {
+	public CategoryImportFile(ImportFile importFile) {
 		this.importFile = importFile;
 	}
 	
@@ -18,8 +19,13 @@ public class CategoryImportFile {
 		while (this.importFile.hasNextEntry()) {
 			HashMap<String, String> entry = this.importFile.getNextEntry();
 			String name = entry.get("name");
-			Category category = new Category(0, name);
-			categories.add(category);
+			Category category;
+			try {
+				category = Category.CategoryBuilder.withName(name).withId(0).build();
+				categories.add(category);
+			} catch (IncorrectEntryException e) {
+				System.err.println("Wrong format for category: name = " + name);
+			}
 		}
 		return categories;
 	}
