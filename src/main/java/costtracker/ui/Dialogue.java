@@ -19,61 +19,69 @@ public class Dialogue {
 	private Adder adder;
 	private Deactivator deactivator;
 	private Activator activator;
-	private History history;
-	private PurchaseModelFactory purchaseModelFactory;
-
-	public Dialogue() {
-		this.history = new History();
-		this.purchaseModelFactory = new PurchaseModelFactory();
-	}
-
+	
 	public void talk() throws SQLException {
 
-		System.out.println("\tCosttracker!\n");
-		do {
-			boolean validInput = true;
-			int action = DialogueHelper.interactQuestion("Was wollen sie machen? Firma oder Kategorie bearbeiten (1), Käufe hinzufügen (2), Käufe bearbeiten (3), Historie auslesen (4), "
-													    + "Programm schließen (5)");	
-			while (validInput) {
-			
-				if (!DialogueHelper.isValidInput(action, 6)) {
-					DialogueHelper.println("Falsche Eingabe " + action + "!");
-					break;
-				}
-				if (action == 1) {			//Done
-					validInput = false;
-					editCompanyOrCategory();
-				} else if (action == 2) {	//Done
-					validInput = false;
-					adder = new PurchaseManager();
-					adder.add();	
-				} else if (action == 3) {	//Done
-					validInput = false;
-					editor = new PurchaseManager();
-					editor.edit();
-				} else if (action == 4) {	//Done
-					validInput = false;
-					historyAction();
-				} else if (action == 5) {
-					break;
-				}
-			}
-			if (action == 5) {
-				DialogueHelper.println("Bis bald!");
+		String start = "\tCosttracker!\n";
+		DialogueHelper.println(start);
+		boolean continueLoop = true;
+		while(continueLoop){
+			continueLoop = interaction1();
+		}
+	}
+	
+	private boolean interaction1() throws SQLException {
+		boolean continueLoop = true;
+		boolean validInput = true;
+		String question = "Was wollen sie machen? Firma oder Kategorie bearbeiten (1), Käufe hinzufügen (2), Käufe bearbeiten (3), Historie auslesen (4), "
+			    + "Programm schließen (5)";
+		int action = DialogueHelper.interactQuestion(question);	
+		while (validInput) {
+		
+			boolean notValid = !DialogueHelper.isValidInput(action, 6);
+			if (notValid) {
+				String errorMsg = "Falsche Eingabe " + action + "!";
+				DialogueHelper.println(errorMsg);
 				break;
 			}
-		}while(true);
+			if (action == 1) {			//Done
+				validInput = false;
+				editCompanyOrCategory();
+			} else if (action == 2) {	//Done
+				validInput = false;
+				adder = new PurchaseManager();
+				adder.add();	
+			} else if (action == 3) {	//Done
+				validInput = false;
+				editor = new PurchaseManager();
+				editor.edit();
+			} else if (action == 4) {	//Done
+				validInput = false;
+				historyAction();
+			} else if (action == 5) {
+				break;
+			}
+		}
+		if (action == 5) {
+			String end = "Bis bald!";
+			DialogueHelper.println(end);
+			continueLoop = false;
+		}
+		return continueLoop;
 	}
 
 	private void editCompanyOrCategory() throws SQLException {
 		do {
-			int action = DialogueHelper.interactQuestion("Wollen sie eine Firma ändern (1), hinzufügen (2), ausblenden (3) oder einblenden (4)? "
-													    + "Wollen sie eine Kategorie ändern (5), hinzufügen (6), ausblenden (7) oder einblenden (8)? "
-													    + "Oder zurück gehen (9)?");
+			String question = "Wollen sie eine Firma ändern (1), hinzufügen (2), ausblenden (3) oder einblenden (4)? "
+				    + "Wollen sie eine Kategorie ändern (5), hinzufügen (6), ausblenden (7) oder einblenden (8)? "
+				    + "Oder zurück gehen (9)?";
+			int action = DialogueHelper.interactQuestion(question);
 			boolean validInput = true;
 			while (validInput) {
-				if (!DialogueHelper.isValidInput(action, 10)) {
-					System.out.println("Falsche Eingabe " + action + "!");
+				boolean notValid = !DialogueHelper.isValidInput(action, 10);
+				if (notValid) {
+					String errorMsg = "Falsche Eingabe " + action + "!";
+					System.out.println(errorMsg);
 				}
 				if (action == 1) {
 					validInput = false;
@@ -123,14 +131,18 @@ public class Dialogue {
 	}
 	
 	private void historyAction() throws SQLException {
+		History history = new History();
 		do {
-			int action = DialogueHelper.interactQuestion("Wollen Sie ihre komplette Kaufhistorie (1), gefiltert nach einer bestimmten Zeitspanne (2), "
-													    + "gefiltert nach Firma in Zeitspanne (3) oder gefiltert nach Kategorie in Zeitspanne (4)? "
-													    + "Oder zurück gehen (5)?");
+			String question = "Wollen Sie ihre komplette Kaufhistorie (1), gefiltert nach einer bestimmten Zeitspanne (2), "
+				    + "gefiltert nach Firma in Zeitspanne (3) oder gefiltert nach Kategorie in Zeitspanne (4)? "
+				    + "Oder zurück gehen (5)?";
+			int action = DialogueHelper.interactQuestion(question);
 			boolean validInput = true;
 			while (validInput) {
-				if (!DialogueHelper.isValidInput(action, 6)) {
-					System.out.println("Falsche Eingabe " + action + "!");
+				boolean notValid = !DialogueHelper.isValidInput(action, 6);
+				if (notValid) {
+					String errorMsg = "Falsche Eingabe " + action + "!";
+					System.out.println(errorMsg);
 				}
 				if (action == 1) {
 					validInput = false;
@@ -138,7 +150,7 @@ public class Dialogue {
 	
 				} else if (action == 2) {
 					validInput = false;
-					timespanAction();
+					timespanAction(history);
 	
 				}else if (action == 3) {
 					validInput = false;
@@ -160,15 +172,18 @@ public class Dialogue {
 		}while(true);
 	}
 	
-	private void timespanAction() throws SQLException {
+	private void timespanAction(History history) throws SQLException {
 		do {
-			int action = DialogueHelper.interactQuestion("Wollen Sie ihre komplette Kaufhistorie nach einem bestimmten Jahr (1), einem Monat (2), "
-													    + "einer Woche (3) oder einer individuellen Zeitspanne (4)? "
-													    + "Oder zurück gehen (5)?");
+			String question = "Wollen Sie ihre komplette Kaufhistorie nach einem bestimmten Jahr (1), einem Monat (2), "
+				    + "einer Woche (3) oder einer individuellen Zeitspanne (4)? "
+				    + "Oder zurück gehen (5)?";
+			int action = DialogueHelper.interactQuestion(question);
 			boolean validInput = true;
 			while (validInput) {
-				if (!DialogueHelper.isValidInput(action, 6)) {
-					System.out.println("Falsche Eingabe " + action + "!");
+				boolean notValid = !DialogueHelper.isValidInput(action, 6);
+				if (notValid) {
+					String errorMsg = "Falsche Eingabe " + action + "!";
+					System.out.println(errorMsg);
 				}
 				if (action == 1) {
 					validInput = false;
