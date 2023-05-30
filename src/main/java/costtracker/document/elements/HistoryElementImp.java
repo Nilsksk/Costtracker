@@ -7,6 +7,11 @@ import costtracker.businessobjects.Purchase;
 import costtracker.document.printer.DocumentPrinter;
 import costtracker.document.type.ElementType;
 
+/**
+ * This class is an internal class. Don't use, it might not work!
+ * @author Florian Felix
+ *
+ */
 public class HistoryElementImp implements HistoryElement {
 
 	private double total;	

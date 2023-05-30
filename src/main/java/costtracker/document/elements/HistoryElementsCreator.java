@@ -10,6 +10,11 @@ import costtracker.businessobjects.Company;
 import costtracker.businessobjects.Purchase;
 import costtracker.document.type.ElementType;
 
+/**
+ * This class is an internal class. Don't use, it might not work!
+ * @author Florian Felix
+ *
+ */
 public class HistoryElementsCreator {
 
 	private List<Purchase> purchases;

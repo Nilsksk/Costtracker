@@ -3,7 +3,11 @@ package costtracker.document.elements;
 import java.time.LocalDate;
 
 import costtracker.document.printer.DocumentPrinter;
-
+/**
+ * This class is an internal class. Don't use, it might not work!
+ * @author Florian Felix
+ *
+ */
 public class HistoryDocumentHeader {
 	
 	private LocalDate dateStart;	
