@@ -7,13 +7,14 @@ import java.util.List;
 
 import costtracker.businessobjects.Category;
 import costtracker.businessobjects.Company;
+import costtracker.businessobjects.IncorrectEntryException;
 import costtracker.businessobjects.Purchase;
 
 public class PurchaseImportFile {
 
-	private CSVImportFile importFile;
+	private ImportFile importFile;
 
-	public PurchaseImportFile(CSVImportFile importFile) {
+	public PurchaseImportFile(ImportFile importFile) {
 		this.importFile = importFile;
 
 	}
@@ -25,10 +26,31 @@ public class PurchaseImportFile {
 			String name = entry.get("name");
 			String description = entry.get("description");
 			double price = Double.valueOf(entry.get("price"));
-			Category category = new Category(Integer.valueOf(entry.get("category")), "");
-			Company company = new Company(Integer.valueOf(entry.get("company")), "", "");
+			Category category;
+			try {
+				category = Category.CategoryBuilder.withName("dummy").withId(Integer.valueOf(entry.get("category")))
+						.build();
+			} catch (NumberFormatException | IncorrectEntryException e) {
+				System.err.println("Wrong format for category: id = " + entry.get("category"));
+				continue;
+			}
+			Company company = null;
+			if (entry.get("company") != "") {
+				try {
+					company = Company.CompanyBuilder.withName("dummy").withId(Integer.valueOf(entry.get("company")))
+							.build();
+				} catch (NumberFormatException | IncorrectEntryException e) {
+					System.err.println("Wrong format for company: id = " + entry.get("company"));
+				}
+			}
 			LocalDate date = LocalDate.parse(entry.get("date"));
-			Purchase purchase = new Purchase(0, name, description, date, price, company, category);
+			Purchase purchase;
+			try {
+				purchase = Purchase.PurchaseBuilder.withValues(name, date, price).withCategory(category).withCompany(company).withDescription(description).withId(0).build();
+			} catch (IncorrectEntryException e) {
+				System.err.println(e.getMessage());
+				continue;
+			}
 			purchases.add(purchase);
 		}
 		return purchases;

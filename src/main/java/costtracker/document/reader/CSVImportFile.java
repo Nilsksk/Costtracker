@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CSVImportFile {
+public class CSVImportFile implements ImportFile {
 
 	private List<CSVImportColumn> columns;
 
