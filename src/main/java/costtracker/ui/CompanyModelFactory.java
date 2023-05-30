@@ -15,14 +15,18 @@ public class CompanyModelFactory {
 	
 	public List<CompanyModel> createCompanyModels(List<Company> companies){
 		try {
-			for (int i = 1; i <= companies.size(); i++) {
-				CompanyModel companyModel = new CompanyModel(i, companies.get(i-1));
-				companyModels.add(companyModel);
-			}
-			return companyModels;			
+			return createModel(companies);			
 		}catch(Exception e) {
 			companyModels.clear();
 			return null;
 		}
+	}
+	
+	private List<CompanyModel> createModel(List<Company> companies){
+		for (int i = 1; i <= companies.size(); i++) {
+			CompanyModel companyModel = new CompanyModel(i, companies.get(i-1));
+			companyModels.add(companyModel);
+		}
+		return companyModels;
 	}
 }

@@ -15,14 +15,18 @@ public class CategoryModelFactory {
 	
 	public List<CategoryModel> createCategoryModels(List<Category> categories){
 		try {
-			for (int i = 1; i <= categories.size(); i++) {
-				CategoryModel categoryModel = new CategoryModel(i, categories.get(i-1));
-				categoryModels.add(categoryModel);
-			}
-			return categoryModels;			
+			return CreateModels(categories);		
 		}catch(Exception e) {
 			categoryModels.clear();
 			return null;
 		}
+	}
+	
+	private List<CategoryModel> CreateModels(List<Category> categories) {
+		for (int i = 1; i <= categories.size(); i++) {
+			CategoryModel categoryModel = new CategoryModel(i, categories.get(i-1));
+			categoryModels.add(categoryModel);
+		}
+		return categoryModels;
 	}
 }

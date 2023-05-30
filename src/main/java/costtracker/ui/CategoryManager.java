@@ -19,7 +19,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 
 	private CategoryHandler categoryHandler;
 	private CategoryModelFactory categoryModelFactory;
-	boolean submit;
+	private boolean submit;
 
 	public CategoryManager() {
 		this.categoryHandler = new CategoryHandler();
@@ -31,8 +31,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		DialogueHelper.startDialogue("Enter Taste drücken zum Hinzufügen einer neuen Kategorie");
 		String newCategoryName = DialogueHelper.inputDialogue("Name");	
 		submit = DialogueHelper.submitEntry();
-		
-		if(submit && !newCategoryName.isEmpty()) {
+		if(inputIsCorrect(submit, newCategoryName)) {
 			created = categoryHandler.create(new Category(newCategoryName));			
 			DialogueHelper.validateCreation(created);
 		}
@@ -41,16 +40,16 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		}
 	}
 	
+	private boolean inputIsCorrect(boolean submit, String newCategoryName) {
+		return submit && !newCategoryName.isEmpty();
+	}
 
 	@Override
 	public void edit() throws SQLException {
 		boolean updated = false;
 		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien");
-
 		DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryHandler.getAll()));
-
 		Category category = getCategoryToEdit();
-
 		String editedName = DialogueHelper.changeDialogue("Name", category.getName());
 		if(editedName.isEmpty()) {
 			editedName = category.getName();
@@ -59,7 +58,6 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			category.setName(editedName);
 		}
 		submit = DialogueHelper.submitEntry();
-		
 		if(submit) {
 			updated = categoryHandler.update(new Category(category.getId(), editedName));			
 		}
@@ -75,15 +73,33 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			List<Category> categoryToDisable= new ArrayList<Category>();
 			categoryToDisable.add(category);
 			DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryToDisable));
-			if(DialogueHelper.validateDeleteOrDeactivation("Erfolgreich deaktiviert!")) {
-				categoryHandler.disable(category.getId());
-			}			
+			succesfulDeactivated(category);	
 		}
 	}
 	
+	private void succesfulDeactivated(Category category) throws SQLException {
+		if(DialogueHelper.validateDeleteOrDeactivation("Erfolgreich deaktiviert!")) {
+			categoryHandler.disable(category.getId());
+		}		
+	}
+	
 	@Override
-	public void activate() {
-		
+	public void activate() throws SQLException {
+		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von deaktivierten Kategorien");
+		DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryHandler.getDisabled()));
+		Category category = getCategoryToEdit();
+		if (category != null) {
+			List<Category> categoryToEnable = new ArrayList<Category>();
+			categoryToEnable.add(category);
+			DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryToEnable));
+			succesfulActivated(category);
+		}
+	}
+	
+	private void succesfulActivated(Category category) throws SQLException {
+		if(DialogueHelper.validateEnable("Erfolgreich aktiviert!")) {
+			categoryHandler.enable(category.getId());
+		}	
 	}
 	
 	private Category getCategoryToEdit() throws SQLException {	
