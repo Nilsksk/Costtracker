@@ -6,10 +6,16 @@ import costtracker.document.elements.PurchaseEntry;
 
 public interface DocumentPrinter {
 
-	public StringBuilder printHeader(HistoryDocumentHeader historyDocumentHeader);
+	public String printHeader(HistoryDocumentHeader historyDocumentHeader);
 	
-	public StringBuilder printElement(HistoryElement historyElement);
+	public String printElement(HistoryElement historyElement);
 	
-	public StringBuilder printEntry(PurchaseEntry purchaseEntry);
+	public String printEntry(PurchaseEntry purchaseEntry);
+
+	public String printPurchaseEntryStart();
+
+	public String printPurchaseEntrySeperator();
+
+	public String printPurchaseEntryEnd();
 
 }

@@ -33,7 +33,9 @@ public class HistoryDocumentHeader {
 	}
 
 	public StringBuilder printWith(DocumentPrinter printer) {
-		StringBuilder sb = printer.printHeader(this);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(printer.printHeader(this));
 		return sb;
 	}
 }

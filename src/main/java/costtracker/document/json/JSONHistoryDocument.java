@@ -46,19 +46,18 @@ public class JSONHistoryDocument extends HistoryDocumentBase implements HistoryD
 		sb.append("{");
 		sb.append("\n");
 		sb.append(header.printWith(printer));
-		sb.append("\n");
+		sb.append(",\n");
 		sb.append("\"elements\":[");
 		for (HistoryElement historyElement : historyElements) {
 			sb.append("{\n");
 			sb.append(historyElement.printWith(printer));
-			sb.append("]\n}");
+			sb.append("}");
 			if (!isLastHistoryElementOf(historyElements, historyElement)) {
 				sb.append(",");
 				sb.append("\n");
 			}
 		}
-		sb.append("]");
-		sb.append("\n");
+		sb.append("]\n");
 		sb.append("}");
 		try {
 			try (FileWriter fileWriter = new FileWriter(file)) {
