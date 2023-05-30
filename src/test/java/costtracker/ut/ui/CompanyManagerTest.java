@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Company;
-import costtracker.ui.CompanyManager;
+import costtracker.domain.businessobjects.Company;
+import costtracker.plugin.ui.CompanyManager;
 
 class CompanyManagerTest {
 

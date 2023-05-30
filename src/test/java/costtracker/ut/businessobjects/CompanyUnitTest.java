@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.db.entities.CompanyEntity;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.plugin.db.entities.CompanyEntity;
 
 class CompanyUnitTest {
 

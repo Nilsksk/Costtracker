@@ -7,13 +7,13 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.businessobjects.Purchase;
-import costtracker.db.entities.CategoryEntity;
-import costtracker.db.entities.CompanyEntity;
-import costtracker.db.entities.PurchaseEntity;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.plugin.db.entities.CategoryEntity;
+import costtracker.plugin.db.entities.CompanyEntity;
+import costtracker.plugin.db.entities.PurchaseEntity;
 
 class PurchaseUnitTest {
 

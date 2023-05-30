@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.db.entities.CategoryEntity;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.plugin.db.entities.CategoryEntity;
 
 class CategoryUnitTest {
 
