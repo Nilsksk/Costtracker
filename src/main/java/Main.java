@@ -20,12 +20,14 @@ public class Main {
     public static void main(String[] args) throws IOException, SQLException {
     	//TODO Supress? Seperate Task?
     	addDependencies();
+    	ensureDatabaseIsCreated();
         Controller controller = new Controller("localhost", 8080, 1);
         controller.startServer();
         controller.addHandler();
         
 		Dialogue dialogue = new Dialogue();
         dialogue.talk();
+		controller.stopServer();
         
     }
 
@@ -37,5 +39,11 @@ public class Main {
 		container.registerScoped(PurchaseRepositoryAdapter.class, PurchaseRepositoryAdapterImp.class);
 		
 		
+	}
+	
+	private static void ensureDatabaseIsCreated() {
+		DependencyContainer container = DependencyContainer.getInstance();
+		UnitOfWork uow = container.getDependency(UnitOfWork.class);
+		uow.ensureCreated();
 	}
 }

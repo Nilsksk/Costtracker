@@ -1,4 +1,4 @@
-package costtracker.adapter.in;
+package costtracker.domain.in;
 
 import costtracker.domain.businessobjects.Purchase;
 

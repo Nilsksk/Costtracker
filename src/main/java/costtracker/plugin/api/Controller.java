@@ -122,6 +122,13 @@ public class Controller {
         System.out.println("-------------------------------------------------");
     }
 
+    public void stopServer(){
+        server.stop(0);
+        System.out.println("\n-------------------");
+        System.out.println("HTTP Server stopped");
+        System.out.println("-------------------");
+    }
+
     public String getHOSTNAME() {
         return HOSTNAME;
     }

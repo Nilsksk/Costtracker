@@ -8,13 +8,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.adapter.in.HistoryElement;
-import costtracker.adapter.in.HistoryElementsCreator;
-import costtracker.application.in.ElementType;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.HistoryElement;
+import costtracker.domain.in.HistoryElementsCreator;
+import costtracker.domain.in.enums.ElementType;
 
 class HistoryElementUnitTest {
 

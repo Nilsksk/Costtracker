@@ -5,12 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import costtracker.adapter.in.HistoryDocumentHeader;
-import costtracker.adapter.in.HistoryElement;
-import costtracker.adapter.in.HistoryElementsCreator;
-import costtracker.application.in.HistoryDocument;
-import costtracker.application.in.HistoryDocumentBase;
 import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.in.HistoryDocument;
+import costtracker.domain.in.HistoryDocumentBase;
+import costtracker.domain.in.HistoryDocumentHeader;
+import costtracker.domain.in.HistoryElement;
+import costtracker.domain.in.HistoryElementsCreator;
 
 public class XMLHistoryDocument extends HistoryDocumentBase implements HistoryDocument {
 
