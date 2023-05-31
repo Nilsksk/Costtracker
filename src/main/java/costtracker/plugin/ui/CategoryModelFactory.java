@@ -32,7 +32,7 @@ public class CategoryModelFactory {
 			categoryModels.add(categoryModel);
 		} catch (Exception e) {
 			
-			DialogueHelper.println("Fehler!");
+			DialogueHelper.printLine("Fehler!");
 		}
 	}
 }

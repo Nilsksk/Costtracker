@@ -6,7 +6,7 @@ public class DialogueHelper {
 
 	private static Scanner sc = new Scanner(System.in);
 
-	public static String fillWhitespaces(int numberWhitespaces) {
+	public static String addWhitespaces(int numberWhitespaces) {
 		String whitespaces = "";
 		for (int i = 0; i < numberWhitespaces; i++) {
 			whitespaces += " ";
@@ -14,36 +14,36 @@ public class DialogueHelper {
 		return whitespaces;
 	}
 
-	public static void startDialogue(String startingDialogue) {
+	public static void printStartDialogueWith(String startingDialogue) {
 		print(startingDialogue);
 		sc.nextLine();
-		println("");
+		printLine("");
 	}
 
-	public static String inputDialogue(String input) {
+	public static String printInputDialogueWith(String input) {
 		String output = input + ": ";
 		print(output);
-		return returnInput();
+		return returnInputOfScanner();
 	}
 
-	public static String changeDialogue(String descriptionOfField, String input) {
-		String output = "(" + descriptionOfField + ")" + " " + input + fillWhitespaces(0) + " -> ";
+	public static String printChangeDialogueWith(String descriptionOfField, String input) {
+		String output = "(" + descriptionOfField + ")" + " " + input + addWhitespaces(0) + " -> ";
 		print(output);
-		return returnInput();
+		return returnInputOfScanner();
 	}
 
-	public static String returnInput() {
+	public static String returnInputOfScanner() {
 		return sc.nextLine();
 	}
 
-	public static int getIntDialogue(String input) {
+	public static int printGetIdDialogueWith(String input) {
 		String output = input + ": ";
 		print(output);
 		String id = sc.nextLine();
-		return mapToId(id);
+		return mapToIdFrom(id);
 	}
 
-	private static int mapToId(String ret) {
+	private static int mapToIdFrom(String ret) {
 		try {
 			return Integer.parseInt(ret);
 		} catch (Exception e) {
@@ -55,64 +55,64 @@ public class DialogueHelper {
 		System.out.print(string);
 	}
 
-	public static void println(String string) {
+	public static void printLine(String string) {
 		System.out.println(string);
 	}
 	
 	public static boolean submitEntry() {
 		String save = "Zum Speichern ihrer Daten '+' eingeben: ";
 		String input = "+";
-		return saveData(save, input);
+		return printSaveDataDialogueWith(save, input);
 	}
 
-	public static boolean saveData(String input, String action) {
+	public static boolean printSaveDataDialogueWith(String input, String action) {
 		print(input);
 		boolean output = sc.nextLine().equals(action);
 		return output;
 	}
 	
-	public static void validateCreation(boolean created, String succesful, String unsuccesful) {
+	public static void printCreationDialogueWith(boolean created, String succesful, String unsuccesful) {
 		if (created) {
-			println(succesful);
+			printLine(succesful);
 		}
 		else {
-			println(unsuccesful);
+			printLine(unsuccesful);
 		}
 	}
 	
-	public static int interactQuestion(String question) {
+	public static int printInteractQuestionWith(String question) {
 		print(question);
 		String action = sc.nextLine();		
-		println("");
-		return mapToId(action);	
+		printLine("");
+		return mapToIdFrom(action);	
 	}
 	
-	public static boolean isValidInput(int input, int maxInput) {
+	public static boolean inputIsGreaterThanZeroAndBelowMaxInput(int input, int maxInput) {
 		boolean valid = input < maxInput && input > 0;
 		return valid;
 	}
 	
-	public static boolean validateDeleteOrDeactivation(String deleteOrDeactivate) {
+	public static boolean printDeleteOrDeactivateDialogueWith(String deleteOrDeactivate) {
 		String question = "Löschung oder Deaktivierung durchführen (-)? ";
-		String input = inputDialogue(question);
-		println("");
+		String input = printInputDialogueWith(question);
+		printLine("");
 		boolean equal = input.equals("-");
 		if (equal) {
-			println(deleteOrDeactivate);
-			println("");
+			printLine(deleteOrDeactivate);
+			printLine("");
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean validateEnable(String activate) {
+	public static boolean printEnableDialogueWith(String activate) {
 		String question = "Aktivierung durchführen (+)?";
-		String input = inputDialogue(question);
-		println("");
+		String input = printInputDialogueWith(question);
+		printLine("");
 		boolean equal = input.equals("+");
 		if (equal) {
-			println(activate);
-			println("");
+			printLine(activate);
+			printLine("");
 			return true;
 		}
 		return false;

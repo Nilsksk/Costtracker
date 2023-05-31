@@ -1,58 +1,37 @@
 package costtracker.application.out;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import costtracker.domain.businessobjects.Category;
-import costtracker.domain.businessobjects.Company;
-import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.application.converter.PurchaseConverter;
 import costtracker.domain.businessobjects.Purchase;
 
 public class PurchaseImportFile {
 
 	private ImportFile importFile;
 
+	private List<Purchase> purchases;
+	
 	public PurchaseImportFile(ImportFile importFile) {
 		this.importFile = importFile;
-
+		purchases = new ArrayList<>();
 	}
 
 	public List<Purchase> getPurchases() {
-		List<Purchase> purchases = new ArrayList<>();
-		while (importFile.hasNextEntry()) {
-			HashMap<String, String> entry = importFile.getNextEntry();
-			String name = entry.get("name");
-			String description = entry.get("description");
-			double price = Double.valueOf(entry.get("price"));
-			Category category;
-			try {
-				category = Category.CategoryBuilder.withName("dummy").withId(Integer.valueOf(entry.get("category")))
-						.build();
-			} catch (NumberFormatException | IncorrectEntryException e) {
-				System.err.println("Wrong format for category: id = " + entry.get("category"));
-				continue;
-			}
-			Company company = null;
-			if (entry.get("company") != "") {
-				try {
-					company = Company.CompanyBuilder.withName("dummy").withId(Integer.valueOf(entry.get("company")))
-							.build();
-				} catch (NumberFormatException | IncorrectEntryException e) {
-					System.err.println("Wrong format for company: id = " + entry.get("company"));
-				}
-			}
-			LocalDate date = LocalDate.parse(entry.get("date"));
-			Purchase purchase;
-			try {
-				purchase = Purchase.PurchaseBuilder.withValues(name, date, price).withCategory(category).withCompany(company).withDescription(description).withId(0).build();
-			} catch (IncorrectEntryException e) {
-				System.err.println(e.getMessage());
-				continue;
-			}
-			purchases.add(purchase);
-		}
+		convertToPurchases();		
 		return purchases;
+	}
+
+	private void convertToPurchases() {
+		while (importFile.hasNextEntry()) {
+			convertToPurchase(importFile.getNextEntry());			
+		}		
+	}
+
+	private void convertToPurchase(HashMap<String, String> entry) {
+		PurchaseConverter pc = new PurchaseConverter();
+		Purchase purchase = pc.convertFrom(entry);
+		purchases.add(purchase);	
 	}
 }

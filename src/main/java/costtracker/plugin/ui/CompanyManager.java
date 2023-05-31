@@ -21,11 +21,11 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		boolean created = false;
 		CompanyHandler companyHandler = new CompanyHandler();
 		String addCompany = "Enter Taste drücken um neue  Firma und optional dessen Standort hinzuzufügen";
-		DialogueHelper.startDialogue(addCompany);
+		DialogueHelper.printStartDialogueWith(addCompany);
 		String name = "Name";
-		String newCompanyName = DialogueHelper.inputDialogue(name);
+		String newCompanyName = DialogueHelper.printInputDialogueWith(name);
 		String location = "Standort";
-		String newCompanyLocation = DialogueHelper.inputDialogue(location);
+		String newCompanyLocation = DialogueHelper.printInputDialogueWith(location);
 		submit = DialogueHelper.submitEntry();
 		try {
 			Company company = Company.CompanyBuilder
@@ -35,13 +35,13 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 					.build();
 			created = companyHandler.create(company);		
 		} catch (IncorrectEntryException e) {
-			DialogueHelper.println("Unzureichende Eingabe!");
+			DialogueHelper.printLine("Unzureichende Eingabe!");
 		}
 		boolean correct = submit && created; 
 		if(correct) {
 			String succesful = "Angelegt!";
 			String unsuccesful = "Anlegen fehlgeschlagen!";
-			DialogueHelper.validateCreation(created, succesful, unsuccesful);
+			DialogueHelper.printCreationDialogueWith(created, succesful, unsuccesful);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		CompanyModelFactory companyModelFactory = new CompanyModelFactory();
 		CompanyHandler companyHandler = new CompanyHandler();
 		String printAllCompanies = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von Firmen";
-		DialogueHelper.startDialogue(printAllCompanies);
+		DialogueHelper.printStartDialogueWith(printAllCompanies);
 		List<Company> enabledCompanies = companyHandler.getEnabled();
 		List<CompanyModel> enabledCompanyModels = companyModelFactory.createCompanyModels(enabledCompanies);
 		boolean moreThenZeroModels = enabledCompanyModels.size() > 0;
@@ -73,7 +73,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		boolean updated = false;
 		String name = "Name";
 		String companyName = company.getName();
-		String editedName = DialogueHelper.changeDialogue(name, companyName);
+		String editedName = DialogueHelper.printChangeDialogueWith(name, companyName);
 		boolean emptyName = editedName.isEmpty();
 		if (emptyName) {
 			editedName = company.getName();
@@ -83,7 +83,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		}
 		String location = "Standort";
 		String companyLocation = company.getLocation();
-		String editedLocation = DialogueHelper.changeDialogue(location, companyLocation);
+		String editedLocation = DialogueHelper.printChangeDialogueWith(location, companyLocation);
 		boolean emptyLocation = editedLocation.isEmpty();
 		if (emptyLocation) {
 			editedLocation = company.getLocation();
@@ -101,12 +101,12 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 					.build();
 			updated = companyHandler.update(company);		
 		} catch (IncorrectEntryException e) {
-			DialogueHelper.println("Fehler!");
+			DialogueHelper.printLine("Fehler!");
 		}
 		if(submit) {
 			String succesful = "Erfolgreich bearbeitet!";
 			String unsuccesful = "Bearbeiten fehlgeschlagen!";
-			DialogueHelper.validateCreation(updated, succesful, unsuccesful);
+			DialogueHelper.printCreationDialogueWith(updated, succesful, unsuccesful);
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		CompanyModelFactory companyModelFactory = new CompanyModelFactory();
 		CompanyHandler companyHandler = new CompanyHandler();
 		String printActiveCompanies = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von aktivierten Firmen";
-		DialogueHelper.startDialogue(printActiveCompanies);
+		DialogueHelper.printStartDialogueWith(printActiveCompanies);
 		List<Company> enabledCompanies = companyHandler.getEnabled();
 		List<CompanyModel> enabledCompanyModels = companyModelFactory.createCompanyModels(enabledCompanies);
 		boolean moreThenZeroModels = enabledCompanyModels.size() > 0;
@@ -140,7 +140,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	
 	private void succesfulDeactivated(Company company, CompanyHandler companyHandler) throws SQLException {
 		String deactivated = "Erfolgreich deaktiviert!";
-		boolean isDeactivated = DialogueHelper.validateDeleteOrDeactivation(deactivated);
+		boolean isDeactivated = DialogueHelper.printDeleteOrDeactivateDialogueWith(deactivated);
 		if(isDeactivated) {
 			int id = company.getId();
 			companyHandler.disable(id);
@@ -151,7 +151,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	public void activate() throws SQLException {
 		CompanyModelFactory companyModelFactory = new CompanyModelFactory();
 		CompanyHandler companyHandler = new CompanyHandler();
-		DialogueHelper.startDialogue("Enter Taste drücken zum Anzeigen aller existierenden Einträge von deaktivierten Firmen");
+		DialogueHelper.printStartDialogueWith("Enter Taste drücken zum Anzeigen aller existierenden Einträge von deaktivierten Firmen");
 		List<Company> disabledCompanies = companyHandler.getDisabled();
 		List<CompanyModel> disabledComapnyModels = companyModelFactory.createCompanyModels(disabledCompanies);
 		if (disabledComapnyModels.size() > 0) {
@@ -175,7 +175,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	
 	private void succesfulActivated(Company company, CompanyHandler companyHandler) throws SQLException {
 		String activated = "Erfolgreich aktiviert!";
-		boolean isActivated = DialogueHelper.validateEnable(activated);
+		boolean isActivated = DialogueHelper.printEnableDialogueWith(activated);
 		if(isActivated) {
 			int id = company.getId();
 			companyHandler.enable(id);
@@ -185,7 +185,7 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	private Company getCompanyToEdit(List<CompanyModel> companyModels, String input) throws SQLException {
 		Company company;
 		try {
-			int id = DialogueHelper.getIntDialogue(input);
+			int id = DialogueHelper.printGetIdDialogueWith(input);
 			CompanyModel companyModel = companyModels.stream().filter(c -> c.getPosition() == id).findAny().orElse(null);
 			company = companyModel.getCompany();
 		}catch(Exception e) {

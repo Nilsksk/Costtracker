@@ -6,7 +6,7 @@ public class DateConverter {
 
 	public static LocalDate convertDate(String input) {
 		LocalDate date;
-		String purchaseDate = DialogueHelper.inputDialogue(input);	
+		String purchaseDate = DialogueHelper.printInputDialogueWith(input);	
 		String[] dateValues = purchaseDate.split(":");
 		try {
 			int day =  Integer.parseInt(dateValues[0]);
