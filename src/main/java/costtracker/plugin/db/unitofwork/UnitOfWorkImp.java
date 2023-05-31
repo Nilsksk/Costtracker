@@ -1,18 +1,14 @@
 package costtracker.plugin.db.unitofwork;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import costtracker.adapter.persistence.UnitOfWork;
 import costtracker.plugin.db.repositories.CategoryRepository;
 import costtracker.plugin.db.repositories.CompanyRepository;
 import costtracker.plugin.db.repositories.PurchaseRepository;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UnitOfWorkImp implements UnitOfWork {
 
@@ -70,15 +66,32 @@ public class UnitOfWorkImp implements UnitOfWork {
 	@Override
 	public void ensureCreated() {
 		try {
-			Path path = Paths.get("CreateDatabase.sql");
-			String sql = Files.readString(path);
+			String sql = "CREATE TABLE IF NOT EXISTS category\n" +
+					"(id IDENTITY NOT NULL,\n" +
+					"name varchar(50) NOT NULL,\n" +
+					"isenabled boolean NOT NULL);\n" +
+					"\n" +
+					"CREATE TABLE IF NOT EXISTS company\n" +
+					"(id IDENTITY NOT NULL,\n" +
+					"name varchar(50) NOT NULL,\n" +
+					"location varchar(50),\n" +
+					"isenabled boolean NOT NULL);\n" +
+					"\n" +
+					"CREATE TABLE IF NOT EXISTS purchase\n" +
+					"(id IDENTITY NOT NULL,\n" +
+					"name varchar(50) NOT NULL,\n" +
+					"description varchar(50),\n" +
+					"date date NOT NULL,\n" +
+					"category int,\n" +
+					"company int,\n" +
+					"price numeric(8,2) NOT NULL,\n" +
+					"CONSTRAINT FK_CATEGORY FOREIGN KEY (category) references category(id) ON DELETE CASCADE,\n" +
+					"CONSTRAINT FK_COMPANY FOREIGN KEY (company) references company(id) ON DELETE SET NULL);";
+
 			Statement stmt = connection.createStatement();
 			stmt.execute(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
-
 }
