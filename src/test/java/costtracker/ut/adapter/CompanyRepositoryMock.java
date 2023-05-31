@@ -1,4 +1,4 @@
-package costtracker.ut.buisnesslogic;
+package costtracker.ut.adapter;
 
 import costtracker.adapter.entities.CompanyEntity;
 import costtracker.adapter.persistence.BaseDataRepository;
@@ -38,7 +38,7 @@ public class CompanyRepositoryMock implements BaseDataRepository<CompanyEntity> 
 
     @Override
     public CompanyEntity get(int id) {
-        return companyEntities.get(id);
+        return companyEntities.stream().filter(c -> c.getId() == id).findFirst().get();
     }
 
     @Override

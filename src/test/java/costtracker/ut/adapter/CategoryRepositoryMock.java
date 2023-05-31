@@ -1,4 +1,4 @@
-package costtracker.ut.buisnesslogic;
+package costtracker.ut.adapter;
 
 import costtracker.adapter.entities.CategoryEntity;
 import costtracker.adapter.persistence.BaseDataRepository;
@@ -39,7 +39,7 @@ public class CategoryRepositoryMock implements BaseDataRepository<CategoryEntity
 
     @Override
     public CategoryEntity get(int id) {
-        return categoryEntities.get(id);
+        return categoryEntities.stream().filter(c -> c.getId() == id).findFirst().get();
     }
 
     @Override

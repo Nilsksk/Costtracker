@@ -1,7 +1,6 @@
-package costtracker.ut.buisnesslogic;
+package costtracker.ut.adapter;
 
 import costtracker.adapter.persistence.UnitOfWork;
-import costtracker.plugin.db.repositories.PurchaseRepository;
 
 import java.sql.SQLException;
 
@@ -18,8 +17,8 @@ public class UnitOfWorkMock implements UnitOfWork {
     }
 
     @Override
-    public PurchaseRepository getPurchaseRepository() {
-        return null;
+    public PurchaseRepositoryMock getPurchaseRepository() {
+        return new PurchaseRepositoryMock();
     }
 
     @Override
