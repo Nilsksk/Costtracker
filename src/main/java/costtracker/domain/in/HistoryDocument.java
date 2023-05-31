@@ -1,4 +1,4 @@
-package costtracker.application.in;
+package costtracker.domain.in;
 
 public interface HistoryDocument {
 	
