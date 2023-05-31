@@ -44,6 +44,14 @@ public class PurchasePrinter {
 								.length())
 								.max()
 								.getAsInt();
+			int longestPurchaseLocation = purchases
+								.stream()
+								.mapToInt(p -> p.getPurchase()
+								.getCompany()
+								.getLocation()
+								.length())
+								.max()
+								.getAsInt();
 			int longestPurchaseCategory = purchases
 								.stream()
 								.mapToInt(p -> p.getPurchase()
@@ -52,13 +60,13 @@ public class PurchasePrinter {
 								.length())
 								.max()
 								.getAsInt();
-			purchasePrinter(purchases, longestPurchaseId, longestPurchaseName, longestPurchasePrice, longestPurchaseDate, longestPurchaseCompany, longestPurchaseCategory);
+			purchasePrinter(purchases, longestPurchaseId, longestPurchaseName, longestPurchasePrice, longestPurchaseDate, longestPurchaseCompany, longestPurchaseLocation, longestPurchaseCategory);
 		}
 		DialogueHelper.println("");
 	}
 	
 	private static void purchasePrinter(List<PurchaseModel> purchases, int longestPurchaseId, int longestPurchaseName, 
-										int longestPurchasePrice, int longestPurchaseDate, int longestPurchaseCompany, int longestPurchaseCategory) {
+										int longestPurchasePrice, int longestPurchaseDate, int longestPurchaseCompany, int longestPurchaseLocation, int longestPurchaseCategory) {
 		for (PurchaseModel purchaseModel : purchases) {
 			String printId = String.valueOf(purchaseModel.getPostion());
 			printColumn(longestPurchaseId, printId);
@@ -75,6 +83,8 @@ public class PurchasePrinter {
 			} else {
 				String companyName = purchaseModel.getPurchase().getCompany().getName();
 				printColumn(longestPurchaseCompany, companyName);
+				String companyLocation = purchaseModel.getPurchase().getCompany().getLocation();
+				printColumn(longestPurchaseLocation, companyLocation);
 			}
 			String purchaseName = purchaseModel.getPurchase().getCategory().getName();
 			printColumn(longestPurchaseCategory, purchaseName);

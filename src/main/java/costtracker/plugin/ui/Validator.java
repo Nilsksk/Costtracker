@@ -29,7 +29,8 @@ public class Validator {
 			LocalDate datePurchase = purchase.getDate(); 
 			return datePurchase;
 		}
-		return LocalDate.parse(newPurchaseDate);
+		LocalDate newDate = DateConverter.convertDateWithoutDialogue(newPurchaseDate);
+		return newDate;
 	}
 		
 	public static int checkCompanyId(Purchase purchase, List<Company> companies) {

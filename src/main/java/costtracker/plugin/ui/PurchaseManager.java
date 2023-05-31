@@ -36,13 +36,13 @@ public class PurchaseManager implements Editor, Adder {
 			String date = "Datum des Kaufs (TT:MM:JJJJ)";
 			LocalDate validatedDate = DateConverter.convertDate(date);	
 			DialogueHelper.println("");
-			List<Company> companies = companyHandler.getAll();
+			List<Company> companies = companyHandler.getEnabled();
 			List<CompanyModel> companyModels = companyModelFactory.createCompanyModels(companies);
 			CompanyPrinter.printCompanies(companyModels);	
 			DialogueHelper.println("");
 			Company company = validateCompany(companyHandler);
 			DialogueHelper.println("");
-			List<Category> categories = categoryHandler.getAll();
+			List<Category> categories = categoryHandler.getEnabled();
 			List<CategoryModel> categoryModels = categoryModelFactory.createCategoryModels(categories);
 			CategoryPrinter.printCategories(categoryModels);
 			Category category = validateCategory(categoryHandler);
@@ -103,9 +103,11 @@ public class PurchaseManager implements Editor, Adder {
 			purchase = tryGetPurchase(purchaseModelFactory, purchaseHandler);
 			if (input == 1) {
 				tryEditPurchase(validInput, purchase, companyModelFactory, companyHandler, categoryModelFactory, categoryHandler, updated, purchaseHandler);
+				break;
 			}
 			else if (input == 2) {
 				tryDeletePurchase(validInput, purchase, purchaseHandler, purchaseModelFactory);
+				break;
 			}	
 			else {
 				break;
@@ -164,7 +166,7 @@ public class PurchaseManager implements Editor, Adder {
 			boolean submit = DialogueHelper.submitEntry();
 			if (submit) {
 				try {
-					Purchase purchaseNew = Purchase.PurchaseBuilder.withValues(newPurchaseName, newPurchaseDate, newPurchasePrice).withCompany(company).withCategory(category).withDescription(newPurchaseDescription).build();
+					Purchase purchaseNew = Purchase.PurchaseBuilder.withValues(purchaseName, newPurchaseDate, newPurchasePrice).withCompany(company).withCategory(category).withDescription(newPurchaseDescription).withId(purchase.getId()).build();
 					updated = purchaseHandler.update(purchaseNew);
 				} catch (IncorrectEntryException e) {
 					String errorMsg = "Fehler!";
