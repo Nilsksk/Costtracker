@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class HandlerHelperFunctions {

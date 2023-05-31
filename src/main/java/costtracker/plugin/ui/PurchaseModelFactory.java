@@ -3,7 +3,6 @@ package costtracker.plugin.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.Purchase;
 
 public class PurchaseModelFactory {

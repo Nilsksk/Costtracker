@@ -3,7 +3,6 @@ package costtracker.plugin.api.routes.purchase;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 
-import costtracker.application.handlers.CompanyHandler;
 import costtracker.application.handlers.PurchaseHandler;
 import costtracker.plugin.api.enums.httpCodes;
 import costtracker.plugin.api.enums.httpHeader;
@@ -14,7 +13,6 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 
 public class DeletePurchaseById implements DeleteHandler {
     private static final Charset CHARSET = StandardCharsets.UTF_8;

@@ -48,7 +48,7 @@ public class Validator {
 	}
 	
 	public static int checkCategoryId(Purchase purchase, List<Category> categories) {
-		String id = "Kategorie-ID";
+		//String id = "Kategorie-ID";
 		String categoryId = Integer.toString(purchase.getCategory().getId());
 		String newPurchaseCategory = DialogueHelper.changeDialogue("Kategorie-ID", categoryId);		
 		try {

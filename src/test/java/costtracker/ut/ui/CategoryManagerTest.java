@@ -1,26 +1,24 @@
 package costtracker.ut.ui;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import costtracker.domain.businessobjects.Category;
-import costtracker.plugin.ui.CategoryManager;
+import costtracker.domain.businessobjects.IncorrectEntryException;
 
 public class CategoryManagerTest {
 
 	@Test
-	void test() {
-		CategoryManager cm = new CategoryManager();
+	void test() throws IncorrectEntryException {
+		//CategoryManager cm = new CategoryManager();
 		
 		List<Category> categories = new ArrayList<Category>();
-		categories.add(new Category(1, "Essen"));
-		categories.add(new Category(2, "Alkohol"));
-		categories.add(new Category(3, "Lego"));
-		categories.add(new Category(4, "Lautre"));
+		categories.add(Category.CategoryBuilder.withName("Essen").withId(1).build());
+		categories.add(Category.CategoryBuilder.withName("Alkohol").withId(2).build());
+		categories.add(Category.CategoryBuilder.withName("Lego").withId(3).build());
+		categories.add(Category.CategoryBuilder.withName("Lautre").withId(4).build());
 		
 		//cm.setCategories(categories);
 		

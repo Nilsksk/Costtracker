@@ -14,7 +14,7 @@ public class CompanyRepositoryAdapaterUnitTest {
     void testCompanyAdapter() {
         DependencyContainer container = DependencyContainer.getInstance();
         container.registerScoped(UnitOfWork.class, UnitOfWorkMock.class);
-        var uowMock = container.getDependency(UnitOfWork.class);
+        //var uowMock = container.getDependency(UnitOfWork.class);
 
         CompanyRepositoryAdapter companyRepositoryAdapter = new CompanyRepositoryAdapterImp();
         Company company = companyRepositoryAdapter.get(3);

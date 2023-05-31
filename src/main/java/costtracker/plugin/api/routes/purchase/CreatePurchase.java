@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpServer;
 import costtracker.application.handlers.PurchaseHandler;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
 import costtracker.plugin.api.enums.httpCodes;
 import costtracker.plugin.api.enums.httpHeader;
@@ -19,7 +20,6 @@ import static costtracker.domain.businessobjects.Company.fromJSONToCompany;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class CreatePurchase implements PostHandler {
@@ -46,7 +46,7 @@ public class CreatePurchase implements PostHandler {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
                             PurchaseHandler purchaseHandler = new PurchaseHandler();
                             boolean returnState = purchaseHandler.create(
-                                    new Purchase(purchaseID, purchaseName, purchaseDescription, purchaseDate, purchasePrice, purchaseCompany, purchaseCategory));
+                                    Purchase.PurchaseBuilder.withValues(purchaseName, purchaseDate, purchasePrice).withCategory(purchaseCategory).withCompany(purchaseCompany).withDescription(purchaseDescription).withId(purchaseID).build());
                             final String responseBody = new JSONObject().put("state", returnState).toString();
 
                             // Set Headers and send Response to client
@@ -61,7 +61,10 @@ public class CreatePurchase implements PostHandler {
                     headers.set(httpHeader.HEADER_ALLOW.headerData, httpHeader.ALLOWED_METHODS.headerData);
                     handler.sendResponseHeaders(httpCodes.STATUS_METHOD_NOT_ALLOWED.code, NO_RESPONSE_LENGTH);
                 }
-            }
+            } catch (IncorrectEntryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         });
     }
 }

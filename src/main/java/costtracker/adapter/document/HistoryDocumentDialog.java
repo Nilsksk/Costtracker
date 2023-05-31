@@ -7,7 +7,6 @@ import costtracker.application.in.DocumentType;
 import costtracker.application.in.HistoryDocumentDialogAdapter;
 import costtracker.domain.dependencyinjection.DependencyContainer;
 import costtracker.domain.in.enums.ElementType;
-import costtracker.plugin.ui.DialogueHelper;
 
 public class HistoryDocumentDialog implements HistoryDocumentDialogAdapter {
 

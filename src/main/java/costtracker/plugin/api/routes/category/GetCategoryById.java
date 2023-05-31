@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 
 public class GetCategoryById implements GetHandler {
     private static final Charset CHARSET = StandardCharsets.UTF_8;

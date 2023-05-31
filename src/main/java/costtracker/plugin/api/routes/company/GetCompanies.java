@@ -3,9 +3,7 @@ package costtracker.plugin.api.routes.company;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 
-import costtracker.application.handlers.CategoryHandler;
 import costtracker.application.handlers.CompanyHandler;
-import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.plugin.api.enums.httpCodes;
 import costtracker.plugin.api.enums.httpHeader;
@@ -13,11 +11,9 @@ import costtracker.plugin.api.helper.HandlerHelperFunctions;
 import costtracker.plugin.api.interfaces.GetHandler;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.List;
 
 public class GetCompanies implements GetHandler {

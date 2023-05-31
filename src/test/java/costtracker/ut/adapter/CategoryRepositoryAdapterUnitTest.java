@@ -14,7 +14,7 @@ public class CategoryRepositoryAdapterUnitTest {
     void testCategoryAdapter() {
         DependencyContainer container = DependencyContainer.getInstance();
         container.registerScoped(UnitOfWork.class, UnitOfWorkMock.class);
-        var uowMock = container.getDependency(UnitOfWork.class);
+        //var uowMock = container.getDependency(UnitOfWork.class);
 
         CategoryRepositoryAdapter categoryRepositoryAdapter = new CategoryRepositoryAdapterImp();
         Category category = categoryRepositoryAdapter.get(2);
