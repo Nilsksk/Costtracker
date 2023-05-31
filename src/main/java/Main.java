@@ -26,6 +26,7 @@ public class Main {
         
 		Dialogue dialogue = new Dialogue();
         dialogue.talk();
+		controller.stopServer();
         
     }
 
