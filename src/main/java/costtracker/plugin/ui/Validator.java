@@ -12,7 +12,7 @@ public class Validator {
 	public static double checkPrize(Purchase purchase) {
 		String price = "Preis";
 		String purchasePrice = String.valueOf(purchase.getPrice());
-		String newPurchasePrice = DialogueHelper.changeDialogue(price, purchasePrice);
+		String newPurchasePrice = DialogueHelper.printChangeDialogueWith(price, purchasePrice);
 		boolean priceIsEmpty = newPurchasePrice.isEmpty();
 		if (priceIsEmpty) {
 			double priceDouble = purchase.getPrice();
@@ -24,7 +24,7 @@ public class Validator {
 	public static LocalDate checkDate(Purchase purchase) {
 		String date = "Datum";
 		String purchaseDate = purchase.getDateString();
-		String newPurchaseDate = DialogueHelper.changeDialogue(date, purchaseDate);
+		String newPurchaseDate = DialogueHelper.printChangeDialogueWith(date, purchaseDate);
 		if (newPurchaseDate.isEmpty()) {
 			LocalDate datePurchase = purchase.getDate(); 
 			return datePurchase;
@@ -36,7 +36,7 @@ public class Validator {
 	public static int checkCompanyId(Purchase purchase, List<Company> companies) {
 		String id = "Firmen-ID";
 		String companyId = Integer.toString(purchase.getCompany().getId());
-		String newPurchaseCompanyId = DialogueHelper.changeDialogue(id, companyId);		
+		String newPurchaseCompanyId = DialogueHelper.printChangeDialogueWith(id, companyId);		
 		try {
 			int idCompany = Integer.parseInt(newPurchaseCompanyId);
 			return idCompany;
@@ -50,7 +50,7 @@ public class Validator {
 	public static int checkCategoryId(Purchase purchase, List<Category> categories) {
 		//String id = "Kategorie-ID";
 		String categoryId = Integer.toString(purchase.getCategory().getId());
-		String newPurchaseCategory = DialogueHelper.changeDialogue("Kategorie-ID", categoryId);		
+		String newPurchaseCategory = DialogueHelper.printChangeDialogueWith("Kategorie-ID", categoryId);		
 		try {
 			int idCategory = Integer.parseInt(newPurchaseCategory); 
 			return idCategory;	

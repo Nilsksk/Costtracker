@@ -32,7 +32,7 @@ public class PurchaseModelFactory {
 			purchaseModels.add(purchaseModel);
 		} catch (Exception e) {
 			
-			DialogueHelper.println("Fehler!");
+			DialogueHelper.printLine("Fehler!");
 		}
 	}
 }

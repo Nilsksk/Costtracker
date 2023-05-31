@@ -23,10 +23,10 @@ public class CategoryPrinter {
 													.valueOf(categoryModel
 													.getPosition())
 													.length();
-			String printId = " " + categoryModel.getPosition() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ";
+			String printId = " " + categoryModel.getPosition() + DialogueHelper.addWhitespaces(numberWhitespaces) + " | ";
 			DialogueHelper.print(printId);
 			String printName = categoryModel.getCategory().getName();
-			DialogueHelper.println(printName);
+			DialogueHelper.printLine(printName);
 		}
 	}
 }

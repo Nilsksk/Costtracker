@@ -22,9 +22,9 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		boolean created = false;
 		CategoryHandler categoryHandler = new CategoryHandler();
 		String addCategory = "Enter Taste drücken zum Hinzufügen einer neuen Kategorie";
-		DialogueHelper.startDialogue(addCategory);
+		DialogueHelper.printStartDialogueWith(addCategory);
 		String name = "Name";
-		String newCategoryName = DialogueHelper.inputDialogue(name);	
+		String newCategoryName = DialogueHelper.printInputDialogueWith(name);	
 		submit = DialogueHelper.submitEntry();
 		try {
 			Category category = Category.CategoryBuilder
@@ -34,13 +34,13 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			created = categoryHandler.create(category);		
 		} catch (IncorrectEntryException e) {
 			String insufficientInput = "Unzureichende Eingabe!";
-			DialogueHelper.println(insufficientInput);
+			DialogueHelper.printLine(insufficientInput);
 		}
 		boolean correct = submit && created;
 		if(correct) {
 			String succesful = "Angelegt!";
 			String unsuccesful = "Anlegen fehlgeschlagen!";
-			DialogueHelper.validateCreation(created, succesful, unsuccesful);
+			DialogueHelper.printCreationDialogueWith(created, succesful, unsuccesful);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		CategoryModelFactory categoryModelFactory = new CategoryModelFactory();
 		CategoryHandler categoryHandler = new CategoryHandler();
 		String printCategories = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien";
-		DialogueHelper.startDialogue(printCategories);
+		DialogueHelper.printStartDialogueWith(printCategories);
 		List<Category> allCategories = categoryHandler.getAll();
 		List<CategoryModel> allCategoryModels = categoryModelFactory.createCategoryModels(allCategories);
 		boolean moreThenZeroModels = allCategoryModels.size() > 0;
@@ -72,7 +72,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		boolean updated = false;
 		String categoryName = category.getName();
 		String name = "Name";
-		String editedName = DialogueHelper.changeDialogue(name, categoryName);
+		String editedName = DialogueHelper.printChangeDialogueWith(name, categoryName);
 		boolean nameIsEmpty = editedName.isEmpty();
 		if(nameIsEmpty) {
 			editedName = category.getName();
@@ -90,12 +90,12 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 			updated = categoryHandler.update(category);		
 		} catch (IncorrectEntryException e) {
 			String error = "Fehler!";
-			DialogueHelper.println(error);
+			DialogueHelper.printLine(error);
 		}
 		if(submit) {
 			String succesful = "Erfolgreich bearbeitet!";
 			String unsuccesful = "Bearbeiten fehlgeschlagen!";
-			DialogueHelper.validateCreation(updated, succesful, unsuccesful);					
+			DialogueHelper.printCreationDialogueWith(updated, succesful, unsuccesful);					
 		}
 	}
 	
@@ -104,7 +104,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		CategoryModelFactory categoryModelFactory = new CategoryModelFactory();
 		CategoryHandler categoryHandler = new CategoryHandler();
 		String printAllCategories = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von Kategorien";
-		DialogueHelper.startDialogue(printAllCategories);
+		DialogueHelper.printStartDialogueWith(printAllCategories);
 		List<Category> enabledCategories = categoryHandler.getEnabled();
 		List<CategoryModel> enabledCategoryModels = categoryModelFactory.createCategoryModels(enabledCategories);
 		boolean moreThenZeroModels = enabledCategoryModels.size() > 0;
@@ -129,7 +129,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 	
 	private void succesfulDeactivated(Category category, CategoryHandler categoryHandler) throws SQLException {
 		String succes = "Erfolgreich deaktiviert!";
-		boolean hasSucceded = DialogueHelper.validateDeleteOrDeactivation(succes);
+		boolean hasSucceded = DialogueHelper.printDeleteOrDeactivateDialogueWith(succes);
 		if(hasSucceded) {
 			int id = category.getId();
 			categoryHandler.disable(id);
@@ -141,7 +141,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 		CategoryModelFactory categoryModelFactory = new CategoryModelFactory();
 		CategoryHandler categoryHandler = new CategoryHandler();
 		String deactivatedCategories = "Enter Taste drücken zum Anzeigen aller existierenden Einträge von deaktivierten Kategorien";
-		DialogueHelper.startDialogue(deactivatedCategories);
+		DialogueHelper.printStartDialogueWith(deactivatedCategories);
 		List<Category> disabledCategories = categoryHandler.getDisabled();
 		List<CategoryModel> disabledCategoryModels = categoryModelFactory.createCategoryModels(disabledCategories);
 		boolean moreThenZeroModels = disabledCategoryModels.size() > 0;
@@ -165,7 +165,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 	}
 	
 	private void succesfulActivated(Category category, CategoryHandler categoryHandler) throws SQLException {
-		boolean activated = DialogueHelper.validateEnable("Erfolgreich aktiviert!"); 
+		boolean activated = DialogueHelper.printEnableDialogueWith("Erfolgreich aktiviert!"); 
 		if(activated) {
 			int id = category.getId();
 			categoryHandler.enable(id);
@@ -175,7 +175,7 @@ public class CategoryManager implements Editor, Adder, Deactivator, Activator {
 	private Category getCategoryToEdit(List<CategoryModel> categoryModels, String input) throws SQLException {	
 		Category category;
 		try {
-			int id = DialogueHelper.getIntDialogue(input);
+			int id = DialogueHelper.printGetIdDialogueWith(input);
 			CategoryModel categoryModel = categoryModels.stream().filter(c -> c.getPosition() == id).findAny().orElse(null);
 			category = categoryModel.getCategory();
 		}catch(Exception e) {
