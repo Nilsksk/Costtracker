@@ -1,10 +1,10 @@
-package costtracker.adapter.in;
+package costtracker.domain.in;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import costtracker.application.in.ElementType;
 import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.enums.ElementType;
 
 /**
  * This class is an internal class. Don't use, it might not work!

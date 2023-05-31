@@ -1,7 +1,5 @@
 package costtracker.adapter.persistence;
 
-import java.sql.SQLException;
-
 import costtracker.adapter.entities.CategoryEntity;
 import costtracker.adapter.entities.CompanyEntity;
 import costtracker.adapter.entities.PurchaseEntity;
@@ -15,7 +13,10 @@ public interface UnitOfWork extends AutoCloseable {
 	public DataRepository<PurchaseEntity> getPurchaseRepository();
 	
 	public BaseDataRepository<CompanyEntity> getCompanyRepository();
+
+	public void ensureCreated();
 	
 	@Override
-	void close() throws SQLException;
+	public void close();
+
 }

@@ -1,9 +1,9 @@
 package costtracker.domain.in.json;
 
-import costtracker.adapter.in.HistoryDocumentHeader;
-import costtracker.adapter.in.HistoryElement;
-import costtracker.adapter.in.PurchaseEntry;
-import costtracker.adapter.in.DocumentPrinter;
+import costtracker.domain.in.DocumentPrinter;
+import costtracker.domain.in.HistoryDocumentHeader;
+import costtracker.domain.in.HistoryElement;
+import costtracker.domain.in.PurchaseEntry;
 /**
  * This class is an internal class. Don't use, it might not work!
  * 
