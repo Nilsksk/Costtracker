@@ -2,8 +2,6 @@ package costtracker.ut.adapter;
 
 import costtracker.adapter.persistence.UnitOfWork;
 
-import java.sql.SQLException;
-
 public class UnitOfWorkMock implements UnitOfWork {
 
     @Override
@@ -27,7 +25,12 @@ public class UnitOfWorkMock implements UnitOfWork {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void ensureCreated() {
+
+    }
+
+    @Override
+    public void close() {
 
     }
 }
