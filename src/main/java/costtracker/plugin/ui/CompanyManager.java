@@ -3,14 +3,10 @@ package costtracker.plugin.ui;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 import costtracker.application.handlers.CompanyHandler;
-import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.IncorrectEntryException;
-import costtracker.domain.businessobjects.Purchase;
 import costtracker.plugin.ui.interfaces.Activator;
 import costtracker.plugin.ui.interfaces.Adder;
 import costtracker.plugin.ui.interfaces.Deactivator;
@@ -64,9 +60,9 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	}
 	
 	private void editCompany(List<CompanyModel> enabledCompanyModels, CompanyHandler companyHandler) throws SQLException {
-		DialogueHelper.printCompanies(enabledCompanyModels);
+		CompanyPrinter.printCompanies(enabledCompanyModels);
 		String idCompany = "ID der Firma die Sie bearbeiten möchten";
-		Company company = getCompanyToEdit(companyHandler, idCompany);
+		Company company = getCompanyToEdit(enabledCompanyModels, idCompany);
 		boolean companyNotNull = company != null;
 		if (companyNotNull) {	
 			editIfNotNull(company, companyHandler);
@@ -129,15 +125,15 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	}
 	
 	private void deactivateCompany(List<CompanyModel> enabledCompanyModels, CompanyHandler companyHandler, CompanyModelFactory companyModelFactory) throws SQLException {
-		DialogueHelper.printCompanies(enabledCompanyModels);
+		CompanyPrinter.printCompanies(enabledCompanyModels);
 		String idCompany = "ID der Firma die sie deaktivieren möchten";
-		Company company = getCompanyToEdit(companyHandler, idCompany);
+		Company company = getCompanyToEdit(enabledCompanyModels, idCompany);
 		boolean companyIsNotNull = company != null;
 		if (companyIsNotNull) {
 			List<Company> companyToDisable= new ArrayList<Company>();
 			companyToDisable.add(company);
 			List<CompanyModel> companiesToDisable = companyModelFactory.createCompanyModels(companyToDisable);
-			DialogueHelper.printCompanies(companiesToDisable);
+			CompanyPrinter.printCompanies(companiesToDisable);
 			succesfulDeactivated(company, companyHandler);
 		}	
 	}
@@ -164,15 +160,15 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 	}
 	
 	private void activateCategory(List<CompanyModel> disabledComapnyModels, CompanyHandler companyHandler, CompanyModelFactory companyModelFactory) throws SQLException {
-		DialogueHelper.printCompanies(disabledComapnyModels);
+		CompanyPrinter.printCompanies(disabledComapnyModels);
 		String idCompany = "ID der Firma die Sie aktivieren möchten";
-		Company company = getCompanyToEdit(companyHandler, idCompany);
+		Company company = getCompanyToEdit(disabledComapnyModels, idCompany);
 		boolean companyIsNotNull = company != null;
 		if (companyIsNotNull) {
 			List<Company> companyToEnable= new ArrayList<Company>();
 			companyToEnable.add(company);
 			List<CompanyModel> companiesToEnable = companyModelFactory.createCompanyModels(companyToEnable);
-			DialogueHelper.printCompanies(companiesToEnable);
+			CompanyPrinter.printCompanies(companiesToEnable);
 			succesfulActivated(company, companyHandler);
 		}	
 	}
@@ -186,11 +182,12 @@ public class CompanyManager implements Editor, Adder, Deactivator, Activator {
 		}	
 	}
 
-	private Company getCompanyToEdit(CompanyHandler companyHandler, String input) throws SQLException {
+	private Company getCompanyToEdit(List<CompanyModel> companyModels, String input) throws SQLException {
 		Company company;
 		try {
 			int id = DialogueHelper.getIntDialogue(input);
-			company = companyHandler.getById(id);
+			CompanyModel companyModel = companyModels.stream().filter(c -> c.getPosition() == id).findAny().orElse(null);
+			company = companyModel.getCompany();
 		}catch(Exception e) {
 			company = null;
 		}

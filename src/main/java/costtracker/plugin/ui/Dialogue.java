@@ -1,13 +1,7 @@
 package costtracker.plugin.ui;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
-import costtracker.application.handlers.CompanyHandler;
-import costtracker.domain.businessobjects.*;
 import costtracker.plugin.ui.interfaces.Activator;
 import costtracker.plugin.ui.interfaces.Adder;
 import costtracker.plugin.ui.interfaces.Deactivator;

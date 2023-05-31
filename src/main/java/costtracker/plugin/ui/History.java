@@ -18,8 +18,9 @@ public class History {
 		PurchaseHandler purchaseHandler = new PurchaseHandler();
 		String printPurchases = "Enter Taste drücken um Historie Ihrer Einkäufe anzuzeigen";
 		DialogueHelper.startDialogue(printPurchases);
-		List<PurchaseModel> getPurchases = purchaseModelFactory.createPurchaseModels(purchaseHandler.getAll());
-		DialogueHelper.printPurchases(getPurchases);
+		List<Purchase> purchases = purchaseHandler.getAll();
+		List<PurchaseModel> getPurchases = purchaseModelFactory.createPurchaseModels(purchases);
+		PurchasePrinter.printPurchases(getPurchases);
 		purchaseModelFactory.createPurchaseModels(null);
 	}
 	
@@ -29,8 +30,9 @@ public class History {
 		CompanyHandler companyHandler = new CompanyHandler();
 		PurchaseHandler purchaseHandler = new PurchaseHandler();
 		try {
-			List<CompanyModel> getCompanies = companyModelFactory.createCompanyModels(companyHandler.getEnabled());
-			DialogueHelper.printCompanies(getCompanies);
+			List<Company> companies = companyHandler.getEnabled();
+			List<CompanyModel> getCompanies = companyModelFactory.createCompanyModels(companies);
+			CompanyPrinter.printCompanies(getCompanies);
 			String idDialogue = "Geben sie die ID der Firma an, nach welcher sortiert werden soll";
 			int companyId = DialogueHelper.getIntDialogue(idDialogue);
 			Company company = companyHandler.getById(companyId);
@@ -39,18 +41,23 @@ public class History {
 			String endDate = "Geben Sie das Enddatum an (TT:MM:JJJJ)";
 			LocalDate inputDateEnd = DateConverter.convertDate(endDate);
 			DialogueHelper.println("");
-			try {
-				List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchaseHandler.getByCompanyByTimestamp(company, inputDateBegin, inputDateEnd));
-				DialogueHelper.printPurchases(purchases);				
-			}catch(Exception e) {
-				String errorMsg = "In diesem Zeitraum wurden keine Käufe von dieser Firma getätigt!";
-				DialogueHelper.println(errorMsg);
-			}
+			tryPrintPurchasesForCompany(purchaseHandler, company, inputDateBegin, inputDateEnd, purchaseModelFactory);
 		}catch(Exception e) {
 			String errorMsg = "Falsche Angaben von Datum!";
 			DialogueHelper.println(errorMsg);
 		}
 		purchaseModelFactory.createPurchaseModels(null);
+	}
+	
+	private void tryPrintPurchasesForCompany(PurchaseHandler purchaseHandler, Company company, LocalDate inputDateBegin, LocalDate inputDateEnd, PurchaseModelFactory purchaseModelFactory) {
+		try {
+			List<Purchase> purchases = purchaseHandler.getByCompanyByTimestamp(company, inputDateBegin, inputDateEnd);
+			List<PurchaseModel> purchaseModels = purchaseModelFactory.createPurchaseModels(purchases);
+			PurchasePrinter.printPurchases(purchaseModels);				
+		}catch(Exception e) {
+			String errorMsg = "In diesem Zeitraum wurden keine Käufe von dieser Firma getätigt!";
+			DialogueHelper.println(errorMsg);
+		}
 	}
 	
 	public void printHistoryForCategoryInTimeframe() {
@@ -60,7 +67,7 @@ public class History {
 		PurchaseHandler purchaseHandler = new PurchaseHandler();
 		try {
 			List<CategoryModel> categories = categoryModelFactory.createCategoryModels(categoryHandler.getEnabled());
-			DialogueHelper.printCategories(categories);
+			CategoryPrinter.printCategories(categories);
 			String idDialogue = "Geben sie die ID der Kategorie an, nach welcher sortiert werden soll";
 			int categoryId = DialogueHelper.getIntDialogue(idDialogue);
 			Category category = categoryHandler.getById(categoryId);
@@ -69,18 +76,22 @@ public class History {
 			String endDate = "Geben Sie das Enddatum an (TT:MM:JJJJ)";
 			LocalDate inputDateEnd = DateConverter.convertDate(endDate);
 			DialogueHelper.println("");
-			try {
-				List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchaseHandler.getByCategoryByTimestamp(category, inputDateBegin, inputDateEnd));
-				DialogueHelper.printPurchases(purchases);				
-			}catch(Exception e) {
-				String errorMsg = "In diesem Zeitraum wurden keine Käufe aus dieser Kategorie getätigt!";
-				DialogueHelper.println(errorMsg);
-			}
+			tryPrintPurchasesForCategory(purchaseModelFactory, purchaseHandler, category, inputDateBegin, inputDateEnd);
 		}catch(Exception e) {
 			String errorMsg = "Falsche Angaben von Datum!";
 			DialogueHelper.println(errorMsg);
 		}
 		purchaseModelFactory.createPurchaseModels(null);
+	}
+	
+	private void tryPrintPurchasesForCategory(PurchaseModelFactory purchaseModelFactory, PurchaseHandler purchaseHandler, Category category, LocalDate inputDateBegin, LocalDate inputDateEnd) {
+		try {
+			List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchaseHandler.getByCategoryByTimestamp(category, inputDateBegin, inputDateEnd));
+			PurchasePrinter.printPurchases(purchases);				
+		}catch(Exception e) {
+			String errorMsg = "In diesem Zeitraum wurden keine Käufe aus dieser Kategorie getätigt!";
+			DialogueHelper.println(errorMsg);
+		}
 	}
 	
 	public void printHistoryByYear() {
@@ -91,7 +102,7 @@ public class History {
 		try {
 			List<Purchase> purchase = purchaseHandler.getByYear(year);
 			List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchase);
-			DialogueHelper.printPurchases(purchases);
+			PurchasePrinter.printPurchases(purchases);
 		}catch(Exception e) {
 			String errorMsg = "In diesem Jahr wurden keine Käufe getätigt!";
 			DialogueHelper.println(errorMsg);
@@ -110,7 +121,7 @@ public class History {
 			int year = Integer.parseInt(monthAndYearValues[1]);
 			List<Purchase> purchase = purchaseHandler.getByMonth(month, year);
 			List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchase);
-			DialogueHelper.printPurchases(purchases);
+			PurchasePrinter.printPurchases(purchases);
 		}catch(Exception e) {
 			String errorMsg = "In diesem Monat wurden keine Käufe getätigt!";
 			DialogueHelper.println(errorMsg);
@@ -129,7 +140,7 @@ public class History {
 			int year = Integer.parseInt(weekAndYearValues[1]);
 			List<Purchase> purchase = purchaseHandler.getByWeek(week, year);
 			List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchase);
-			DialogueHelper.printPurchases(purchases);
+			PurchasePrinter.printPurchases(purchases);
 		}catch(Exception e) {
 			String errorMsg = "In dieser Woche wurden keine Käufe getätigt!";
 			DialogueHelper.println(errorMsg);
@@ -147,18 +158,22 @@ public class History {
 			LocalDate inputDateEnd = DateConverter.convertDate(endDate);
 			String input = "Enter Taste drücken um Historie Ihrer Einkäufe in ihrer gewählten Zeitspanne anzuzeigen";
 			DialogueHelper.startDialogue(input);
-			try {
-				List<Purchase> purchase = purchaseHandler.getByTimestamp(inputDateBegin, inputDateEnd);
-				List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchase);
-				DialogueHelper.printPurchases(purchases);				
-			}catch(Exception e) {
-				String errorMsg = "In diesem Zeitraum wurden keine Käufe getätigt!";
-				DialogueHelper.println(errorMsg);
-			}
+			tryPrintPurchasesByTimespan(purchaseHandler, inputDateBegin, inputDateEnd, purchaseModelFactory);
 		}catch(Exception e) {
 			String errorMsg = "Falsche Angaben von Datum!";
 			DialogueHelper.println(errorMsg);
 		}
 		purchaseModelFactory.createPurchaseModels(null);
+	}
+	
+	private void tryPrintPurchasesByTimespan(PurchaseHandler purchaseHandler, LocalDate inputDateBegin, LocalDate inputDateEnd, PurchaseModelFactory purchaseModelFactory) {
+		try {
+			List<Purchase> purchase = purchaseHandler.getByTimestamp(inputDateBegin, inputDateEnd);
+			List<PurchaseModel> purchases = purchaseModelFactory.createPurchaseModels(purchase);
+			PurchasePrinter.printPurchases(purchases);				
+		}catch(Exception e) {
+			String errorMsg = "In diesem Zeitraum wurden keine Käufe getätigt!";
+			DialogueHelper.println(errorMsg);
+		}
 	}
 }
