@@ -45,7 +45,7 @@ public class PurchaseRepositoryAdapterImp implements PurchaseRepositoryAdapter {
 			if(ret)
 				uow.save();
 		} catch (SQLException e) {
-			// TODO Addlogging
+			System.err.println(e.getMessage());
 		}
 		return ret;
 	}
@@ -59,7 +59,7 @@ public class PurchaseRepositoryAdapterImp implements PurchaseRepositoryAdapter {
 			if(ret)
 				uow.save();
 		} catch (SQLException e) {
-			// TODO Addlogging
+			System.err.println(e.getMessage());
 		}
 		return ret;
 	}

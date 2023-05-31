@@ -1,13 +1,9 @@
 package costtracker.plugin.ui;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
-import costtracker.application.handlers.CompanyHandler;
-import costtracker.domain.businessobjects.*;
+import costtracker.application.in.HistoryDocumentService;
+import costtracker.domain.in.HistoryDocument;
 import costtracker.plugin.ui.interfaces.Activator;
 import costtracker.plugin.ui.interfaces.Adder;
 import costtracker.plugin.ui.interfaces.Deactivator;
@@ -132,14 +128,15 @@ public class Dialogue {
 	
 	private void historyAction() throws SQLException {
 		History history = new History();
+		HistoryDocumentService historyDocumentService = new HistoryDocumentService();
 		do {
 			String question = "Wollen Sie ihre komplette Kaufhistorie (1), gefiltert nach einer bestimmten Zeitspanne (2), "
-				    + "gefiltert nach Firma in Zeitspanne (3) oder gefiltert nach Kategorie in Zeitspanne (4)? "
-				    + "Oder zurück gehen (5)?";
+				    + "gefiltert nach Firma in Zeitspanne (3) gefiltert nach Kategorie in Zeitspanne (4)? Oder als Dokumentenausgabe (5)?"
+				    + "Oder zurück gehen (6)?";
 			int action = DialogueHelper.interactQuestion(question);
 			boolean validInput = true;
 			while (validInput) {
-				boolean notValid = !DialogueHelper.isValidInput(action, 6);
+				boolean notValid = !DialogueHelper.isValidInput(action, 7);
 				if (notValid) {
 					String errorMsg = "Falsche Eingabe " + action + "!";
 					System.out.println(errorMsg);
@@ -160,13 +157,17 @@ public class Dialogue {
 					validInput = false;
 					history.printHistoryForCategoryInTimeframe();
 	
-				} else if (action == 5) {
+				}else if (action  == 5) {
+					validInput = false;
+					historyDocumentService.createHistoryDocument();
+					
+				} else if (action == 6) {
 					validInput = false;
 					break;
 				}
 			}
 			System.out.println();
-			if (action == 5) {
+			if (action == 6) {
 				break;
 			}
 		}while(true);

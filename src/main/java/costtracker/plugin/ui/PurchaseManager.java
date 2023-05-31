@@ -36,38 +36,43 @@ public class PurchaseManager implements Editor, Adder {
 			String date = "Datum des Kaufs (TT:MM:JJJJ)";
 			LocalDate validatedDate = DateConverter.convertDate(date);	
 			DialogueHelper.println("");
-			List<Company> companies = companyHandler.getAll();
+			List<Company> companies = companyHandler.getEnabled();
 			List<CompanyModel> companyModels = companyModelFactory.createCompanyModels(companies);
-			DialogueHelper.printCompanies(companyModels);	
+			CompanyPrinter.printCompanies(companyModels);	
 			DialogueHelper.println("");
 			Company company = validateCompany(companyHandler);
 			DialogueHelper.println("");
-			List<Category> categories = categoryHandler.getAll();
+			List<Category> categories = categoryHandler.getEnabled();
 			List<CategoryModel> categoryModels = categoryModelFactory.createCategoryModels(categories);
-			DialogueHelper.printCategories(categoryModels);
+			CategoryPrinter.printCategories(categoryModels);
 			Category category = validateCategory(categoryHandler);
 			String desc = "Geben sie optional eine Beschreibung ihres Kaufes an";
 			String purchaseDescription = DialogueHelper.inputDialogue(desc);
-			System.out.println();		
-			boolean submit = DialogueHelper.submitEntry();
-			boolean correct = submit && checkIfAllParametersPresent(purchaseName, validatedDate, validatedValue, company, category);
-			if (correct) {
-				try {
-					created = purchaseHandler.create(Purchase.PurchaseBuilder.withValues(purchaseName, validatedDate, validatedValue).withCompany(company).withCategory(category).withDescription(purchaseDescription).build());
-				} catch (IncorrectEntryException e) {
-					String errorMsg = "Fehler!";
-					DialogueHelper.println(errorMsg);
-				}
-				String succesful = "Angelegt!";
-				String unsuccesful = "Anlegen fehlgeschlagen!";
-				DialogueHelper.validateCreation(created, succesful, unsuccesful);
-			}			
-			else {
-				String errorMsg = "Unzureichende Eingaben!";
-				DialogueHelper.print(errorMsg);
-			}
+			DialogueHelper.println("");		
+			tryCreatePurchase(purchaseName, validatedDate, validatedValue, company, category, purchaseHandler, purchaseDescription, created);
 			breaking = breakInput();
 		}while(breaking);
+	}
+	
+	private void tryCreatePurchase(String purchaseName, LocalDate validatedDate, double validatedValue, Company company, Category category, PurchaseHandler purchaseHandler, String purchaseDescription, boolean created) {
+		boolean submit = DialogueHelper.submitEntry();
+		boolean correct = submit && checkIfAllParametersPresent(purchaseName, validatedDate, validatedValue, company, category);
+		if (correct) {
+			try {
+				Purchase purchase = Purchase.PurchaseBuilder.withValues(purchaseName, validatedDate, validatedValue).withCompany(company).withCategory(category).withDescription(purchaseDescription).build();
+				created = purchaseHandler.create(purchase);
+			} catch (IncorrectEntryException e) {
+				String errorMsg = "Fehler!";
+				DialogueHelper.println(errorMsg);
+			}
+			String succesful = "Angelegt!";
+			String unsuccesful = "Anlegen fehlgeschlagen!";
+			DialogueHelper.validateCreation(created, succesful, unsuccesful);
+		}			
+		else {
+			String errorMsg = "Unzureichende Eingaben!";
+			DialogueHelper.print(errorMsg);
+		}
 	}
 
 	@Override
@@ -85,78 +90,24 @@ public class PurchaseManager implements Editor, Adder {
 		DialogueHelper.startDialogue(printPurchases);
 		List<Purchase> purchases = purchaseHandler.getAll();
 		List<PurchaseModel> purchaseModels = purchaseModelFactory.createPurchaseModels(purchases);
-	    DialogueHelper.printPurchases(purchaseModels);
+	    PurchasePrinter.printPurchases(purchaseModels);
 	    String question = "Wollen sie einen Kauf anpassen (1) oder löschen (2)?";
-	    int input = DialogueHelper.interactQuestion(question);
-		
 		while(validInput) {
-			boolean valid = !DialogueHelper.isValidInput(input, 3);
-			if (valid) {
-				String output = "Falsche Eingabe " + input + "!";
+			int input = DialogueHelper.interactQuestion(question);
+			boolean notValid = !DialogueHelper.isValidInput(input, 3);
+			if (notValid) {
+				String output = "Falsche Eingabe!";
 				DialogueHelper.println(output);
 				break;
 			}	
-			purchase = getPurchaseToEdit(purchaseModelFactory, purchaseHandler);
+			purchase = tryGetPurchase(purchaseModelFactory, purchaseHandler);
 			if (input == 1) {
-				validInput = false;
-				if (purchase == null) {
-					String errorMsg = "Kein Einkauf unter dieser ID hinterlegt!";
-					DialogueHelper.println(errorMsg);
-				}
-				else {
-					//Hier weiter machen
-					String newPurchaseName = DialogueHelper.changeDialogue("Name", purchase.getName());
-					if (newPurchaseName.isEmpty()) {
-						newPurchaseName = purchase.getName();
-					}
-					double newPurchasePrice = Validator.checkPrize(purchase);
-					if (String.valueOf(newPurchasePrice).isEmpty()) {
-						newPurchasePrice = purchase.getPrice();
-					}
-					LocalDate newPurchaseDate = Validator.checkDate(purchase);
-					if (newPurchaseDate == null) {
-						newPurchaseDate = purchase.getDate();
-					}
-					DialogueHelper.printCompanies(companyModelFactory.createCompanyModels(companyHandler.getAll()));
-					Company company = validateCompany(companyHandler);
-					if (company == null) {
-						company = purchase.getCompany();
-					}
-					DialogueHelper.printCategories(categoryModelFactory.createCategoryModels(categoryHandler.getAll()));
-					Category category = validateCategory(categoryHandler);
-					if (category == null) {
-						category = purchase.getCategory();
-					}
-					String newPurchaseDescription = DialogueHelper.changeDialogue("Beschreibung", purchase.getDescription());
-					boolean submit = DialogueHelper.submitEntry();
-					
-					if (submit) {
-						try {
-							updated = purchaseHandler.update(Purchase.PurchaseBuilder.withValues(newPurchaseName, newPurchaseDate, newPurchasePrice).withCompany(company).withCategory(category).withDescription(newPurchaseDescription).build());
-						} catch (IncorrectEntryException e) {
-							String errorMsg = "Fehler!";
-							DialogueHelper.println(errorMsg);
-						}
-						String succesful = "Erfolgreich bearbeitet!";
-						String unsuccesful = "Bearbeiten fehlgeschlagen!";
-						DialogueHelper.validateCreation(updated, succesful, unsuccesful);
-					}	
-				}
+				tryEditPurchase(validInput, purchase, companyModelFactory, companyHandler, categoryModelFactory, categoryHandler, updated, purchaseHandler);
+				break;
 			}
 			else if (input == 2) {
-				validInput = false;
-				List<Purchase> purchaseToDelete = new ArrayList<Purchase>();
-				purchaseToDelete.add(purchase);
-				DialogueHelper.println("");
-				try {
-					//DialogueHelper.printPurchases(purchaseToDelete);					
-				}
-				catch(Exception e) {
-					break;
-				}
-				if (DialogueHelper.validateDeleteOrDeactivation("Erfolgreich gelöscht!")) {
-					purchaseHandler.deleteById(purchase.getId());
-				}
+				tryDeletePurchase(validInput, purchase, purchaseHandler, purchaseModelFactory);
+				break;
 			}	
 			else {
 				break;
@@ -164,10 +115,90 @@ public class PurchaseManager implements Editor, Adder {
 		}
 	}
 	
+	private Purchase tryGetPurchase(PurchaseModelFactory purchaseModelFactory, PurchaseHandler purchaseHandler) {
+		try {
+			return getPurchaseToEdit(purchaseModelFactory, purchaseHandler);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	private void tryEditPurchase(boolean validInput, Purchase purchase, CompanyModelFactory companyModelFactory, CompanyHandler companyHandler,
+								CategoryModelFactory categoryModelFactory, CategoryHandler categoryHandler, boolean updated, PurchaseHandler purchaseHandler) throws SQLException {
+		validInput = false;
+		if (purchase != null) {
+			String purchaseName = purchase.getName();
+			String name = "Name";
+			String newPurchaseName = DialogueHelper.changeDialogue(name, purchaseName);
+			boolean nameIsEmpty = newPurchaseName.isEmpty();
+			if (nameIsEmpty) {
+				newPurchaseName = purchase.getName();
+			}
+			double newPurchasePrice = Validator.checkPrize(purchase);
+			boolean priceIsEmpty = String.valueOf(newPurchasePrice).isEmpty();
+			if (priceIsEmpty) {
+				newPurchasePrice = purchase.getPrice();
+			}
+			LocalDate newPurchaseDate = Validator.checkDate(purchase);
+			boolean dateIsEmpty = newPurchaseDate == null; 
+			if (dateIsEmpty) {
+				newPurchaseDate = purchase.getDate();
+			}
+			List<Company> companies = companyHandler.getAll();
+			List<CompanyModel> companyModels = companyModelFactory.createCompanyModels(companies);
+			CompanyPrinter.printCompanies(companyModels);
+			Company company = validateCompany(companyHandler);
+			boolean companyIsEmptyy = company == null;
+			if (companyIsEmptyy) {
+				company = purchase.getCompany();
+			}
+			List<Category> categories = categoryHandler.getAll();
+			List<CategoryModel> categoryModels = categoryModelFactory.createCategoryModels(categories);
+			CategoryPrinter.printCategories(categoryModels);
+			Category category = validateCategory(categoryHandler);
+			boolean categoryIsEmpty = category == null; 
+			if (categoryIsEmpty) {
+				category = purchase.getCategory();
+			}
+			String purchaseDescription = purchase.getDescription();
+			String description = "Beschreibung";
+			String newPurchaseDescription = DialogueHelper.changeDialogue(description, purchaseDescription);
+			boolean submit = DialogueHelper.submitEntry();
+			if (submit) {
+				try {
+					Purchase purchaseNew = Purchase.PurchaseBuilder.withValues(purchaseName, newPurchaseDate, newPurchasePrice).withCompany(company).withCategory(category).withDescription(newPurchaseDescription).withId(purchase.getId()).build();
+					updated = purchaseHandler.update(purchaseNew);
+				} catch (IncorrectEntryException e) {
+					String errorMsg = "Fehler!";
+					DialogueHelper.println(errorMsg);
+				}
+				String succesful = "Erfolgreich bearbeitet!";
+				String unsuccesful = "Bearbeiten fehlgeschlagen!";
+				DialogueHelper.validateCreation(updated, succesful, unsuccesful);
+			}	
+		}
+	}
+	
+	private void tryDeletePurchase(boolean validInput, Purchase purchase, PurchaseHandler purchaseHandler, PurchaseModelFactory purchaseModelFactory) {
+		validInput = false;
+		List<Purchase> purchaseToDelete = new ArrayList<Purchase>();
+		purchaseToDelete.add(purchase);
+		DialogueHelper.println("");
+		List<PurchaseModel> purchaseModels = purchaseModelFactory.createPurchaseModels(purchaseToDelete);
+		boolean moreThenZeroPurchases = purchaseModels.get(0).getPurchase() != null;
+		if (moreThenZeroPurchases) {
+			PurchasePrinter.printPurchases(purchaseModels);						
+		}
+		if (DialogueHelper.validateDeleteOrDeactivation("Erfolgreich gelöscht!")) {
+			int id = purchase.getId();
+			purchaseHandler.deleteById(id);
+		}
+	}
+	
 	private double validatedValue() {
 		double price;
-		
-		String inputPrice = DialogueHelper.inputDialogue("Kaufpreis");
+		String purchasePrice = "Kaufpreis";
+		String inputPrice = DialogueHelper.inputDialogue(purchasePrice);
 		try {
 			price = Double.parseDouble(inputPrice);
 		}
@@ -178,14 +209,17 @@ public class PurchaseManager implements Editor, Adder {
 	}
 
 	private boolean breakInput() {
-		System.out.println();
-		return DialogueHelper.saveData("Falls sie weitere Einkäufe eintragen wollen erneut '+' drücken: ", "+");
+		DialogueHelper.println("");
+		String saving = "Falls sie weitere Einkäufe eintragen wollen erneut '+' drücken: ";
+		String input = "+";
+		return DialogueHelper.saveData(saving, input);
 	}
 	
 	private Company validateCompany(CompanyHandler companyHandler) throws SQLException {
 		Company company;
 		try {
-			int companyId = DialogueHelper.getIntDialogue("Geben sie die ID der Firma an, bei welcher Ihr Kauf geätigt wurde");	
+			String getId = "Geben sie die ID der Firma an, bei welcher Ihr Kauf geätigt wurde";
+			int companyId = DialogueHelper.getIntDialogue(getId);	
 			company = companyHandler.getById(companyId);
 		}
 		catch(Exception e) {
@@ -197,7 +231,8 @@ public class PurchaseManager implements Editor, Adder {
 	private Category validateCategory(CategoryHandler categoryHandler) throws SQLException {
 		Category category;
 		try {
-			int categoryId = DialogueHelper.getIntDialogue("Geben sie die ID der Kategorie an, zu welcher ihr Kauf am besten passt");	
+			String getId = "Geben sie die ID der Kategorie an, zu welcher ihr Kauf am besten passt";
+			int categoryId = DialogueHelper.getIntDialogue(getId);	
 			category = categoryHandler.getById(categoryId);
 		}
 		catch(Exception e) {
@@ -207,19 +242,18 @@ public class PurchaseManager implements Editor, Adder {
 	}
 	
 	private Purchase getPurchaseToEdit(PurchaseModelFactory purchaseModelFactory, PurchaseHandler purchaseHandler) throws SQLException {
-		int id = DialogueHelper.getIntDialogue("ID des Kaufs auswählen, welchen Sie bearbeiten möchten");
-		List<PurchaseModel> purchaseModels = purchaseModelFactory.createPurchaseModels(purchaseHandler.getAll());
+		String getId = "ID des Kaufs auswählen, welchen Sie bearbeiten möchten";
+		int id = DialogueHelper.getIntDialogue(getId);
+		List<Purchase> purchases = purchaseHandler.getAll();
+		List<PurchaseModel> purchaseModels = purchaseModelFactory.createPurchaseModels(purchases);
 		PurchaseModel purchaseModel = purchaseModels.stream().filter(p -> p.getPostion() == id).findAny().orElse(null);	
-		return purchaseModel.getPurchase();
+		Purchase purchase = purchaseModel.getPurchase();
+		return purchase;
 	}
 	
 	private boolean checkIfAllParametersPresent(String name, LocalDate date, double price, Company company, Category category) {
-		if (!name.isEmpty() && date != null && (price == 0 || !String.valueOf(price).isEmpty()) && !company.equals(null) && !category.equals(null)) {
-			return true;			
-		}
-		else {
-			return false;
-		}
+		boolean checkIfCorrectInput = !name.isEmpty() && date != null && (price == 0 || !String.valueOf(price).isEmpty()) && !company.equals(null) && !category.equals(null);
+		return checkIfCorrectInput;
 	}
 	
 	

@@ -48,7 +48,7 @@ public class HistoryDocumentDialog implements HistoryDocumentDialogAdapter {
 	public ElementType askForElementType() {
 		String elementType = display.askQuestionWithReturn(
 				"Bitte geben Sie den Sortiertyp an, nachdem die Einkäufe der Historie gefiltert werden sollen:\n"
-						+ "Nach Datum = 1, nach Firma = 2 oder nach Kategorie = 3");
+						+ "Nach Datum (1), nach Firma (2) oder nach Kategorie (3)");
 		return convertElementType(elementType);
 	}
 

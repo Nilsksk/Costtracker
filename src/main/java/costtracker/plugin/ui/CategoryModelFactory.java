@@ -11,6 +11,7 @@ public class CategoryModelFactory {
 	
 	public List<CategoryModel> createCategoryModels(List<Category> categories){
 		try {
+			categoryModels.clear();
 			return CreateModels(categories);		
 		}catch(Exception e) {
 			categoryModels.clear();

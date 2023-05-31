@@ -10,43 +10,54 @@ import costtracker.domain.businessobjects.Purchase;
 public class Validator {
 
 	public static double checkPrize(Purchase purchase) {
-		String newPurchasePrice = null;
-		newPurchasePrice = DialogueHelper.changeDialogue("Preis", String.valueOf(purchase.getPrice()));
-		//ReSet.setNewDouble(newPurchasePrice, purchase::setPrice);
-		if (newPurchasePrice.isEmpty()) {
-			return purchase.getPrice();
+		String price = "Preis";
+		String purchasePrice = String.valueOf(purchase.getPrice());
+		String newPurchasePrice = DialogueHelper.changeDialogue(price, purchasePrice);
+		boolean priceIsEmpty = newPurchasePrice.isEmpty();
+		if (priceIsEmpty) {
+			double priceDouble = purchase.getPrice();
+			return priceDouble;
 		}
 		return Double.parseDouble(newPurchasePrice);
 	}
 	
 	public static LocalDate checkDate(Purchase purchase) {
-		String newPurchaseDate = null;
-		newPurchaseDate = DialogueHelper.changeDialogue("Datum", purchase.getDateString());
+		String date = "Datum";
+		String purchaseDate = purchase.getDateString();
+		String newPurchaseDate = DialogueHelper.changeDialogue(date, purchaseDate);
 		if (newPurchaseDate.isEmpty()) {
-			return purchase.getDate();
+			LocalDate datePurchase = purchase.getDate(); 
+			return datePurchase;
 		}
-		return LocalDate.parse(newPurchaseDate);
+		LocalDate newDate = DateConverter.convertDateWithoutDialogue(newPurchaseDate);
+		return newDate;
 	}
 		
 	public static int checkCompanyId(Purchase purchase, List<Company> companies) {
-		String newPurchaseCompanyId;
-		newPurchaseCompanyId = DialogueHelper.changeDialogue("Firmen-ID", Integer.toString(purchase.getCompany().getId()));		
+		String id = "Firmen-ID";
+		String companyId = Integer.toString(purchase.getCompany().getId());
+		String newPurchaseCompanyId = DialogueHelper.changeDialogue(id, companyId);		
 		try {
-			return Integer.parseInt(newPurchaseCompanyId);
+			int idCompany = Integer.parseInt(newPurchaseCompanyId);
+			return idCompany;
 		}
 		catch(NumberFormatException e){
-			return purchase.getCompany().getId();
+			int idCompany = purchase.getCompany().getId();
+			return idCompany;
 		}
 	}
 	
 	public static int checkCategoryId(Purchase purchase, List<Category> categories) {
-		String newPurchaseCategory;	
-		newPurchaseCategory = DialogueHelper.changeDialogue("Kategorie-ID", Integer.toString(purchase.getCategory().getId()));		
+		String id = "Kategorie-ID";
+		String categoryId = Integer.toString(purchase.getCategory().getId());
+		String newPurchaseCategory = DialogueHelper.changeDialogue("Kategorie-ID", categoryId);		
 		try {
-			return purchase.getCategory().getId();
+			int idCategory = Integer.parseInt(newPurchaseCategory); 
+			return idCategory;	
 		}
 		catch(NumberFormatException e){
-			return Integer.parseInt(newPurchaseCategory);			
+			int idCategory = purchase.getCategory().getId();
+			return idCategory;
 		}
 	}
 }
