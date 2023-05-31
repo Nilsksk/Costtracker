@@ -7,29 +7,30 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.Purchase;
-import costtracker.ui.PurchaseManager;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.plugin.ui.PurchaseManager;
 
 public class PurchaseManagerTest {
 
 	PurchaseManager pm = new PurchaseManager();
 	
 //	@Test
-	void test() throws SQLException {
+	void test() throws SQLException, IncorrectEntryException {
 		
 		List<Company> companies = new ArrayList<Company>();
-		companies.add(new Company(1, "Netto", "Offenbach"));
-		companies.add(new Company(2, "Penny", "Offenbach"));
-		companies.add(new Company(3, "Globus", "Neustadt"));
-		companies.add(new Company(4, "Dogan", "Offenbach"));
+		companies.add(Company.CompanyBuilder.withName("Netto").withLocation("Offenbach").withId(1).build());
+		companies.add(Company.CompanyBuilder.withName("Dogan").withLocation("Offenbach").withId(2).build());
+		companies.add(Company.CompanyBuilder.withName("Lidl").withLocation("Landau").withId(3).build());
+		companies.add(Company.CompanyBuilder.withName("Globus").withLocation("Neustadt").withId(4).build());
 		
 		List<Category> categories = new ArrayList<Category>();
-		categories.add(new Category(1, "Essen"));
-		categories.add(new Category(2, "Alkohol"));
-		categories.add(new Category(3, "Lego"));
-		categories.add(new Category(4, "Lautre"));
+		categories.add(Category.CategoryBuilder.withName("Essen").withId(1).build());
+		categories.add(Category.CategoryBuilder.withName("Alkohol").withId(2).build());
+		categories.add(Category.CategoryBuilder.withName("Lego").withId(3).build());
+		categories.add(Category.CategoryBuilder.withName("Lautre").withId(4).build());
 		
 		//pm.setCompanies(companies);
 		//pm.setCategories(categories);
@@ -38,27 +39,27 @@ public class PurchaseManagerTest {
 	}
 	
 	@Test
-	void testEdit() {
+	void testEdit() throws IncorrectEntryException {
 		List<Company> companies = new ArrayList<Company>();
-		Company com1 = new Company(1, "Netto", "Offenbach");
-		Company com2 = new Company(2, "Penny", "Offenbach");
+		Company com1 = Company.CompanyBuilder.withName("Netto").withLocation("Offenbach").withId(1).build();
+		Company com2 = Company.CompanyBuilder.withName("Penny").withLocation("Offenbach").withId(2).build();
 		companies.add(com1);
 		companies.add(com2);
-		companies.add(new Company(3, "Globus", "Neustadt"));
-		companies.add(new Company(4, "Dogan", "Offenbach"));
+		companies.add(Company.CompanyBuilder.withName("Globus").withLocation("Neustadt").withId(3).build());
+		companies.add(Company.CompanyBuilder.withName("Dogan").withLocation("Offenbach").withId(4).build());
 		
 		List<Category> categories = new ArrayList<Category>();
-		Category cat1 = new Category(1, "Essen");
-		Category cat2 = new Category(2, "Alkohol");
+		Category cat1 = Category.CategoryBuilder.withName("Essen").withId(1).build();
+		Category cat2 = Category.CategoryBuilder.withName("Alkohol").withId(2).build();
 		categories.add(cat1);
 		categories.add(cat2);
-		categories.add(new Category(3, "Lego"));
-		categories.add(new Category(4, "Lautre"));
+		categories.add(Category.CategoryBuilder.withName("Lego").withId(3).build());
+		categories.add(Category.CategoryBuilder.withName("Lautre").withId(4).build());
 		
 		List<Purchase> purchases = new ArrayList<Purchase>();
-        purchases.add(new Purchase(1, "Nutella","750g", LocalDate.of(2022, 2, 1), 4.99, com2, cat1)); 
-        purchases.add(new Purchase(2, "Bellheimer","Kasten", LocalDate.of(2022, 2, 1), 14.99, null, cat2)); 
-        purchases.add(new Purchase(3, "Oreo Schokolade",null, LocalDate.of(2022, 2, 1), 14.99, null, cat1)); 
+		purchases.add(Purchase.PurchaseBuilder.withValues("Nutella", LocalDate.of(2022, 2, 1), 4.99).withDescription("750g").withCompany(com2).withCategory(cat2).withId(1).build());
+		purchases.add(Purchase.PurchaseBuilder.withValues("Bellheimer", LocalDate.of(2022, 2, 1), 14.99).withDescription("Kastern").withCategory(cat2).withId(2).build());
+		purchases.add(Purchase.PurchaseBuilder.withValues("Oreo Schokolade", LocalDate.of(2022, 2, 1), 14.99).withCategory(cat1).withId(3).build());
 		
 		//pm.setCompanies(companies);
 		//pm.setCategories(categories);

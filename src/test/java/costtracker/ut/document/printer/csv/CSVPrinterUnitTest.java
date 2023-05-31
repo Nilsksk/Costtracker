@@ -9,16 +9,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.businessobjects.Purchase;
-import costtracker.document.elements.HistoryDocumentHeader;
-import costtracker.document.elements.HistoryElement;
-import costtracker.document.elements.HistoryElementsCreator;
-import costtracker.document.elements.PurchaseEntry;
-import costtracker.document.printer.CSVDocumentPrinter;
-import costtracker.document.type.ElementType;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.HistoryDocumentHeader;
+import costtracker.domain.in.HistoryElement;
+import costtracker.domain.in.HistoryElementsCreator;
+import costtracker.domain.in.PurchaseEntry;
+import costtracker.domain.in.csv.CSVDocumentPrinter;
+import costtracker.domain.in.enums.ElementType;
 
 class CSVPrinterUnitTest {
 
@@ -71,9 +71,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 
 	@Test
@@ -99,9 +99,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 		
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 	@Test
 	void TestPrintEntryNoCompanyNoDescription() throws IncorrectEntryException {
@@ -121,9 +121,9 @@ class CSVPrinterUnitTest {
 		
 		var line = entry.getName() + ";" + entry.getPrice() + ";" + entry.getDate() + ";" + entry.getCategory() + ";" + entry.getCompany() + ";" + entry.getDescription() + ";\n";
 		
-		var sb = printer.printEntry(entry);
+		var ret = printer.printEntry(entry);
 		
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 
 	@Test
@@ -137,9 +137,9 @@ class CSVPrinterUnitTest {
 
 		String line = description + ";Startdatum:;" + dateStart.toString() + ";Enddatum:;" + dateEnd.toString() + ";\n";
 		
-		var sb = printer.printHeader(header);
+		var ret = printer.printHeader(header);
 
-		assertEquals(line, sb.toString());
+		assertEquals(line, ret);
 	}
 //
 //	@Test

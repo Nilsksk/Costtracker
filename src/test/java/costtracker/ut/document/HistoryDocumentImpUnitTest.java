@@ -1,6 +1,5 @@
 package costtracker.ut.document;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -10,12 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.businessobjects.Purchase;
-import costtracker.document.HistoryDocument;
-import costtracker.document.HistoryDocumentBase;
-import costtracker.document.type.ElementType;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.HistoryDocument;
+import costtracker.domain.in.HistoryDocumentBase;
+import costtracker.domain.in.enums.ElementType;
 
 class HistoryDocumentImpUnitTest {
 
@@ -35,16 +34,34 @@ class HistoryDocumentImpUnitTest {
 		LocalDate dateEnd = LocalDate.of(2023,05,23);
 		List<Purchase> purchases = new ArrayList<Purchase>();
 		Category category = Category.CategoryBuilder
-		.withName("cat")
-		.withId(1)
-		.build();
+				.withName("cat")
+				.withId(1)
+				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
 		Purchase purchase = Purchase.PurchaseBuilder
-		.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
-		.withId(1)
-		.withCategory(category)
-		.withDescription("description")
-		.build();
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
 		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
 		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
 		.asCSV()
 		.withDescription(description)
@@ -54,6 +71,108 @@ class HistoryDocumentImpUnitTest {
 		.withTimespan(dateStart, dateEnd)
 		.withData(purchases)
 		.build();
+		
+		document.print();
+		
+	}
+	
+	@Test
+	void TestCreateXMLDocument() throws IncorrectEntryException {
+		String description = "Data for";
+		String name = "Categories";
+		String path = "./";
+		LocalDate dateStart = LocalDate.of(2023,05,22);
+		LocalDate dateEnd = LocalDate.of(2023,05,23);
+		List<Purchase> purchases = new ArrayList<Purchase>();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
+		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
+		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
+				.asXML()
+				.withDescription(description)
+				.withKpi(ElementType.Category)
+				.withName(name)
+				.withPath(path)
+				.withTimespan(dateStart, dateEnd)
+				.withData(purchases)
+				.build();
+		
+		document.print();
+		
+	}
+
+	@Test
+	void TestCreateJSONDocument() throws IncorrectEntryException {
+		String description = "Data for";
+		String name = "Categories";
+		String path = "./";
+		LocalDate dateStart = LocalDate.of(2023,05,22);
+		LocalDate dateEnd = LocalDate.of(2023,05,23);
+		List<Purchase> purchases = new ArrayList<Purchase>();
+		Category category = Category.CategoryBuilder
+				.withName("cat")
+				.withId(1)
+				.build();
+		Category category2 = Category.CategoryBuilder
+				.withName("cat2")
+				.withId(2)
+				.build();
+		Purchase purchase = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase2 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category)
+				.withDescription("description")
+				.build();
+		Purchase purchase3 = Purchase.PurchaseBuilder
+				.withValues("purchase", LocalDate.of(2023,1, 21), 1.0)
+				.withId(1)
+				.withCategory(category2)
+				.withDescription("description")
+				.build();
+		purchases.add(purchase);
+		purchases.add(purchase2);
+		purchases.add(purchase3);
+		HistoryDocument document = HistoryDocumentBase.HistoryDocumentBuilder
+				.asJSON()
+				.withDescription(description)
+				.withKpi(ElementType.Category)
+				.withName(name)
+				.withPath(path)
+				.withTimespan(dateStart, dateEnd)
+				.withData(purchases)
+				.build();
 		
 		document.print();
 		

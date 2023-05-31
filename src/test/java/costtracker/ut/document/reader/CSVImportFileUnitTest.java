@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.document.reader.CSVImportFile;
+import costtracker.application.out.CSVImportFile;
 
 class CSVImportFileUnitTest {
 

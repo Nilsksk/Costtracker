@@ -1,9 +1,10 @@
 package costtracker.ut.db;
 
-import costtracker.db.entities.CategoryEntity;
-import costtracker.db.entities.CompanyEntity;
-import costtracker.db.entities.PurchaseEntity;
-import costtracker.db.repositories.PurchaseRepository;
+import costtracker.adapter.entities.CategoryEntity;
+import costtracker.adapter.entities.CompanyEntity;
+import costtracker.adapter.entities.PurchaseEntity;
+import costtracker.plugin.db.repositories.PurchaseRepository;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
