@@ -62,7 +62,7 @@ public class PurchasePrinter {
 								.getAsInt();
 			purchasePrinter(purchases, longestPurchaseId, longestPurchaseName, longestPurchasePrice, longestPurchaseDate, longestPurchaseCompany, longestPurchaseLocation, longestPurchaseCategory);
 		}
-		DialogueHelper.println("");
+		DialogueHelper.printLine("");
 	}
 	
 	private static void purchasePrinter(List<PurchaseModel> purchases, int longestPurchaseId, int longestPurchaseName, 
@@ -89,13 +89,13 @@ public class PurchasePrinter {
 			String purchaseName = purchaseModel.getPurchase().getCategory().getName();
 			printColumn(longestPurchaseCategory, purchaseName);
 			String purchaseDescription = purchaseModel.getPurchase().getDescription();
-			DialogueHelper.println(purchaseDescription);	
+			DialogueHelper.printLine(purchaseDescription);	
 		}
 	}
 
 	 private static void printColumn(int maxLength, String value) {
 		int numberWhitespaces = maxLength - value.length();
-		String output = " " + value + DialogueHelper.fillWhitespaces(numberWhitespaces) + " |";
+		String output = " " + value + DialogueHelper.addWhitespaces(numberWhitespaces) + " |";
 		DialogueHelper.print(output);
 	}
 }

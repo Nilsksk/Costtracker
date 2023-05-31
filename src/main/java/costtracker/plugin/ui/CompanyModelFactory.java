@@ -32,7 +32,7 @@ public class CompanyModelFactory {
 			companyModels.add(companyModel);
 		} catch (Exception e) {
 			
-			DialogueHelper.println("Fehler!");
+			DialogueHelper.printLine("Fehler!");
 		}
 	}
 }

@@ -18,7 +18,7 @@ public class Dialogue {
 	public void talk() throws SQLException {
 
 		String start = "\tCosttracker!\n";
-		DialogueHelper.println(start);
+		DialogueHelper.printLine(start);
 		boolean continueLoop = true;
 		while(continueLoop){
 			continueLoop = interaction1();
@@ -30,13 +30,13 @@ public class Dialogue {
 		boolean validInput = true;
 		String question = "Was wollen sie machen? Firma oder Kategorie bearbeiten (1), Käufe hinzufügen (2), Käufe bearbeiten (3), Historie auslesen (4), "
 			    + "Programm schließen (5)";
-		int action = DialogueHelper.interactQuestion(question);	
+		int action = DialogueHelper.printInteractQuestionWith(question);	
 		while (validInput) {
 		
-			boolean notValid = !DialogueHelper.isValidInput(action, 6);
+			boolean notValid = !DialogueHelper.inputIsGreaterThanZeroAndBelowMaxInput(action, 6);
 			if (notValid) {
 				String errorMsg = "Falsche Eingabe " + action + "!";
-				DialogueHelper.println(errorMsg);
+				DialogueHelper.printLine(errorMsg);
 				break;
 			}
 			if (action == 1) {			//Done
@@ -59,7 +59,7 @@ public class Dialogue {
 		}
 		if (action == 5) {
 			String end = "Bis bald!";
-			DialogueHelper.println(end);
+			DialogueHelper.printLine(end);
 			continueLoop = false;
 		}
 		return continueLoop;
@@ -70,10 +70,10 @@ public class Dialogue {
 			String question = "Wollen sie eine Firma ändern (1), hinzufügen (2), ausblenden (3) oder einblenden (4)? "
 				    + "Wollen sie eine Kategorie ändern (5), hinzufügen (6), ausblenden (7) oder einblenden (8)? "
 				    + "Oder zurück gehen (9)?";
-			int action = DialogueHelper.interactQuestion(question);
+			int action = DialogueHelper.printInteractQuestionWith(question);
 			boolean validInput = true;
 			while (validInput) {
-				boolean notValid = !DialogueHelper.isValidInput(action, 10);
+				boolean notValid = !DialogueHelper.inputIsGreaterThanZeroAndBelowMaxInput(action, 10);
 				if (notValid) {
 					String errorMsg = "Falsche Eingabe " + action + "!";
 					System.out.println(errorMsg);
@@ -138,10 +138,10 @@ public class Dialogue {
 			String question = "Wollen Sie ihre komplette Kaufhistorie (1), gefiltert nach einer bestimmten Zeitspanne (2), "
 				    + "gefiltert nach Firma in Zeitspanne (3) gefiltert nach Kategorie in Zeitspanne (4)? Oder als Dokumentenausgabe (5)?"
 				    + "Oder zurück gehen (6)?";
-			int action = DialogueHelper.interactQuestion(question);
+			int action = DialogueHelper.printInteractQuestionWith(question);
 			boolean validInput = true;
 			while (validInput) {
-				boolean notValid = !DialogueHelper.isValidInput(action, 7);
+				boolean notValid = !DialogueHelper.inputIsGreaterThanZeroAndBelowMaxInput(action, 7);
 				if (notValid) {
 					String errorMsg = "Falsche Eingabe " + action + "!";
 					System.out.println(errorMsg);
@@ -194,10 +194,10 @@ public class Dialogue {
 			String question = "Wollen Sie ihre komplette Kaufhistorie nach einem bestimmten Jahr (1), einem Monat (2), "
 				    + "einer Woche (3) oder einer individuellen Zeitspanne (4)? "
 				    + "Oder zurück gehen (5)?";
-			int action = DialogueHelper.interactQuestion(question);
+			int action = DialogueHelper.printInteractQuestionWith(question);
 			boolean validInput = true;
 			while (validInput) {
-				boolean notValid = !DialogueHelper.isValidInput(action, 6);
+				boolean notValid = !DialogueHelper.inputIsGreaterThanZeroAndBelowMaxInput(action, 6);
 				if (notValid) {
 					String errorMsg = "Falsche Eingabe " + action + "!";
 					System.out.println(errorMsg);

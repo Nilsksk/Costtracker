@@ -28,16 +28,16 @@ public class CompanyPrinter {
 	private static void companyPrinter(List<CompanyModel> companies, int longestCompanyId, int longestCompanyName) {
 		for (CompanyModel companyModel : companies) {
 			int numberWhitespaces = (longestCompanyId - String.valueOf(companyModel.getPosition()).length());
-			String printId = " " + companyModel.getPosition() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ";
+			String printId = " " + companyModel.getPosition() + DialogueHelper.addWhitespaces(numberWhitespaces) + " | ";
 			DialogueHelper.print(printId);
 			numberWhitespaces = (longestCompanyName - companyModel
 													.getCompany()
 													.getName()
 													.length());
-			String printName = companyModel.getCompany().getName() + DialogueHelper.fillWhitespaces(numberWhitespaces) + " | ";
+			String printName = companyModel.getCompany().getName() + DialogueHelper.addWhitespaces(numberWhitespaces) + " | ";
 			DialogueHelper.print(printName);
 			String printLocation = companyModel.getCompany().getLocation();
-			DialogueHelper.println(printLocation);
+			DialogueHelper.printLine(printLocation);
 		}
 	}
 }
