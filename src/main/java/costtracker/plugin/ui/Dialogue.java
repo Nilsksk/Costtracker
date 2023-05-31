@@ -164,15 +164,26 @@ public class Dialogue {
 	
 				}else if (action  == 5) {
 					validInput = false;
-					historyDocumentService.createHistoryDocument();
+					try {
+						historyDocumentService.createHistoryDocument();						
+					}catch(Exception e) {
+						break;
+					}
 					
 				} else if (action == 6) {
+					validInput = false;
+					break;
+				}
+				else {
 					validInput = false;
 					break;
 				}
 			}
 			System.out.println();
 			if (action == 6) {
+				break;
+			}
+			else {
 				break;
 			}
 		}while(true);
@@ -210,8 +221,15 @@ public class Dialogue {
 					validInput = false;
 					break;
 				}
+				else {
+					validInput = false;
+					break;
+				}
 			}
 			if (action == 5) {
+				break;
+			}
+			else {
 				break;
 			}
 		}while(true);
