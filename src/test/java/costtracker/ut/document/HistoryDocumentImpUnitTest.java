@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.application.in.ElementType;
-import costtracker.application.in.HistoryDocument;
-import costtracker.application.in.HistoryDocumentBase;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.HistoryDocument;
+import costtracker.domain.in.HistoryDocumentBase;
+import costtracker.domain.in.enums.ElementType;
 
 class HistoryDocumentImpUnitTest {
 

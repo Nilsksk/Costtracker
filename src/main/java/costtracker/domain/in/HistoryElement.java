@@ -1,4 +1,4 @@
-package costtracker.adapter.in;
+package costtracker.domain.in;
 
 public interface HistoryElement {
 	double getTotal();	

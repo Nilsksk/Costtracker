@@ -19,24 +19,18 @@ public class UnitOfWorkImp implements UnitOfWork {
 	private CompanyRepository companyRepository;
 	private CategoryRepository categoryRepository;
 	private PurchaseRepository purchaseRepository;
-	
+
 	private Connection connection;
-	
+
 	public UnitOfWorkImp() {
 		try {
 			connection = DriverManager.getConnection("jdbc:h2:~/costtracker", "sa", "ct2023!");
 			connection.setAutoCommit(false);
-			Path path = Paths.get("CreateDatabase.sql");
-			String sql = Files.readString(path);
-			Statement stmt = connection.createStatement();
-			stmt.execute(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+		}
 	}
-	
+
 	@Override
 	public void save() {
 		try {
@@ -47,26 +41,44 @@ public class UnitOfWorkImp implements UnitOfWork {
 	}
 
 	public PurchaseRepository getPurchaseRepository() {
-		if(purchaseRepository == null)
+		if (purchaseRepository == null)
 			purchaseRepository = new PurchaseRepository(connection);
 		return purchaseRepository;
 	}
 
 	public CategoryRepository getCategoryRepository() {
-		if(categoryRepository == null)
+		if (categoryRepository == null)
 			categoryRepository = new CategoryRepository(connection);
 		return categoryRepository;
 	}
 
 	public CompanyRepository getCompanyRepository() {
-		if(companyRepository == null)
+		if (companyRepository == null)
 			companyRepository = new CompanyRepository(connection);
 		return companyRepository;
 	}
 
 	@Override
-	public void close() throws SQLException{
-			this.connection.close();		
+	public void close() {
+		try {
+			this.connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void ensureCreated() {
+		try {
+			Path path = Paths.get("CreateDatabase.sql");
+			String sql = Files.readString(path);
+			Statement stmt = connection.createStatement();
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
