@@ -7,9 +7,9 @@ import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Company;
-import costtracker.document.reader.CSVImportFile;
-import costtracker.document.reader.CompanyImportFile;
+import costtracker.application.out.CSVImportFile;
+import costtracker.application.out.CompanyImportFile;
+import costtracker.domain.businessobjects.Company;
 
 public class CompanyImportFileUnitTest {
 	private String name = "name";

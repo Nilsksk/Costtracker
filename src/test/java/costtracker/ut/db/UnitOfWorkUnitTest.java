@@ -1,9 +1,10 @@
 package costtracker.ut.db;
 
-import costtracker.db.repositories.CategoryRepository;
-import costtracker.db.repositories.CompanyRepository;
-import costtracker.db.repositories.PurchaseRepository;
-import costtracker.db.unitofwork.UnitOfWorkImp;
+import costtracker.plugin.db.repositories.CategoryRepository;
+import costtracker.plugin.db.repositories.CompanyRepository;
+import costtracker.plugin.db.repositories.PurchaseRepository;
+import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,7 +44,7 @@ class UnitOfWorkUnitTest {
 	@Test
 	void TestSave() throws IOException, SQLException {	
 		try(UnitOfWorkImp uow = new UnitOfWorkImp()){
-			uow.Save();
+			uow.save();
 		}
 		
 	}

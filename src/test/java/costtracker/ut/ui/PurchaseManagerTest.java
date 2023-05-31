@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.Purchase;
-import costtracker.ui.PurchaseManager;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.plugin.ui.PurchaseManager;
 
 public class PurchaseManagerTest {
 

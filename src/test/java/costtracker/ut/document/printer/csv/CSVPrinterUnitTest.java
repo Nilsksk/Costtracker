@@ -9,16 +9,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.businessobjects.Company;
-import costtracker.businessobjects.IncorrectEntryException;
-import costtracker.businessobjects.Purchase;
-import costtracker.document.csv.CSVDocumentPrinter;
-import costtracker.document.elements.HistoryDocumentHeader;
-import costtracker.document.elements.HistoryElement;
-import costtracker.document.elements.HistoryElementsCreator;
-import costtracker.document.elements.PurchaseEntry;
-import costtracker.document.type.ElementType;
+import costtracker.adapter.in.HistoryDocumentHeader;
+import costtracker.adapter.in.HistoryElement;
+import costtracker.adapter.in.HistoryElementsCreator;
+import costtracker.adapter.in.PurchaseEntry;
+import costtracker.application.in.ElementType;
+import costtracker.domain.businessobjects.Category;
+import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
+import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.csv.CSVDocumentPrinter;
 
 class CSVPrinterUnitTest {
 

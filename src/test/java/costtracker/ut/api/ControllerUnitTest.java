@@ -1,7 +1,8 @@
 package costtracker.ut.api;
 
-import costtracker.api.Controller;
 import org.junit.jupiter.api.Test;
+
+import costtracker.plugin.api.Controller;
 
 import java.io.IOException;
 

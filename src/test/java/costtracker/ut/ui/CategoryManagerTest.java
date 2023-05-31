@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import costtracker.businessobjects.Category;
-import costtracker.ui.CategoryManager;
+import costtracker.domain.businessobjects.Category;
+import costtracker.plugin.ui.CategoryManager;
 
 public class CategoryManagerTest {
 
