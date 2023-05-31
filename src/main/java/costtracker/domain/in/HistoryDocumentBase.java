@@ -1,16 +1,16 @@
 package costtracker.domain.in;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.List;
-
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
 import costtracker.domain.in.csv.CSVHistoryDocument.CSVHistoryDocumentBuilder;
 import costtracker.domain.in.enums.ElementType;
 import costtracker.domain.in.json.JSONHistoryDocument.JSONHistoryDocumentBuilder;
 import costtracker.domain.in.xml.XMLHistoryDocument.XMLHistoryDocumentBuilder;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 public abstract class HistoryDocumentBase {
 
@@ -93,4 +93,5 @@ public abstract class HistoryDocumentBase {
 		}
 	}
 
+	public abstract void print();
 }
