@@ -188,10 +188,10 @@ public class PurchaseManager implements Editor, Adder {
 		boolean moreThenZeroPurchases = purchaseModels.get(0).getPurchase() != null;
 		if (moreThenZeroPurchases) {
 			PurchasePrinter.printPurchases(purchaseModels);						
-		}
-		if (DialogueHelper.validateDeleteOrDeactivation("Erfolgreich gelöscht!")) {
-			int id = purchase.getId();
-			purchaseHandler.deleteById(id);
+			if (DialogueHelper.validateDeleteOrDeactivation("Erfolgreich gelöscht!")) {
+				int id = purchase.getId();
+				purchaseHandler.deleteById(id);
+			}
 		}
 	}
 	
