@@ -1,4 +1,4 @@
-package costtracker.plugin.in.json;
+package costtracker.domain.in.json;
 
 public class JSONString extends JSONValue {
 	private String value;

@@ -1,14 +1,16 @@
-package costtracker.adapter.in;
+package costtracker.domain.in.json;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import costtracker.adapter.in.HistoryDocumentHeader;
+import costtracker.adapter.in.HistoryElement;
+import costtracker.adapter.in.HistoryElementsCreator;
 import costtracker.application.in.HistoryDocument;
 import costtracker.application.in.HistoryDocumentBase;
 import costtracker.domain.businessobjects.IncorrectEntryException;
-import costtracker.plugin.in.json.JSONDocumentPrinter;
 
 public class JSONHistoryDocument extends HistoryDocumentBase implements HistoryDocument {
 

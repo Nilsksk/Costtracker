@@ -1,16 +1,16 @@
 package costtracker.application.handlers;
 
-import costtracker.adapter.repositoryadapters.CompanyRepositoryAdapterImp;
 import costtracker.application.handlers.interfaces.DatabaseHandler;
 import costtracker.application.handlers.interfaces.StateHandler;
 import costtracker.application.interfaces.CompanyRepositoryAdapter;
 import costtracker.domain.businessobjects.Company;
+import costtracker.domain.dependencyinjection.DependencyContainer;
 
 import java.util.List;
 
 public class CompanyHandler implements DatabaseHandler<Company>, StateHandler<Company> {
 
-	private CompanyRepositoryAdapter companyRepositoryAdapter = new CompanyRepositoryAdapterImp();
+	private CompanyRepositoryAdapter companyRepositoryAdapter = DependencyContainer.getInstance().getDependency(CompanyRepositoryAdapter.class);
 	
 	@Override
 	public Company getById(int id) {

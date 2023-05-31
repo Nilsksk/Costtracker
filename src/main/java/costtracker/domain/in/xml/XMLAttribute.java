@@ -1,4 +1,4 @@
-package costtracker.plugin.in.xml;
+package costtracker.domain.in.xml;
 
 /**
  * This class is an internal class. Don't use, it might not work!

@@ -1,12 +1,12 @@
 package costtracker.application.handlers;
 
-import costtracker.adapter.repositoryadapters.PurchaseRepositoryAdapterImp;
 import costtracker.application.handlers.interfaces.DatabaseHandler;
 import costtracker.application.handlers.interfaces.TimestampHandler;
 import costtracker.application.interfaces.PurchaseRepositoryAdapter;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.dependencyinjection.DependencyContainer;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalField;
@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class PurchaseHandler implements TimestampHandler, DatabaseHandler<Purchase> {
 
-	private PurchaseRepositoryAdapter purchaseRepositoryAdapter = new PurchaseRepositoryAdapterImp();
+	private PurchaseRepositoryAdapter purchaseRepositoryAdapter = DependencyContainer.getInstance().getDependency(PurchaseRepositoryAdapter.class);
 
 	public PurchaseHandler() {
 

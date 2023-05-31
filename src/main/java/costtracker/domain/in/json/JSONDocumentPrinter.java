@@ -1,4 +1,4 @@
-package costtracker.plugin.in.json;
+package costtracker.domain.in.json;
 
 import costtracker.adapter.in.HistoryDocumentHeader;
 import costtracker.adapter.in.HistoryElement;

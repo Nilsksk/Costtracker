@@ -15,12 +15,11 @@ import costtracker.application.interfaces.PurchaseRepositoryAdapter;
 import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.Purchase;
-import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
+import costtracker.domain.dependencyinjection.DependencyContainer;
 
 public class PurchaseRepositoryAdapterImp implements PurchaseRepositoryAdapter {
 
-	private UnitOfWork uow = new UnitOfWorkImp();
-
+	private UnitOfWork uow = DependencyContainer.getInstance().getDependency(UnitOfWork.class);
 	public PurchaseRepositoryAdapterImp() {
 	
 	}

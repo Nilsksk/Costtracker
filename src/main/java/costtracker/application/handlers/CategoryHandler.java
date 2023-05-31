@@ -1,16 +1,16 @@
 package costtracker.application.handlers;
 
-import costtracker.adapter.repositoryadapters.CategoryRepositoryAdapterImp;
 import costtracker.application.handlers.interfaces.DatabaseHandler;
 import costtracker.application.handlers.interfaces.StateHandler;
 import costtracker.application.interfaces.CategoryRepositoryAdapter;
 import costtracker.domain.businessobjects.Category;
+import costtracker.domain.dependencyinjection.DependencyContainer;
 
 import java.util.List;
 
 public class CategoryHandler implements DatabaseHandler<Category>, StateHandler<Category> {
 
-	private CategoryRepositoryAdapter categoryRepositoryAdapter = new CategoryRepositoryAdapterImp();
+	private CategoryRepositoryAdapter categoryRepositoryAdapter = DependencyContainer.getInstance().getDependency(CategoryRepositoryAdapter.class);
 	
 	public CategoryHandler() {
 		

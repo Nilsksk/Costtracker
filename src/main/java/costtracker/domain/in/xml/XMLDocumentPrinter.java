@@ -1,4 +1,4 @@
-package costtracker.plugin.in.xml;
+package costtracker.domain.in.xml;
 
 import costtracker.adapter.in.DocumentPrinter;
 import costtracker.adapter.in.HistoryDocumentHeader;

@@ -1,83 +1,48 @@
-package costtracker.adapter.dependencyinjection;
-//package consttracker.adapter.dependencyinjection;
-//
-//import java.lang.reflect.Constructor;
-//import java.lang.reflect.Field;
-//import java.lang.reflect.InvocationTargetException;
-//import java.util.HashMap;
-//
-//public class DependencyContainer {
-//	private static DependencyContainer instance;
-//
-//	private final HashMap<Class<?>, Class<?>> dependencies = new HashMap<>();
-//
-//	private final HashMap<Class<?>, Object> singletons = new HashMap<Class<?>, Object>();
-//
-//	public static DependencyContainer getInstance() {
-//		if (instance == null) {
-//			instance = new DependencyContainer();
-//		}
-//		return instance;
-//	}
-//
-//	public <TInterface, TClass> void registerScoped(Class<TInterface> port, Class<TClass> implementation) {
-//		dependencies.put(port, implementation);
-//	}
-//
-//	public <TClass> void registerScoped(Class<TClass> implementation) {
-//		dependencies.put(implementation, implementation);
-//	}
-//
-//	public <TInterface, TClass> void registerSingleton(Class<TInterface> port, Class<TClass> implementation) {
-//	}
-//
-//	public <TClass> void registerSingleton(Class<TClass> implementation)
-//			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
-//			NoSuchMethodException, SecurityException {
-//		Constructor<TClass> constructor =  implementation.getDeclaredConstructor();
-//		constructor.setAccessible(true);
-//		var instance = constructor.newInstance();
-//		for (var field : implementation.getFields()) {
-//			injectField(instance, field);
-//		}
-//	}
-//
-//	private Object instantiateClass(Class<?> c) throws NoSuchMethodException, SecurityException, InstantiationException,
-//			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-//		Constructor<?> contructor = c.getDeclaredConstructor();
-//		return contructor.newInstance();
-//	}
-//
-//	private void injectField(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException,
-//			NoSuchMethodException, SecurityException, InstantiationException, InvocationTargetException {
-//		field.setAccessible(true);
-//		Object obj = singletons.get(field.getClass());
-//		if (obj != null) {
-//			field.set(instance, obj);
-//			return;
-//		}
-//		Class<?> c = dependencies.get(field.getClass());
-//		if (c != null) {
-//			Object o = instantiateClass(c);
-//			for (var f :c.getFields()) {
-//				injectField(o, f);
-//			}
-//			field.set(instance, o);
-//		}
-//		return;
-//	}
-//
-//	public <T> T getDependency(Class<T> type) {
-//
-//		var x = dependencies.get(type);
-//		if (x == null)
-//			throw new RuntimeException("No dependency of type " + type.getName() + " found.");
-//		try {
-//			var y = x.getDeclaredConstructor();
-//		} catch (NoSuchMethodException | SecurityException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
-//}
+package costtracker.domain.dependencyinjection;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
+public class DependencyContainer {
+	private HashMap<Class<?>, Object> singletons = new HashMap<>();
+
+	private HashMap<Class<?>, Class<?>> scopeds = new HashMap<>();
+
+	private static DependencyContainer instance;
+	
+	private DependencyContainer() {
+		
+	}
+	
+	public static DependencyContainer getInstance() {
+		if(instance == null)
+			instance = new DependencyContainer();
+		return instance;
+	}
+	
+	public void registerSingleton(Class<?> i, Object o) {
+		singletons.put(i, o);
+	}
+
+	public void registerScoped(Class<?> i, Class<?> c) {
+		scopeds.put(i, c);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getDependency(Class<T> type) {
+		if (singletons.containsKey(type)) {
+			return (T) singletons.get(type);
+		} else if (scopeds.containsKey(type)) {
+			Class<?> c = scopeds.get(type);
+			try {
+				Constructor<?> constructor = c.getDeclaredConstructor();
+				return (T) constructor.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				return null;
+			}
+		}
+		return null;
+	}
+}

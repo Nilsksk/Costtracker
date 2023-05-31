@@ -9,10 +9,10 @@ import costtracker.adapter.mappers.EntityMapper;
 import costtracker.adapter.persistence.UnitOfWork;
 import costtracker.application.interfaces.CategoryRepositoryAdapter;
 import costtracker.domain.businessobjects.Category;
-import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
+import costtracker.domain.dependencyinjection.DependencyContainer;
 
 public class CategoryRepositoryAdapterImp implements CategoryRepositoryAdapter {
-	private UnitOfWork uow = new UnitOfWorkImp();
+	private UnitOfWork uow = DependencyContainer.getInstance().getDependency(UnitOfWork.class);
 
 	public CategoryRepositoryAdapterImp() {
 	

@@ -8,11 +8,11 @@ import java.util.List;
 import costtracker.adapter.in.DocumentPrinter;
 import costtracker.adapter.in.HistoryDocumentHeader;
 import costtracker.adapter.in.HistoryElement;
-import costtracker.adapter.in.CSVHistoryDocument.CSVHistoryDocumentBuilder;
-import costtracker.adapter.in.JSONHistoryDocument.JSONHistoryDocumentBuilder;
-import costtracker.adapter.in.XMLHistoryDocument.XMLHistoryDocumentBuilder;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
+import costtracker.domain.in.csv.CSVHistoryDocument.CSVHistoryDocumentBuilder;
+import costtracker.domain.in.json.JSONHistoryDocument.JSONHistoryDocumentBuilder;
+import costtracker.domain.in.xml.XMLHistoryDocument.XMLHistoryDocumentBuilder;
 
 public abstract class HistoryDocumentBase {
 

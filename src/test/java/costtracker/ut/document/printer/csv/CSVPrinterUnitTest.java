@@ -18,7 +18,7 @@ import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
 import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.domain.businessobjects.Purchase;
-import costtracker.plugin.in.csv.CSVDocumentPrinter;
+import costtracker.domain.in.csv.CSVDocumentPrinter;
 
 class CSVPrinterUnitTest {
 

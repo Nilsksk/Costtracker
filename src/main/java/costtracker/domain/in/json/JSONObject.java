@@ -1,4 +1,4 @@
-package costtracker.plugin.in.json;
+package costtracker.domain.in.json;
 
 import java.util.ArrayList;
 import java.util.List;

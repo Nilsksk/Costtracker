@@ -1,4 +1,4 @@
-package costtracker.plugin.in.xml;
+package costtracker.domain.in.xml;
 
 import java.util.ArrayList;
 import java.util.List;

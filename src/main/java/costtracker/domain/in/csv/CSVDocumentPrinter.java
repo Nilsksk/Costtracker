@@ -1,4 +1,4 @@
-package costtracker.plugin.in.csv;
+package costtracker.domain.in.csv;
 
 import costtracker.adapter.in.DocumentPrinter;
 import costtracker.adapter.in.HistoryDocumentHeader;
