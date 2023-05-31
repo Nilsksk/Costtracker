@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.List;
 
 public class GetPurchaseByWeek implements GetHandler {

@@ -82,8 +82,6 @@ public class DialogueHelper {
 	
 	public static int interactQuestion(String question) {
 		print(question);
-
-		Scanner sc = new Scanner(System.in);
 		String action = sc.nextLine();		
 		println("");
 		return mapToId(action);	

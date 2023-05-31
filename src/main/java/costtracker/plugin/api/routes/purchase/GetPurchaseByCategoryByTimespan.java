@@ -18,7 +18,6 @@ import static costtracker.domain.businessobjects.Category.fromJSONToCategory;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -3,7 +3,6 @@ package costtracker.plugin.ui;
 import java.sql.SQLException;
 
 import costtracker.application.in.HistoryDocumentService;
-import costtracker.domain.in.HistoryDocument;
 import costtracker.plugin.ui.interfaces.Activator;
 import costtracker.plugin.ui.interfaces.Adder;
 import costtracker.plugin.ui.interfaces.Deactivator;
@@ -118,9 +117,15 @@ public class Dialogue {
 				else if (action == 9) {
 					break;
 				}
+				else{
+					break;
+				}
 			}
 			System.out.println();
 			if (action == 9) {
+				break;
+			}
+			else {
 				break;
 			}
 		}while(true);

@@ -2,11 +2,9 @@ package costtracker.plugin.api.routes.company;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
-
-import costtracker.application.handlers.CategoryHandler;
 import costtracker.application.handlers.CompanyHandler;
-import costtracker.domain.businessobjects.Category;
 import costtracker.domain.businessobjects.Company;
+import costtracker.domain.businessobjects.IncorrectEntryException;
 import costtracker.plugin.api.enums.httpCodes;
 import costtracker.plugin.api.enums.httpHeader;
 import costtracker.plugin.api.helper.HandlerHelperFunctions;
@@ -16,7 +14,6 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 
 public class UpdateCompany implements PutHandler {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -37,7 +34,7 @@ public class UpdateCompany implements PutHandler {
                 if (httpHeader.METHOD_PUT.headerData.equals(requestMethod)) {
                     if (HandlerHelperFunctions.checkURI(handler.getRequestURI(), path)) {
                             CompanyHandler companyHandler = new CompanyHandler();
-                            boolean returnState = companyHandler.update(new Company(companyId, companyName,companyLocation));
+                            boolean returnState = companyHandler.update(Company.CompanyBuilder.withName(companyName).withLocation(companyLocation).withId(companyId).build());
                             final String responseBody = new JSONObject().put("state", returnState).toString();
 
                             // Set Headers and send Response to client
@@ -52,7 +49,10 @@ public class UpdateCompany implements PutHandler {
                     headers.set(httpHeader.HEADER_ALLOW.headerData, httpHeader.ALLOWED_METHODS.headerData);
                     handler.sendResponseHeaders(httpCodes.STATUS_METHOD_NOT_ALLOWED.code, NO_RESPONSE_LENGTH);
                 }
-            }
+            } catch (IncorrectEntryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         });
     }
 }

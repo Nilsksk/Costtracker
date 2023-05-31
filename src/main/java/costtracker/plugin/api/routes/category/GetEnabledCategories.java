@@ -11,11 +11,9 @@ import costtracker.plugin.api.helper.HandlerHelperFunctions;
 import costtracker.plugin.api.interfaces.GetHandler;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.List;
 
 public class GetEnabledCategories implements GetHandler {

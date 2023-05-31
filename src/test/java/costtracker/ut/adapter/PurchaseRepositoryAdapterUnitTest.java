@@ -14,7 +14,7 @@ public class PurchaseRepositoryAdapterUnitTest {
     void testPurchaseAdapter() {
         DependencyContainer container = DependencyContainer.getInstance();
         container.registerScoped(UnitOfWork.class, UnitOfWorkMock.class);
-        var uowMock = container.getDependency(UnitOfWork.class);
+        //var uowMock = container.getDependency(UnitOfWork.class);
 
         PurchaseRepositoryAdapter purchaseRepositoryAdapter = new PurchaseRepositoryAdapterImp();
         Purchase purchase = purchaseRepositoryAdapter.get(1);
