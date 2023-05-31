@@ -17,7 +17,7 @@ import costtracker.domain.dependencyinjection.DependencyContainer;
 import costtracker.plugin.console.dialog.ConsoleDisplay;
 import costtracker.plugin.db.unitofwork.UnitOfWorkImp;
 
-public class DocumentServiceIntegrationTest {
+public class DocumentServiceIntegration {
 	@Test
 	void TestCreateDocument() {
 		DependencyContainer container = DependencyContainer.getInstance();
