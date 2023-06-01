@@ -1,2 +1,2 @@
-docker run -t costtracker-image .
-docker build -it costtracker-image
+docker build -t costtracker-image .
+docker run -it costtracker-image
